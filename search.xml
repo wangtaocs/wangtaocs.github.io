@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>NLP/testbili</title>
+    <url>/2020/03/28/NLP/testbili/</url>
+    <content><![CDATA[<!-- build time:Sat Mar 28 2020 19:19:54 GMT+0800 (GMT+08:00) --><h1 id="testBilibili"><a href="#testBilibili" class="headerlink" title="testBilibili"></a>testBilibili</h1><div class="bili_video"><iframe src="https://player.bilibili.com/player.html?aid=NaN&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" width="544" height="452" allowfullscreen></iframe></div><!-- rebuild by neat -->]]></content>
+      <categories>
+        <category>NLP</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Hello,hexo!</title>
     <url>/2020/03/27/Hexo/Hello,hexo!/</url>
     <content><![CDATA[<!-- build time:Fri Mar 27 2020 20:24:48 GMT+0800 (GMT+08:00) --><h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><ol><li>安装Hexo脚手架：<code>npm install -g hexo-cli</code></li><li>在任意目录下初始化：<code>hexo init Blog</code></li></ol><h2 id="2-插件"><a href="#2-插件" class="headerlink" title="2.插件"></a>2.插件</h2><h3 id="2-1-hexagon"><a href="#2-1-hexagon" class="headerlink" title="2.1.hexagon"></a>2.1.hexagon</h3><ul><li><p>hexo的包管理工具</p></li><li><p>安装：<code>npm install -g hexagon-cli</code></p></li><li><p>查看初始化后的hexo的所有插件和主题：<code>hexa -l</code></p><p><img src="https://i.loli.net/2020/03/27/ge7TbLZJRXF2nma.png" alt="批注 2020-03-27 162741.png" style="zoom:50%"></p></li><li><p>ee</p></li></ul><h3 id="2-2-hexo-auto-category"><a href="#2-2-hexo-auto-category" class="headerlink" title="2.2.hexo-auto-category"></a>2.2.hexo-auto-category</h3><ul><li>自动解析文章目录，方便博文归类整理</li><li>安装：<code>npm install hexo-auto-category --save</code></li></ul><h3 id="2-3-hexo-wordcount"><a href="#2-3-hexo-wordcount" class="headerlink" title="2.3.hexo-wordcount"></a>2.3.hexo-wordcount</h3><ul><li>自动统计文章字数</li></ul><!-- rebuild by neat -->]]></content>
