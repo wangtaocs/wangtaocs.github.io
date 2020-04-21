@@ -57,11 +57,11 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello,hexo!</title>
-    <url>/2020/03/27/Hexo/Hello,hexo!/</url>
-    <content><![CDATA[<!-- build time:Mon Apr 06 2020 23:14:41 GMT+0800 (GMT+08:00) --><h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><ol><li>安装Hexo脚手架：<code>npm install -g hexo-cli</code></li><li>在任意目录下初始化：<code>hexo init Blog</code></li></ol><h2 id="2-插件"><a href="#2-插件" class="headerlink" title="2.插件"></a>2.插件</h2><ul><li><p>hexagon</p><ul><li><p>hexo的包管理工具</p></li><li><p>安装：<code>npm install -g hexagon-cli</code></p></li><li><p>查看初始化后的hexo的所有插件和主题：<code>hexa -l</code></p></li></ul></li><li><p>hexo-auto-category</p><ul><li>自动解析文章目录，方便博文归类整理</li><li>安装：<code>npm install hexo-auto-category --save</code></li></ul></li><li><p>hexo-wordcount</p><ul><li>自动统计文章字数</li></ul></li><li><p>hexo-symbols-count-time</p><ul><li>自动统计阅读时长</li></ul></li><li>hexo-renderer-kramed<ul><li>Latex渲染引擎</li></ul></li></ul><!-- rebuild by neat -->]]></content>
+    <title>Hexo</title>
+    <url>/2020/03/27/%E5%85%B6%E4%BB%96/Hexo/</url>
+    <content><![CDATA[<!-- build time:Tue Apr 21 2020 21:45:05 GMT+0800 (GMT+08:00) --><h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><ol><li>安装Hexo脚手架：<code>npm install -g hexo-cli</code></li><li>在任意目录下初始化：<code>hexo init Blog</code></li></ol><h2 id="2-插件"><a href="#2-插件" class="headerlink" title="2.插件"></a>2.插件</h2><ul><li><p>hexagon</p><ul><li><p>hexo的包管理工具</p></li><li><p>安装：<code>npm install -g hexagon-cli</code></p></li><li><p>查看初始化后的hexo的所有插件和主题：<code>hexa -l</code></p></li></ul></li><li><p>hexo-auto-category</p><ul><li>自动解析文章目录，方便博文归类整理</li><li>安装：<code>npm install hexo-auto-category --save</code></li></ul></li><li><p>hexo-wordcount</p><ul><li>自动统计文章字数</li></ul></li><li><p>hexo-symbols-count-time</p><ul><li>自动统计阅读时长</li></ul></li><li>hexo-renderer-kramed<ul><li>Latex渲染引擎</li></ul></li></ul><!-- rebuild by neat -->]]></content>
       <categories>
-        <category>Hexo</category>
+        <category>其他</category>
       </categories>
   </entry>
   <entry>
