@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>0.深度学习课程资源</title>
-    <url>/2020/08/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/0-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90/</url>
-    <content><![CDATA[<!-- build time:Thu Aug 20 2020 23:35:52 GMT+0800 (GMT+08:00) --><p>吴恩达深度学习课程资源：</p><ol><li>第一课 — 神经网络与深度学习<ol><li>视频课：<a href="https://www.bilibili.com/video/BV164411m79z" target="_blank" rel="noopener">https://www.bilibili.com/video/BV164411m79z</a></li><li>笔记：<a href="http://www.ai-start.com/dl2017/" target="_blank" rel="noopener">http://www.ai-start.com/dl2017/</a></li><li>课后题：<a href="https://www.kesci.com/home/project/5e20243e2823a10036b542da" target="_blank" rel="noopener">https://www.kesci.com/home/project/5e20243e2823a10036b542da</a></li></ol></li></ol><!-- rebuild by neat -->]]></content>
-  </entry>
-  <entry>
     <title>3.浅层神经网络</title>
     <url>/2020/08/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/3-%E6%B5%85%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</url>
     <content><![CDATA[<!-- build time:Thu Aug 20 2020 21:09:17 GMT+0800 (GMT+08:00) --><h1 id="神经网络概览"><a href="#神经网络概览" class="headerlink" title="神经网络概览"></a>神经网络概览</h1><!-- rebuild by neat -->]]></content>
@@ -54,6 +49,14 @@ b:=b-a * d b
     <title>1.深度学习概论</title>
     <url>/2020/08/16/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/1-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%AE%BA/</url>
     <content><![CDATA[<!-- build time:Thu Aug 20 2020 23:35:52 GMT+0800 (GMT+08:00) --><p>今天学习了吴恩达深度学习课程的P1~P6的入门课程，总结如下问题</p><ul><li>什么是神经网络？</li><li>什么是深度学习？</li><li>什么是监督学习、无监督学习？</li></ul><h1 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h1><p>就我个人理解，神经网络并没有听起来这么高大上，它只是由原来的单一映射关系升级为了层级映射关系，只有输入层与输出层对外界可见，而中间的隐藏层不可见，在多个层级之间，前一层的输出可作为下一层的输入，利用大量的数据对这种多级映射关系进行训练，以获得一个非常精准的映射函数，中间的多级运算单元可看作“神经元”，由这些神经元组成的复杂网络可看作“神经网络”。</p><h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><p>我认为的深度学习，是摆脱掉传统的专家系统所带来的枷锁（机器学习），利用提前构建好的<strong>神经网络</strong>对大量的数据集进行训练，从而得到一个精准的可以对海量数据进行很好的拟合的一个模型，利用这个模型可以解决目标领域中的一些简单问题。</p><h1 id="监督学习、无监督学习"><a href="#监督学习、无监督学习" class="headerlink" title="监督学习、无监督学习"></a>监督学习、无监督学习</h1><ul><li>监督学习：使用经过人为标注的数据集对模型进行训练</li><li>无监督学习：使用未经过人为标注的数据集对模型进行训练</li></ul><blockquote><p>半监督学习：监督学习与无监督学习相结合，也叫强化学习。</p></blockquote><h1 id="错题总结"><a href="#错题总结" class="headerlink" title="错题总结"></a>错题总结</h1><h2 id="第-3-题"><a href="#第-3-题" class="headerlink" title="第 3 题"></a>第 3 题</h2><p>回想一下这个机器学习迭代的图。以下哪项陈述是正确的？（选出所有正确项）（AC<strong>D</strong>）</p><p><img src="https://cdn.kesci.com/upload/image/q46zljt0cq.jpg?imageView2/0/w/960/h/960" alt="Image Name"></p><p>A.能够快速地尝试各种想法可以让深入学习的工程师更快地迭代。</p><p>B.更快的计算有助于加快团队迭代一个好主意所需的时间。</p><p>C.在大数据集上训练比在小数据集上训练更快。</p><p><strong>D.深度学习算法的最新进展使我们能够更快地训练好的模型（即使不改变CPU/GPU硬件）。</strong></p><h2 id="第-4-题"><a href="#第-4-题" class="headerlink" title="第 4 题"></a>第 4 题</h2><p>当一个有经验的深度学习工程师处理一个新问题时，他们通常可以在第一次尝试时利用以前问题的洞察力来训练一个好的模型，而不需要在不同的模型中重复多次。</p><p>A.对 <strong>B.不对</strong></p><h2 id="第-8-题"><a href="#第-8-题" class="headerlink" title="第 8 题"></a>第 8 题</h2><p>为什么RNN（递归神经网络）被用于机器翻译，比如说将英语翻译成法语？（选出所有正确项）（<del>BC</del>AC）</p><p><strong>A.它可以训练成一个有监督的学习问题</strong></p><p><del>B.它比卷积神经网络（CNN）更强大</del></p><p>C.当输入/输出是一个序列（例如，一个单词序列）时适用</p><p>D.RNN表示 想法-&gt;代码-&gt;实验-&gt;想法-&gt;… 的循环过程</p><!-- rebuild by neat -->]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>0.深度学习课程资源</title>
+    <url>/2020/08/15/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/0-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90/</url>
+    <content><![CDATA[<!-- build time:Thu Aug 20 2020 23:41:00 GMT+0800 (GMT+08:00) --><p>吴恩达深度学习课程资源：</p><ol><li>第一课 — 神经网络与深度学习<ol><li>视频课：<a href="https://www.bilibili.com/video/BV164411m79z" target="_blank" rel="noopener">https://www.bilibili.com/video/BV164411m79z</a></li><li>笔记：<a href="http://www.ai-start.com/dl2017/" target="_blank" rel="noopener">http://www.ai-start.com/dl2017/</a></li><li>课后题：<a href="https://www.kesci.com/home/project/5e20243e2823a10036b542da" target="_blank" rel="noopener">https://www.kesci.com/home/project/5e20243e2823a10036b542da</a></li></ol></li></ol><!-- rebuild by neat -->]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
