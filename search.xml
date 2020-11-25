@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>YOLOv1</title>
-    <url>/2020/11/06/paper%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/YOLOv1/</url>
+    <url>/2020110662617/</url>
     <content><![CDATA[<h1 id="论文简述"><a href="#论文简述" class="headerlink" title="论文简述"></a>论文简述</h1><p><a href="https://pjreddie.com/darknet/yolov1/">YOLOv1</a><br>一个实时目标检测模型，因对整张图片进行检测（Unified Detection），使用卷积进行滑动窗口的实现，大大提高了对象检测的效率。因为第二段是论文的核心内容，因此本文将YOLOv1的第二段进行主观式理解与翻译，如有不对还请指正。你可以在这里<a href="https://arxiv.org/abs/1506.02640">下载</a></p>
 <h1 id="理解式翻译"><a href="#理解式翻译" class="headerlink" title="理解式翻译"></a>理解式翻译</h1><p>以下为论文原文翻译</p>
 <h2 id="2-统一检测"><a href="#2-统一检测" class="headerlink" title="2.统一检测"></a>2.统一检测</h2><p><strong>Ⅰ.</strong></p>
@@ -188,7 +188,7 @@
   </entry>
   <entry>
     <title>8.目标检测</title>
-    <url>/2020/10/26/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/8-%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/</url>
+    <url>/2020102647531/</url>
     <content><![CDATA[<h1 id="目标定位"><a href="#目标定位" class="headerlink" title="目标定位"></a>目标定位</h1><ol>
 <li><p>如何定位图片中对象的位置？<br>目标的参数化表示，让神经网络多输出4个单元：</p>
 <ul>
@@ -260,7 +260,7 @@ y=\left[p_{c}\right. & b_{x} & b_{y} & b_{h} & b_{w} & c_{1} & c_{2} & c_{3} & p
   </entry>
   <entry>
     <title>7.卷积神经网络</title>
-    <url>/2020/10/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/7-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</url>
+    <url>/2020101715916/</url>
     <content><![CDATA[<h1 id="边缘检测"><a href="#边缘检测" class="headerlink" title="边缘检测"></a>边缘检测</h1><h2 id="卷积运算“-”"><a href="#卷积运算“-”" class="headerlink" title="卷积运算“$*$”"></a>卷积运算“$*$”</h2><p><img src="http://www.ai-start.com/dl2017/images/7099a5373f2281626aa8ddd47a180571.png" alt=""></p>
 <p>$*$是卷积的标准符号</p>
 <p><img src="http://www.ai-start.com/dl2017/images/2b4796e91703492fe5a87d4fd95fcd6b.png" alt=""></p>
@@ -351,7 +351,7 @@ p=\frac{f-1}{2}</script></li>
   </entry>
   <entry>
     <title>6.超参数调试、Batch正则化和程序框架</title>
-    <url>/2020/10/08/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/6-%E8%B6%85%E5%8F%82%E6%95%B0%E8%B0%83%E8%AF%95%E3%80%81Batch%E6%AD%A3%E5%88%99%E5%8C%96%E5%92%8C%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/</url>
+    <url>/2020100833501/</url>
     <content><![CDATA[<p><em>这篇有点水，Batch Norm还是不太理解，很多笔记是直接摘抄的</em></p>
 <h1 id="调试处理"><a href="#调试处理" class="headerlink" title="调试处理"></a>调试处理</h1><p>超参数优先级排序：</p>
 <ol>
@@ -410,7 +410,7 @@ z^{(i)}_{norm}=\frac{z^{(i)}-\mu}{\sqrt{\sigma ^{2}+\varepsilon}}</script><scrip
   </entry>
   <entry>
     <title>5.优化算法</title>
-    <url>/2020/10/03/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/5-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/</url>
+    <url>/2020100337967/</url>
     <content><![CDATA[<h1 id="Mini-batch梯度下降法"><a href="#Mini-batch梯度下降法" class="headerlink" title="Mini-batch梯度下降法"></a>Mini-batch梯度下降法</h1><p>将较大的训练集分割为较小的子集，这些子集叫做<strong>mini-batch</strong>。</p>
 <p>如果mini-batch的大小是2的n次方，代码运行的会快一点，64~512的mini-batch比较常见。</p>
 <p>假设训练集有5000,000个样本，mini-batch的大小为1000，则整个训练集一共有5000个mini-batch；使用batch训练，遍历整个训练集，梯度下降法只能下降一次，使用mini-batch，遍历一次训练集可以下降5000次；mini-batch大小为1时，则为随机梯度下降，噪声会减小，但会失去所有向量化带来的加速，因为一次性只处理了一个训练样本，这样效率过于低下。选择适合的mini-batch大小。</p>
@@ -512,7 +512,7 @@ b:=b-\alpha \frac{v_{db}^{corrected}}{\sqrt{S_{db}^{corrected}}+\varepsilon}</sc
   </entry>
   <entry>
     <title>4.深度学习实用层面</title>
-    <url>/2020/09/27/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/4-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E7%94%A8%E5%B1%82%E9%9D%A2/</url>
+    <url>/2020092741052/</url>
     <content><![CDATA[<h1 id="训练、验证、测试集"><a href="#训练、验证、测试集" class="headerlink" title="训练、验证、测试集"></a>训练、验证、测试集</h1><ol>
 <li>如果数据集较小，可将所有数据按照3:1:1的比例分配训练集、验证集和测试集；<br>或7:3的比例分配训练集和测试集（无验证集）</li>
 <li>如果数据集较大<ul>
@@ -759,7 +759,7 @@ J(\theta)=\frac{1}{m} \sum L\left(\hat{y}^{(i)}, y^{(i)}\right)+\frac{\lambda}{2
   </entry>
   <entry>
     <title>2020研究生数学建模大赛E题复盘</title>
-    <url>/2020/09/22/%E5%85%B6%E4%BB%96/2020%E7%A0%94%E7%A9%B6%E7%94%9F%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%E5%A4%A7%E8%B5%9BE%E9%A2%98%E5%A4%8D%E7%9B%98/</url>
+    <url>/2020092217439/</url>
     <content><![CDATA[<h1 id="探索大雾演化规律，预测大雾变化趋势"><a href="#探索大雾演化规律，预测大雾变化趋势" class="headerlink" title="探索大雾演化规律，预测大雾变化趋势"></a>探索大雾演化规律，预测大雾变化趋势</h1><ol>
 <li><p><strong>关键词</strong>：能见度分析，图像处理，深度学习，神经网络</p>
 </li>
@@ -816,7 +816,7 @@ J(\theta)=\frac{1}{m} \sum L\left(\hat{y}^{(i)}, y^{(i)}\right)+\frac{\lambda}{2
   </entry>
   <entry>
     <title>3.浅层神经网络</title>
-    <url>/2020/08/22/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/3-%E6%B5%85%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</url>
+    <url>/2020082248338/</url>
     <content><![CDATA[<h1 id="神经网络概览及表示"><a href="#神经网络概览及表示" class="headerlink" title="神经网络概览及表示"></a>神经网络概览及表示</h1><p>个人认为，这节只需要搞懂两个问题：</p>
 <h2 id="单个神经元的作用"><a href="#单个神经元的作用" class="headerlink" title="单个神经元的作用"></a>单个神经元的作用</h2><pre class="mermaid">graph LR
 x1-->B((N))
@@ -987,7 +987,7 @@ u n d e f i n e d & \text { if } z=0
   </entry>
   <entry>
     <title>2.神经网络基础</title>
-    <url>/2020/08/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</url>
+    <url>/202008174340/</url>
     <content><![CDATA[<h1 id="二分类问题（Binary-Classification）"><a href="#二分类问题（Binary-Classification）" class="headerlink" title="二分类问题（Binary Classification）"></a>二分类问题（Binary Classification）</h1><p>逻辑回归要解决的问题，什么是二分类问题？即目标问题的答案空间非此即彼，是离散的，这有点像我们平常做的判断题，非对即错。就像吴恩达老师提出的问题：训练一个分类器，对图片进行判断，是猫就输出1，否则输出0</p>
 <h1 id="逻辑回归（Logistic-Regression）"><a href="#逻辑回归（Logistic-Regression）" class="headerlink" title="逻辑回归（Logistic Regression）"></a>逻辑回归（Logistic Regression）</h1><p>给定$x$，求$\hat{y}=P(y=1|x)$（已知$x$，$y=1$的概率$P$，对实际值$y$的预测）</p>
 <script type="math/tex; mode=display">
@@ -1150,7 +1150,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1.深度学习概论</title>
-    <url>/2020/08/16/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/1-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A6%82%E8%AE%BA/</url>
+    <url>/2020081633184/</url>
     <content><![CDATA[<p>今天学习了吴恩达深度学习课程的P1~P6的入门课程，总结如下问题</p>
 <ul>
 <li>什么是神经网络？</li>
@@ -1186,7 +1186,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>0.深度学习课程资源</title>
-    <url>/2020/08/15/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/0-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90/</url>
+    <url>/2020081510778/</url>
     <content><![CDATA[<p>吴恩达深度学习课程资源：</p>
 <ol>
 <li>第一课 — 神经网络与深度学习<ol>
@@ -1203,7 +1203,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>Java上溯造型与动态绑定</title>
-    <url>/2020/08/02/Java/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <url>/2020080231118/</url>
     <content><![CDATA[<h1 id="Java基础知识"><a href="#Java基础知识" class="headerlink" title="Java基础知识"></a>Java基础知识</h1><h2 id="八种基本数据类型"><a href="#八种基本数据类型" class="headerlink" title="八种基本数据类型"></a>八种基本数据类型</h2><div class="table-container">
 <table>
 <thead>
@@ -1289,7 +1289,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>118.杨辉三角</title>
-    <url>/2020/07/14/LeetCode/118.%E6%9D%A8%E8%BE%89%E4%B8%89%E8%A7%92/</url>
+    <url>/2020071434917/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负整数 <em>numRows，</em>生成杨辉三角的前 <em>numRows</em> 行。</p>
 <p><img src="https://s1.ax1x.com/2020/07/14/UUA7VA.gif" alt="UUA7VA.gif"></p>
 <p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
@@ -1313,7 +1313,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>119.杨辉三角 II</title>
-    <url>/2020/07/14/LeetCode/119.%E6%9D%A8%E8%BE%89%E4%B8%89%E8%A7%92%20II/</url>
+    <url>/202007149168/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
 <p><img src="https://s1.ax1x.com/2020/07/14/UUA7VA.gif" alt="UUA7VA.gif"></p>
 <p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
@@ -1332,7 +1332,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>121.买卖股票的最佳时机</title>
-    <url>/2020/07/14/LeetCode/121.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA/</url>
+    <url>/2020071435904/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个数组，它的第 <em>i</em> 个元素是一支给定股票第 <em>i</em> 天的价格。</p>
 <p>如果你最多只允许完成一笔交易（即买入和卖出一支股票），设计一个算法来计算你所能获取的最大利润。</p>
 <p>注意你不能在买入股票前卖出股票。</p>
@@ -1353,7 +1353,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>88.合并两个有序数组</title>
-    <url>/2020/07/12/LeetCode/88.%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84/</url>
+    <url>/2020071218592/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定两个有序整数数组 <em>nums1</em> 和 <em>nums2</em>，将 <em>nums2</em> 合并到 <em>nums1</em> 中<em>，</em>使得 <em>num1</em> 成为一个有序数组。</p>
 <p><strong>说明:</strong></p>
 <ul>
@@ -1384,7 +1384,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>如何刷leetcode</title>
-    <url>/2020/07/11/%E5%A6%82%E4%BD%95%E5%88%B7leetcode/</url>
+    <url>/2020071150360/</url>
     <content><![CDATA[<ol>
 <li>Python的骚方法太多了，看一看图个乐，不要太在意。更不要看那些一行的代码，那不是给人看的！要注重的是算法本身，先把基本功打扎实了，解题方法可以按照标签来。</li>
 <li>贪心、分治、动态规划</li>
@@ -1393,7 +1393,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>2.线性表</title>
-    <url>/2020/07/11/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/2-%E7%BA%BF%E6%80%A7%E8%A1%A8/</url>
+    <url>/2020071142354/</url>
     <content><![CDATA[]]></content>
       <categories>
         <category>数据结构与算法</category>
@@ -1401,7 +1401,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>26.删除排序数组中的重复项</title>
-    <url>/2020/07/11/LeetCode/26.%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9/</url>
+    <url>/2020071128724/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个<strong>排序数组</strong>，你需要在<strong><a href="http://baike.baidu.com/item/原地算法">原地</a></strong>删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p>
 <p>不要使用额外的数组空间，你必须在<strong><a href="https://baike.baidu.com/item/原地算法">原地</a>修改输入数组</strong>并在使用 O(1) 额外空间的条件下完成。</p>
 <p><strong>示例 1:</strong></p>
@@ -1434,7 +1434,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>27.移除元素</title>
-    <url>/2020/07/11/LeetCode/27.%E7%A7%BB%E9%99%A4%E5%85%83%E7%B4%A0/</url>
+    <url>/2020071150510/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个数组 <em>nums</em> 和一个值 <em>val</em>，你需要<strong><a href="https://baike.baidu.com/item/原地算法">原地</a></strong>移除所有数值等于 <em>val</em> 的元素，返回移除后数组的新长度。</p>
 <p>不要使用额外的数组空间，你必须在<strong><a href="https://baike.baidu.com/item/原地算法">原地</a>修改输入数组</strong>并在使用 O(1) 额外空间的条件下完成。</p>
 <p>元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。</p>
@@ -1462,7 +1462,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>35.搜索插入位置</title>
-    <url>/2020/07/11/LeetCode/35.%E6%90%9C%E7%B4%A2%E6%8F%92%E5%85%A5%E4%BD%8D%E7%BD%AE/</url>
+    <url>/2020071130535/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
 <p>你可以假设数组中无重复元素。</p>
 <p><strong>示例 1:</strong></p>
@@ -1487,7 +1487,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>66.加一</title>
-    <url>/2020/07/11/LeetCode/66.%E5%8A%A0%E4%B8%80/</url>
+    <url>/2020071157516/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个由<strong>整数</strong>组成的<strong>非空</strong>数组所表示的非负整数，在该数的基础上加一。</p>
 <p>最高位数字存放在数组的首位， 数组中每个元素只存储<strong>单个</strong>数字。</p>
 <p>你可以假设除了整数 0 之外，这个整数不会以零开头。</p>
@@ -1516,7 +1516,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1.数组、矩阵和广义表</title>
-    <url>/2020/07/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/1-%E6%95%B0%E7%BB%84%E3%80%81%E7%9F%A9%E9%98%B5%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8/</url>
+    <url>/2020070642666/</url>
     <content><![CDATA[<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><p>在内存中的一块连续的存储空间，是最常用的数据结构</p>
 <h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ol>
 <li>支持随机访问</li>
@@ -1567,7 +1567,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1.两数之和</title>
-    <url>/2020/07/06/LeetCode/1.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+    <url>/2020070652823/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个整数数组 <code>nums</code> 和一个目标值 <code>target</code>，请你在该数组中找出和为目标值的那 <strong>两个</strong> 整数，并返回他们的数组下标。</p>
 <p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。</p>
 <p><strong>示例:</strong></p>
@@ -1588,7 +1588,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>103.二叉树的锯齿形层次遍历</title>
-    <url>/2020/07/05/LeetCode/103.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%94%AF%E9%BD%BF%E5%BD%A2%E5%B1%82%E6%AC%A1%E9%81%8D%E5%8E%86/</url>
+    <url>/2020070553249/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。</p>
 <p>例如：<br>给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  3</span><br><span class="line"> &#x2F; \</span><br><span class="line">9  20</span><br><span class="line">  &#x2F;  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
@@ -1603,7 +1603,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>20.有效的括号</title>
-    <url>/2020/06/30/LeetCode/20.%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/</url>
+    <url>/2020063063451/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个只包括 <code>&#39;(&#39;</code>，<code>&#39;)&#39;</code>，<code>&#39;&#123;&#39;</code>，<code>&#39;&#125;&#39;</code>，<code>&#39;[&#39;</code>，<code>&#39;]&#39;</code> 的字符串，判断字符串是否有效。</p>
 <p>有效字符串需满足：</p>
 <ol>
@@ -1636,7 +1636,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>VSCode</title>
-    <url>/2020/06/17/%E5%85%B6%E4%BB%96/VSCode/</url>
+    <url>/2020061718503/</url>
     <content><![CDATA[<h1 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h1><p>由于经常使用VSCode刷C语言的题，<del>这两天又在写30天自制操作系统</del>，实在受不了VSCode默认的C代码风格，用了一个Prettier -Code formatter插件也不是很满意，在网上找到了使用Clang-format格式化，这是自带的。</p>
 <p>Clang-format有多种风格，我最喜欢<strong>WebKit</strong>：</p>
 <p><img src="https://s1.ax1x.com/2020/06/17/NABuiq.jpg" alt="NABuiq.jpg"></p>
@@ -1657,7 +1657,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>常用排序算法</title>
-    <url>/2020/04/06/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%B8%B8%E7%94%A8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
+    <url>/2020040629759/</url>
     <content><![CDATA[<div class="table-container">
 <table>
 <thead>
@@ -1786,7 +1786,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>Java上溯造型与动态绑定</title>
-    <url>/2020/04/01/Java/Java%E4%B8%8A%E6%BA%AF%E9%80%A0%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/</url>
+    <url>/2020040131117/</url>
     <content><![CDATA[<h2 id="1-上溯造型"><a href="#1-上溯造型" class="headerlink" title="1.上溯造型"></a>1.上溯造型</h2><h3 id="1-1-什么是上溯造型"><a href="#1-1-什么是上溯造型" class="headerlink" title="1.1 什么是上溯造型"></a>1.1 什么是上溯造型</h3><p>以代码为例：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Instrument</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;play()&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">tune</span><span class="params">(Instrument i)</span></span>&#123;</span><br><span class="line">        i.play();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Wind</span> <span class="keyword">extends</span> <span class="title">Instrument</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Wind flute = <span class="keyword">new</span> Wind();</span><br><span class="line">        <span class="comment">//一个Wind对象也是一个Instrument对象</span></span><br><span class="line">        <span class="comment">//从Wind类型的句柄flute转换为Instrument类型，这就是造型上溯</span></span><br><span class="line">        Instrument.tune(flute);         <span class="comment">//Upcasting</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>上溯造型：将子类句柄转化为父类类型</strong></p>
@@ -1820,7 +1820,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>242.有效的字母异位词</title>
-    <url>/2020/04/01/LeetCode/242.%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D/</url>
+    <url>/2020040144708/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个字符串 <em>s</em> 和 <em>t</em> ，编写一个函数来判断 <em>t</em> 是否是 <em>s</em> 的字母异位词。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: s &#x3D; &quot;anagram&quot;, t &#x3D; &quot;nagaram&quot;</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
@@ -1842,7 +1842,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>733.图像渲染</title>
-    <url>/2020/04/01/LeetCode/733.%E5%9B%BE%E5%83%8F%E6%B8%B2%E6%9F%93/</url>
+    <url>/2020040165238/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>有一幅以二维整数数组表示的图画，每一个整数表示该图画的像素值大小，数值在 0 到 65535 之间。</p>
 <p>给你一个坐标 <code>(sr, sc)</code> 表示图像渲染开始的像素值（行 ，列）和一个新的颜色值 <code>newColor</code>，让你重新上色这幅图像。</p>
 <p>为了完成上色工作，从初始坐标开始，记录初始坐标的上下左右四个方向上像素值与初始坐标相同的相连像素点，接着再记录这四个方向上符合条件的像素点与他们对应四个方向上像素值与初始坐标相同的相连像素点，……，重复该过程。将所有有记录的像素点的颜色值改为新的颜色值。</p>
@@ -1871,7 +1871,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>Java对象是如何创建的？</title>
-    <url>/2020/03/31/Java/Java%E5%AF%B9%E8%B1%A1%E6%98%AF%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E7%9A%84%EF%BC%9F/</url>
+    <url>/2020033138645/</url>
     <content><![CDATA[<h2 id="1-检查static关键字"><a href="#1-检查static关键字" class="headerlink" title="1.检查static关键字"></a>1.检查static关键字</h2><p>如果有static关键字修饰，即该对象为一个静态对象，那么其会被<strong>优先</strong>加载到虚拟机中执行；</p>
 <h2 id="2-找到class"><a href="#2-找到class" class="headerlink" title="2.找到class"></a>2.找到class</h2><p>找到class后，会创建一个Class对象，其所有static模块都会执行，但是只在对象载入时执行一次</p>
 <h2 id="3-分配内存"><a href="#3-分配内存" class="headerlink" title="3.分配内存"></a>3.分配内存</h2><p>此时，new关键字所修饰的类进程会在内存堆（Heap）中，为该类分配足够的内存空间</p>
@@ -1902,7 +1902,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>Hexo</title>
-    <url>/2020/03/27/%E5%85%B6%E4%BB%96/Hexo/</url>
+    <url>/2020032737733/</url>
     <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ol>
 <li>安装Hexo脚手架：<code>npm install -g hexo-cli</code></li>
 <li>在任意目录下初始化：<code>hexo init Blog</code></li>
@@ -1946,7 +1946,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>108.将有序数组转换为二叉搜索树</title>
-    <url>/2020/03/21/LeetCode/108.%E5%B0%86%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E8%BD%AC%E6%8D%A2%E4%B8%BA%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</url>
+    <url>/2020032117850/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。</p>
 <p>本题中，一个高度平衡二叉树是指一个二叉树<em>每个节点</em> 的左右两个子树的高度差的绝对值不超过 1。</p>
 <p><strong>示例:</strong></p>
@@ -1967,7 +1967,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>669.修剪二叉搜索树</title>
-    <url>/2020/03/21/LeetCode/669.%E4%BF%AE%E5%89%AA%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</url>
+    <url>/2020032161487/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉搜索树，同时给定最小边界<code>L</code> 和最大边界 <code>R</code>。通过修剪二叉搜索树，使得所有节点的值在<code>[L, R]</code>中 (R&gt;=L) 。你可能需要改变树的根节点，所以结果应当返回修剪好的二叉搜索树的新的根节点。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  0   2</span><br><span class="line"></span><br><span class="line">  L &#x3D; 1</span><br><span class="line">  R &#x3D; 2</span><br><span class="line"></span><br><span class="line">输出: </span><br><span class="line">    1</span><br><span class="line">      \</span><br><span class="line">       2</span><br></pre></td></tr></table></figure>
@@ -1992,7 +1992,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>938.二叉搜索树的范围和</title>
-    <url>/2020/03/19/LeetCode/938.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E8%8C%83%E5%9B%B4%E5%92%8C/</url>
+    <url>/2020031957722/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定二叉搜索树的根结点 <code>root</code>，返回 <code>L</code> 和 <code>R</code>（含）之间的所有结点的值的和。</p>
 <p>二叉搜索树保证具有唯一的值。</p>
 <p><strong>示例 1：</strong></p>
@@ -2016,7 +2016,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>965.单值二叉树</title>
-    <url>/2020/03/19/LeetCode/965.%E5%8D%95%E5%80%BC%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <url>/2020031923916/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>如果二叉树每个节点都具有相同的值，那么该二叉树就是<em>单值</em>二叉树。</p>
 <p>只有给定的树是单值二叉树时，才返回 <code>true</code>；否则返回 <code>false</code>。</p>
 <p><strong>示例 1：</strong></p>
@@ -2046,7 +2046,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>993.二叉树的堂兄弟节点</title>
-    <url>/2020/03/19/LeetCode/993.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A0%82%E5%85%84%E5%BC%9F%E8%8A%82%E7%82%B9/</url>
+    <url>/2020031916967/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>在二叉树中，根节点位于深度 <code>0</code> 处，每个深度为 <code>k</code> 的节点的子节点位于深度 <code>k+1</code> 处。</p>
 <p>如果二叉树的两个节点深度相同，但<strong>父节点不同</strong>，则它们是一对<em>堂兄弟节点</em>。</p>
 <p>我们给出了具有唯一值的二叉树的根节点 <code>root</code>，以及树中两个不同节点的值 <code>x</code> 和 <code>y</code>。</p>
@@ -2080,7 +2080,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>672.二叉树中第二小的节点</title>
-    <url>/2020/03/18/LeetCode/672.%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E7%AC%AC%E4%BA%8C%E5%B0%8F%E7%9A%84%E8%8A%82%E7%82%B9/</url>
+    <url>/2020031843759/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个非空特殊的二叉树，每个节点都是正数，并且每个节点的子节点数量只能为 <code>2</code> 或 <code>0</code>。如果一个节点有两个子节点的话，那么这个节点的值不大于它的子节点的值。 </p>
 <p>给出这样的一个二叉树，你需要输出所有节点中的<strong>第二小的值。</strong>如果第二小的值不存在的话，输出 -1 <strong>。</strong></p>
 <p><strong>示例 1:</strong></p>
@@ -2106,7 +2106,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>700.二叉搜索树中的搜索</title>
-    <url>/2020/03/16/LeetCode/700.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E7%9A%84%E6%90%9C%E7%B4%A2/</url>
+    <url>/202003166604/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定二叉搜索树（BST）的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在，则返回 NULL。</p>
 <p>例如，</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">给定二叉搜索树:</span><br><span class="line"></span><br><span class="line">        4</span><br><span class="line">       &#x2F; \</span><br><span class="line">      2   7</span><br><span class="line">     &#x2F; \</span><br><span class="line">    1   3</span><br><span class="line"></span><br><span class="line">和值: 2</span><br></pre></td></tr></table></figure>
@@ -2129,7 +2129,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>872.叶子相似的树</title>
-    <url>/2020/03/16/LeetCode/872.%E5%8F%B6%E5%AD%90%E7%9B%B8%E4%BC%BC%E7%9A%84%E6%A0%91/</url>
+    <url>/2020031660530/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请考虑一颗二叉树上所有的叶子，这些叶子的值按从左到右的顺序排列形成一个 <em>叶值序列</em> 。</p>
 <p><img src="https://i.loli.net/2020/03/16/l6cBuoOSaj1Eg5L.png" alt="binarysearchtree_improved.png" style="zoom:50%;" /></p>
 <p>举个例子，如上图所示，给定一颗叶值序列为 <code>(6, 7, 4, 9, 8)</code> 的树。</p>
@@ -2156,7 +2156,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>897.递增顺序查找树</title>
-    <url>/2020/03/16/LeetCode/897.%E9%80%92%E5%A2%9E%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E6%A0%91/</url>
+    <url>/2020031636925/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个树，<strong>按中序遍历</strong>重新排列树，使树中最左边的结点现在是树的根，并且每个结点没有左子结点，只有一个右子结点。</p>
 <p><strong>示例 ：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[5,3,6,2,4,null,8,1,null,null,null,7,9]</span><br><span class="line"></span><br><span class="line">       5</span><br><span class="line">      &#x2F; \</span><br><span class="line">    3    6</span><br><span class="line">   &#x2F; \    \</span><br><span class="line">  2   4    8</span><br><span class="line"> &#x2F;        &#x2F; \ </span><br><span class="line">1        7   9</span><br><span class="line"></span><br><span class="line">输出：[1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]</span><br><span class="line"></span><br><span class="line"> 1</span><br><span class="line">  \</span><br><span class="line">   2</span><br><span class="line">    \</span><br><span class="line">     3</span><br><span class="line">      \</span><br><span class="line">       4</span><br><span class="line">        \</span><br><span class="line">         5</span><br><span class="line">          \</span><br><span class="line">           6</span><br><span class="line">            \</span><br><span class="line">             7</span><br><span class="line">              \</span><br><span class="line">               8</span><br><span class="line">                \</span><br><span class="line">                 9  </span><br></pre></td></tr></table></figure>
@@ -2190,7 +2190,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>501.二叉搜索树中的众数</title>
-    <url>/2020/03/15/LeetCode/501.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E7%9A%84%E4%BC%97%E6%95%B0/</url>
+    <url>/2020031517526/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。</p>
 <p>假定 BST 有如下定义：</p>
 <ul>
@@ -2218,7 +2218,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>617.合并二叉树</title>
-    <url>/2020/03/14/LeetCode/617.%E5%90%88%E5%B9%B6%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <url>/202003148682/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个二叉树，想象当你将它们中的一个覆盖到另一个上时，两个二叉树的一些节点便会重叠。</p>
 <p>你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠，那么将他们的值相加作为节点合并后的新值，否则<strong>不为</strong> NULL 的节点将直接作为新二叉树的节点。</p>
 <p><strong>示例 1:</strong></p>
@@ -2236,7 +2236,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>653.两数之和 IV - 输入 BST</title>
-    <url>/2020/03/14/LeetCode/653.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C%20IV%20-%20%E8%BE%93%E5%85%A5%20BST/</url>
+    <url>/2020031417472/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉搜索树和一个目标结果，如果 BST 中存在两个元素且它们的和等于给定的目标结果，则返回 true。</p>
 <p><strong>案例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">    5</span><br><span class="line">   &#x2F; \</span><br><span class="line">  3   6</span><br><span class="line"> &#x2F; \   \</span><br><span class="line">2   4   7</span><br><span class="line"></span><br><span class="line">Target &#x3D; 9</span><br><span class="line"></span><br><span class="line">输出: True</span><br></pre></td></tr></table></figure>
@@ -2257,7 +2257,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>687.最长同值路径</title>
-    <url>/2020/03/14/LeetCode/687.%E6%9C%80%E9%95%BF%E5%90%8C%E5%80%BC%E8%B7%AF%E5%BE%84/</url>
+    <url>/2020031462948/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，找到最长的路径，这个路径中的每个节点具有相同值。 这条路径可以经过也可以不经过根节点。</p>
 <p><strong>注意</strong>：两个节点之间的路径长度由它们之间的边数表示。</p>
 <p><strong>示例 1:</strong></p>
@@ -2285,7 +2285,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>538.把二叉搜索树转换为累加树</title>
-    <url>/2020/03/13/LeetCode/538.%E6%8A%8A%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E8%BD%AC%E6%8D%A2%E4%B8%BA%E7%B4%AF%E5%8A%A0%E6%A0%91/</url>
+    <url>/2020031359946/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。</p>
 <p><strong>例如：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 原始二叉搜索树:</span><br><span class="line">              5</span><br><span class="line">            &#x2F;   \</span><br><span class="line">           2     13</span><br><span class="line"></span><br><span class="line">输出: 转换为累加树:</span><br><span class="line">             18</span><br><span class="line">            &#x2F;   \</span><br><span class="line">          20     13</span><br></pre></td></tr></table></figure>
@@ -2308,7 +2308,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>563.二叉树的坡度</title>
-    <url>/2020/03/13/LeetCode/563.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%9D%A1%E5%BA%A6/</url>
+    <url>/202003139306/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，计算<strong>整个树</strong>的坡度。</p>
 <p>一个树的<strong>节点的坡度</strong>定义即为，该节点左子树的结点之和和右子树结点之和的<strong>差的绝对值</strong>。空结点的的坡度是0。</p>
 <p><strong>整个树</strong>的坡度就是其所有节点的坡度之和。</p>
@@ -2340,7 +2340,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>572.另一个树的子树</title>
-    <url>/2020/03/13/LeetCode/572.%E5%8F%A6%E4%B8%80%E4%B8%AA%E6%A0%91%E7%9A%84%E5%AD%90%E6%A0%91/</url>
+    <url>/2020031335055/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个非空二叉树 <strong>s</strong> 和 <strong>t</strong>，检验 <strong>s</strong> 中是否包含和 <strong>t</strong> 具有相同结构和节点值的子树。<strong>s</strong> 的一个子树包括 <strong>s</strong> 的一个节点和这个节点的所有子孙。<strong>s</strong> 也可以看做它自身的一棵子树。</p>
 <p><strong>示例 1:</strong><br>给定的树 s:</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
@@ -2368,7 +2368,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>530.二叉搜索树的最小绝对差</title>
-    <url>/2020/03/12/LeetCode/530.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E5%B0%8F%E7%BB%9D%E5%AF%B9%E5%B7%AE/</url>
+    <url>/2020031232248/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line"></span><br><span class="line">   1</span><br><span class="line">    \</span><br><span class="line">     3</span><br><span class="line">    &#x2F;</span><br><span class="line">   2</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">1</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">最小绝对差为 1，其中 2 和 1 的差的绝对值为 1（或者 2 和 3）。</span><br></pre></td></tr></table></figure>
@@ -2393,7 +2393,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>543.二叉树的直径</title>
-    <url>/2020/03/12/LeetCode/543.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%9B%B4%E5%BE%84/</url>
+    <url>/2020031261814/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过根结点。</p>
 <p><strong>示例 :</strong><br>给定二叉树</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  2   3</span><br><span class="line"> &#x2F; \     </span><br><span class="line">4   5    </span><br></pre></td></tr></table></figure>
@@ -2423,7 +2423,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>226.反转二叉树</title>
-    <url>/2020/03/11/LeetCode/226.%E5%8F%8D%E8%BD%AC%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <url>/2020031118801/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>翻转一棵二叉树。</p>
 <p><strong>示例：</strong></p>
 <p>输入：</p>
@@ -2449,7 +2449,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>235.二叉搜索树的最近公共祖先</title>
-    <url>/2020/03/11/LeetCode/235.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/</url>
+    <url>/2020031131088/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。</p>
 <p><a href="https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin">百度百科</a>中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（<strong>一个节点也可以是它自己的祖先</strong>）。”</p>
 <p>例如，给定如下二叉搜索树: root = [6,2,8,0,4,7,9,null,null,3,5]</p>
@@ -2478,7 +2478,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>404.左叶子之和</title>
-    <url>/2020/03/11/LeetCode/404.%E5%B7%A6%E5%8F%B6%E5%AD%90%E4%B9%8B%E5%92%8C/</url>
+    <url>/2020031127616/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>计算给定二叉树的所有左叶子之和。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  9  20</span><br><span class="line">    &#x2F;  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24</span><br></pre></td></tr></table></figure>
@@ -2496,7 +2496,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>437.路径总和 III</title>
-    <url>/2020/03/11/LeetCode/437.%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8C%20III/</url>
+    <url>/2020031136949/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，它的每个结点都存放着一个整数值。</p>
 <p>找出路径和等于给定数值的路径总数。</p>
 <p>路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。</p>
@@ -2526,7 +2526,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>101.对称二叉树</title>
-    <url>/2020/03/10/LeetCode/101.%E5%AF%B9%E7%A7%B0%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <url>/2020031046824/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，检查它是否是镜像对称的。</p>
 <p>例如，二叉树 <code>[1,2,2,3,4,4,3]</code> 是对称的。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  2   2</span><br><span class="line"> &#x2F; \ &#x2F; \</span><br><span class="line">3  4 4  3</span><br></pre></td></tr></table></figure>
@@ -2553,7 +2553,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>98.验证二叉搜索树</title>
-    <url>/2020/03/10/LeetCode/98.%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</url>
+    <url>/2020031019332/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，判断其是否是一个有效的二叉搜索树。</p>
 <p>假设一个二叉搜索树具有如下特征：</p>
 <ul>
@@ -2582,7 +2582,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>96.不同的二叉搜索树</title>
-    <url>/2020/03/09/LeetCode/96.%E4%B8%8D%E5%90%8C%E7%9A%84%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/</url>
+    <url>/2020030955253/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数 <em>n</em>，求以 1 … <em>n</em> 为节点组成的二叉搜索树有多少种？</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: 5</span><br><span class="line">解释:</span><br><span class="line">给定 n &#x3D; 3, 一共有 5 种不同结构的二叉搜索树:</span><br><span class="line"></span><br><span class="line">   1         3     3      2      1</span><br><span class="line">    \       &#x2F;     &#x2F;      &#x2F; \      \</span><br><span class="line">     3     2     1      1   3      2</span><br><span class="line">    &#x2F;     &#x2F;       \                 \</span><br><span class="line">   2     1         2                 3</span><br></pre></td></tr></table></figure>
@@ -2605,7 +2605,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>621.任务调度器</title>
-    <url>/2020/03/08/LeetCode/621.%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E5%99%A8/</url>
+    <url>/2020030815003/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个用字符数组表示的 CPU 需要执行的任务列表。其中包含使用大写的 A - Z 字母表示的26 种不同种类的任务。任务可以以任意顺序执行，并且每个任务都可以在 1 个单位时间内执行完。CPU 在任何一个单位时间内都可以执行一个任务，或者在待命状态。</p>
 <p>然而，两个<strong>相同种类</strong>的任务之间必须有长度为 <strong>n</strong> 的冷却时间，因此至少有连续 n 个单位时间内 CPU 在执行不同的任务，或者在待命状态。</p>
 <p>你需要计算完成所有任务所需要的<strong>最短时间</strong>。</p>
@@ -2646,7 +2646,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>641.设计循环双端队列</title>
-    <url>/2020/03/08/LeetCode/641.%E8%AE%BE%E8%AE%A1%E5%BE%AA%E7%8E%AF%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/</url>
+    <url>/2020030855960/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>设计实现双端队列。<br>你的实现需要支持以下操作：</p>
 <ul>
 <li>MyCircularDeque(k)：构造函数,双端队列的大小为k。</li>
@@ -2686,7 +2686,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>933.最近的请求次数</title>
-    <url>/2020/03/08/LeetCode/933.%E6%9C%80%E8%BF%91%E7%9A%84%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/</url>
+    <url>/2020030819288/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>写一个 <code>RecentCounter</code> 类来计算最近的请求。</p>
 <p>它只有一个方法：<code>ping(int t)</code>，其中 <code>t</code> 代表以毫秒为单位的某个时间。</p>
 <p>返回从 3000 毫秒前到现在的 <code>ping</code> 数。</p>
@@ -2719,7 +2719,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1017.负二进制转换</title>
-    <url>/2020/03/05/LeetCode/1017.%E8%B4%9F%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/</url>
+    <url>/2020030519586/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给出数字 <code>N</code>，返回由若干 <code>&quot;0&quot;</code> 和 <code>&quot;1&quot;</code>组成的字符串，该字符串为 <code>N</code> 的<strong>负二进制（<code>base -2</code>）</strong>表示。</p>
 <p>除非字符串就是 <code>&quot;0&quot;</code>，否则返回的字符串中不能含有前导零。</p>
 <p><strong>示例 1：</strong></p>
@@ -2760,7 +2760,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>739.每日温度</title>
-    <url>/2020/03/05/LeetCode/739.%E6%AF%8F%E6%97%A5%E6%B8%A9%E5%BA%A6/</url>
+    <url>/2020030521712/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>根据每日 <code>气温</code> 列表，请重新生成一个列表，对应位置的输入是你需要再等待多久温度才会升高超过该日的天数。如果之后都不会升高，请在该位置用 <code>0</code> 来代替。</p>
 <p>例如，给定一个列表 <code>temperatures = [73, 74, 75, 71, 69, 72, 76, 73]</code>，你的输出应该是 <code>[1, 1, 4, 2, 1, 1, 0, 0]</code>。</p>
 <p><strong>提示：</strong><code>气温</code> 列表长度的范围是 <code>[1, 30000]</code>。每个气温的值的均为华氏度，都是在 <code>[30, 100]</code> 范围内的整数。</p>
@@ -2792,7 +2792,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>456.132模式</title>
-    <url>/2020/03/04/LeetCode/456.132%E6%A8%A1%E5%BC%8F/</url>
+    <url>/2020030452735/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数序列：a1, a2, …, an，一个132模式的子序列 a<strong>i</strong>, a<strong>j</strong>, a<strong>k</strong> 被定义为：当 <strong>i</strong> &lt; <strong>j</strong> &lt; <strong>k</strong> 时，a<strong>i</strong> &lt; a<strong>k</strong> &lt; a<strong>j</strong>。设计一个算法，当给定有 n 个数字的序列时，验证这个序列中是否含有132模式的子序列。</p>
 <p><strong>注意：</strong>n 的值小于15000。</p>
 <p><strong>示例1:</strong></p>
@@ -2832,7 +2832,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>503.下一个更大元素 II</title>
-    <url>/2020/03/04/LeetCode/503.%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0%20II/</url>
+    <url>/2020030431329/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个循环数组（最后一个元素的下一个元素是数组的第一个元素），输出每个元素的下一个更大元素。数字 x 的下一个更大的元素是按数组遍历顺序，这个数字之后的第一个比它更大的数，这意味着你应该循环地搜索它的下一个更大的数。如果不存在，则输出 -1。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,2,1]</span><br><span class="line">输出: [2,-1,2]</span><br><span class="line">解释: 第一个 1 的下一个更大的数是 2；</span><br><span class="line">数字 2 找不到下一个更大的数； </span><br><span class="line">第二个 1 的下一个最大的数需要循环搜索，结果也是 2。</span><br></pre></td></tr></table></figure>
@@ -2857,7 +2857,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>331.验证二叉树的前序序列化</title>
-    <url>/2020/03/03/LeetCode/331.%E9%AA%8C%E8%AF%81%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <url>/2020030311311/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>序列化二叉树的一种方法是使用前序遍历。当我们遇到一个非空节点时，我们可以记录下这个节点的值。如果它是一个空节点，我们可以使用一个标记值记录，例如 <code>#</code>。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">     _9_</span><br><span class="line">    &#x2F;   \</span><br><span class="line">   3     2</span><br><span class="line">  &#x2F; \   &#x2F; \</span><br><span class="line"> 4   1  #  6</span><br><span class="line">&#x2F; \ &#x2F; \   &#x2F; \</span><br><span class="line"># # # #   # #</span><br></pre></td></tr></table></figure>
 <p>例如，上面的二叉树可以被序列化为字符串 <code>&quot;9,3,4,#,#,1,#,#,2,#,6,#,#&quot;</code>，其中 <code>#</code> 代表一个空节点。</p>
@@ -2891,7 +2891,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>145.二叉树的后序遍历</title>
-    <url>/2020/03/02/LeetCode/145.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
+    <url>/2020030262169/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，返回它的 <em>后序</em> 遍历。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,null,2,3]  </span><br><span class="line">   1</span><br><span class="line">    \</span><br><span class="line">     2</span><br><span class="line">    &#x2F;</span><br><span class="line">   3 </span><br><span class="line"></span><br><span class="line">输出: [3,2,1]</span><br></pre></td></tr></table></figure>
@@ -2933,7 +2933,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>144.二叉树的前序遍历</title>
-    <url>/2020/03/02/LeetCode/144.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%89%8D%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
+    <url>/2020030224235/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，返回它的 <em>前序</em> 遍历。</p>
 <p> <strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,null,2,3]  </span><br><span class="line">   1</span><br><span class="line">    \</span><br><span class="line">     2</span><br><span class="line">    &#x2F;</span><br><span class="line">   3 </span><br><span class="line"></span><br><span class="line">输出: [1,2,3]</span><br></pre></td></tr></table></figure>
@@ -2970,7 +2970,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>150.逆波兰表达式求值</title>
-    <url>/2020/03/02/LeetCode/150.%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B1%82%E5%80%BC/</url>
+    <url>/2020030212598/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>根据<a href="https://baike.baidu.com/item/逆波兰式/128437">逆波兰表示法</a>，求表达式的值。</p>
 <p>有效的运算符包括 <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。</p>
 <p><strong>说明：</strong></p>
@@ -3005,7 +3005,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>173.二叉搜索树迭代器</title>
-    <url>/2020/03/02/LeetCode/173.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E8%BF%AD%E4%BB%A3%E5%99%A8/</url>
+    <url>/2020030230537/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>实现一个二叉搜索树迭代器。你将使用二叉搜索树的根节点初始化迭代器。</p>
 <p>调用 <code>next()</code> 将返回二叉搜索树中的下一个最小的数。</p>
 <p><strong>示例：</strong></p>
@@ -3036,7 +3036,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>94.二叉树的中序遍历</title>
-    <url>/2020/03/02/LeetCode/94.%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86/</url>
+    <url>/202003025409/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，返回它的<em>中序</em> 遍历。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,null,2,3]</span><br><span class="line">   1</span><br><span class="line">    \</span><br><span class="line">     2</span><br><span class="line">    &#x2F;</span><br><span class="line">   3</span><br><span class="line"></span><br><span class="line">输出: [1,3,2]</span><br></pre></td></tr></table></figure>
@@ -3076,7 +3076,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>C语言递归的那点事</title>
-    <url>/2020/03/01/C/C%E8%AF%AD%E8%A8%80%E9%80%92%E5%BD%92%E7%9A%84%E9%82%A3%E7%82%B9%E4%BA%8B/</url>
+    <url>/2020030112979/</url>
     <content><![CDATA[<h1 id="浅析递归"><a href="#浅析递归" class="headerlink" title="浅析递归"></a>浅析递归</h1><p>​    递归是一种绝大多数语言都支持的编程方式。但是我本人并不建议使用。</p>
 <h2 id="1-是什么？"><a href="#1-是什么？" class="headerlink" title="1.是什么？"></a>1.是什么？</h2><h3 id="1-1-释义"><a href="#1-1-释义" class="headerlink" title="1.1 释义"></a>1.1 释义</h3><p>​    允许函数循环调用自己的过程</p>
 <h3 id="1-2-原理"><a href="#1-2-原理" class="headerlink" title="1.2 原理"></a>1.2 原理</h3><ol>
@@ -3103,7 +3103,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>71.简化路径</title>
-    <url>/2020/03/01/LeetCode/71.%E7%AE%80%E5%8C%96%E8%B7%AF%E5%BE%84/</url>
+    <url>/2020030133986/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>以 Unix 风格给出一个文件的<strong>绝对路径</strong>，你需要简化它。或者换句话说，将其转换为规范路径。</p>
 <p>在 Unix 风格的文件系统中，一个点（<code>.</code>）表示当前目录本身；此外，两个点 （<code>..</code>） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。更多信息请参阅：<a href="https://blog.csdn.net/u011327334/article/details/50355600">Linux / Unix中的绝对路径 vs 相对路径</a></p>
 <p>请注意，返回的规范路径必须始终以斜杠 <code>/</code> 开头，并且两个目录名之间必须只有一个斜杠 <code>/</code>。最后一个目录名（如果存在）<strong>不能</strong>以 <code>/</code> 结尾。此外，规范路径必须是表示绝对路径的<strong>最短</strong>字符串。</p>
@@ -3171,7 +3171,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>496.下一个更大元素 I</title>
-    <url>/2020/02/27/LeetCode/496.%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A4%A7%E5%85%83%E7%B4%A0%20I/</url>
+    <url>/2020022716162/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定两个<strong>没有重复元素</strong>的数组 <code>nums1</code> 和 <code>nums2</code> ，其中<code>nums1</code> 是 <code>nums2</code> 的子集。找到 <code>nums1</code> 中每个元素在 <code>nums2</code> 中的下一个比其大的值。</p>
 <p><code>nums1</code> 中数字 <strong>x</strong> 的下一个更大元素是指 <strong>x</strong> 在 <code>nums2</code> 中对应位置的右边的第一个比 <strong>x</strong> 大的元素。如果不存在，对应位置输出-1。</p>
 <p><strong>示例 1:</strong></p>
@@ -3207,7 +3207,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>682.棒球比赛</title>
-    <url>/2020/02/27/LeetCode/682.%E6%A3%92%E7%90%83%E6%AF%94%E8%B5%9B/</url>
+    <url>/2020022752952/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>你现在是棒球比赛记录员。<br>给定一个字符串列表，每个字符串可以是以下四种类型之一：</p>
 <ol>
 <li><code>整数</code>（一轮的得分）：直接表示您在本轮中获得的积分数。</li>
@@ -3247,7 +3247,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>844.比较含退格的字符串</title>
-    <url>/2020/02/27/LeetCode/844.%E6%AF%94%E8%BE%83%E5%90%AB%E9%80%80%E6%A0%BC%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    <url>/2020022747335/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定 <code>S</code> 和 <code>T</code> 两个字符串，当它们分别被输入到空白的文本编辑器后，判断二者是否相等，并返回结果。 <code>#</code> 代表退格字符。</p>
 <p><strong>示例 1：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：S &#x3D; &quot;ab#c&quot;, T &#x3D; &quot;ad#c&quot;</span><br><span class="line">输出：true</span><br><span class="line">解释：S 和 T 都会变成 “ac”。</span><br></pre></td></tr></table></figure>
@@ -3279,7 +3279,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>142.环形链表 II</title>
-    <url>/2020/02/26/LeetCode/142.%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8%20II/</url>
+    <url>/2020022628708/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 <code>null</code>。</p>
 <p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。</p>
 <p><strong>说明：</strong>不允许修改给定的链表。</p>
@@ -3315,7 +3315,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>155.最小栈</title>
-    <url>/2020/02/26/LeetCode/155.%E6%9C%80%E5%B0%8F%E6%A0%88/</url>
+    <url>/2020022620751/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。</p>
 <ul>
 <li>push(x) — 将元素 x 推入栈中。</li>
@@ -3340,7 +3340,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>225.用队列实现栈</title>
-    <url>/2020/02/26/LeetCode/225.%E7%94%A8%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%A0%88/</url>
+    <url>/202002263620/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>使用队列实现栈的下列操作：</p>
 <ul>
 <li>push(x) — 元素 x 入栈</li>
@@ -3369,7 +3369,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>232.用栈实现队列</title>
-    <url>/2020/02/26/LeetCode/232.%E7%94%A8%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97/</url>
+    <url>/2020022644957/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>使用栈实现队列的下列操作：</p>
 <ul>
 <li>push(x) — 将一个元素放入队列的尾部。</li>
@@ -3404,7 +3404,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>143.重排链表</title>
-    <url>/2020/02/20/LeetCode/143.%E9%87%8D%E6%8E%92%E9%93%BE%E8%A1%A8/</url>
+    <url>/2020022040854/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个单链表 <em>L</em>：<em>L</em>0→<em>L</em>1→…→<em>L**n</em>-1→<em>L</em>n ，<br>将其重新排列后变为： <em>L</em>0→<em>L**n</em>→<em>L</em>1→<em>L**n</em>-1→<em>L</em>2→<em>L**n</em>-2→…</p>
 <p>你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。</p>
 <p><strong>示例 1:</strong></p>
@@ -3438,7 +3438,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>328.奇偶链表</title>
-    <url>/2020/02/20/LeetCode/328.%E5%A5%87%E5%81%B6%E9%93%BE%E8%A1%A8/</url>
+    <url>/2020022052539/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。</p>
 <p>请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。</p>
 <p><strong>示例 1:</strong></p>
@@ -3469,7 +3469,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>445.两数相加 II</title>
-    <url>/2020/02/20/LeetCode/445.%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0%20II/</url>
+    <url>/2020022030492/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个<strong>非空</strong>链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储单个数字。将这两数相加会返回一个新的链表。</p>
 <p>你可以假设除了数字 0 之外，这两个数字都不会以零开头。</p>
 <p><strong>进阶:</strong></p>
@@ -3496,7 +3496,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>61.旋转链表</title>
-    <url>/2020/02/19/LeetCode/61.%E6%97%8B%E8%BD%AC%E9%93%BE%E8%A1%A8/</url>
+    <url>/2020021945490/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个链表，旋转链表，将链表每个节点向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, k &#x3D; 2</span><br><span class="line">输出: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: 5-&gt;1-&gt;2-&gt;3-&gt;4-&gt;NULL</span><br><span class="line">向右旋转 2 步: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</span><br></pre></td></tr></table></figure>
@@ -3523,7 +3523,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>86.分隔链表</title>
-    <url>/2020/02/19/LeetCode/86.%E5%88%86%E9%9A%94%E9%93%BE%E8%A1%A8/</url>
+    <url>/2020021962780/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个链表和一个特定值 <em>x</em>，对链表进行分隔，使得所有小于 <em>x</em> 的节点都在大于或等于 <em>x</em> 的节点之前。</p>
 <p>你应当保留两个分区中每个节点的初始相对位置。</p>
 <p><strong>示例:</strong></p>
@@ -3548,7 +3548,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>82.删除排序链表中的重复元素 II</title>
-    <url>/2020/02/19/LeetCode/82.%E5%88%A0%E9%99%A4%E6%8E%92%E5%BA%8F%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0%20II/</url>
+    <url>/2020021918973/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 <em>没有重复出现</em> 的数字。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;3-&gt;3-&gt;4-&gt;4-&gt;5</span><br><span class="line">输出: 1-&gt;2-&gt;5</span><br></pre></td></tr></table></figure>
@@ -3575,7 +3575,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>92.反转链表 II</title>
-    <url>/2020/02/19/LeetCode/92.%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%20II/</url>
+    <url>/2020021958290/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>反转从位置 <em>m</em> 到 <em>n</em> 的链表。请使用一趟扫描完成反转。</p>
 <p><strong>说明:</strong><br>1 ≤ <em>m</em> ≤ <em>n</em> ≤ 链表长度。</p>
 <p><strong>示例:</strong></p>
@@ -3598,7 +3598,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>24.两两交换链表中的节点</title>
-    <url>/2020/02/18/LeetCode/24.%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/</url>
+    <url>/2020021823378/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。</p>
 <p><strong>你不能只是单纯的改变节点内部的值</strong>，而是需要实际的进行节点交换。</p>
 <p><strong>示例:</strong></p>
@@ -3620,7 +3620,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>19.删除链表的倒数第N个节点</title>
-    <url>/2020/02/17/LeetCode/19.%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACN%E4%B8%AA%E8%8A%82%E7%82%B9/</url>
+    <url>/2020021719130/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个链表，删除链表的倒数第 <em>n</em> 个节点，并且返回链表的头结点。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">给定一个链表: 1-&gt;2-&gt;3-&gt;4-&gt;5, 和 n &#x3D; 2.</span><br><span class="line"></span><br><span class="line">当删除了倒数第二个节点后，链表变为 1-&gt;2-&gt;3-&gt;5.</span><br></pre></td></tr></table></figure>
@@ -3646,7 +3646,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>21.合并两个有序链表</title>
-    <url>/2020/02/17/LeetCode/21.%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8/</url>
+    <url>/2020021729474/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 </p>
 <p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：1-&gt;2-&gt;4, 1-&gt;3-&gt;4</span><br><span class="line">输出：1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4</span><br></pre></td></tr></table></figure>
@@ -3674,7 +3674,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>234.回文链表</title>
-    <url>/2020/02/17/LeetCode/234.%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8/</url>
+    <url>/2020021755897/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请判断一个链表是否为回文链表。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
@@ -3705,7 +3705,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>237.删除链表中的节点</title>
-    <url>/2020/02/17/LeetCode/237.%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9/</url>
+    <url>/2020021755666/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。</p>
 <p>现有一个链表 — head = [4,5,1,9]，它可以表示为:</p>
 <p><img src="https://i.loli.net/2020/02/17/v62DZVMGCynFS4J.png" alt="237_example.png"></p>
@@ -3757,7 +3757,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>876.链表的中间结点</title>
-    <url>/2020/02/17/LeetCode/876.%E9%93%BE%E8%A1%A8%E7%9A%84%E4%B8%AD%E9%97%B4%E7%BB%93%E7%82%B9/</url>
+    <url>/2020021736027/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个带有头结点 <code>head</code> 的非空单链表，返回链表的中间结点。</p>
 <p>如果有两个中间结点，则返回第二个中间结点。</p>
 <p><strong>示例 1：</strong></p>
@@ -3786,7 +3786,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>908.最小差值 I</title>
-    <url>/2020/02/17/LeetCode/908.%E6%9C%80%E5%B0%8F%E5%B7%AE%E5%80%BC%20I/</url>
+    <url>/2020021736172/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组 <code>A</code>，对于每个整数 <code>A[i]</code>，我们可以选择任意 <code>x</code> 满足 <code>-K &lt;= x &lt;= K</code>，并将 <code>x</code> 加到 <code>A[i]</code> 中。</p>
 <p>在此过程之后，我们得到一些数组 <code>B</code>。</p>
 <p>返回 <code>B</code> 的最大值和 <code>B</code> 的最小值之间可能存在的最小差值。</p>
@@ -3828,7 +3828,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1013.将数组分成和相等的三个部分</title>
-    <url>/2020/02/16/LeetCode/1013.%E5%B0%86%E6%95%B0%E7%BB%84%E5%88%86%E6%88%90%E5%92%8C%E7%9B%B8%E7%AD%89%E7%9A%84%E4%B8%89%E4%B8%AA%E9%83%A8%E5%88%86/</url>
+    <url>/2020021631411/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组 <code>A</code>，只有我们可以将其划分为三个和相等的非空部分时才返回 <code>true</code>，否则返回 <code>false</code>。</p>
 <p>形式上，如果我们可以找出索引 <code>i+1 &lt; j</code> 且满足 <code>(A[0] + A[1] + ... + A[i] == A[i+1] + A[i+2] + ... + A[j-1] == A[j] + A[j-1] + ... + A[A.length - 1])</code> 就可以将数组三等分。</p>
 <p><strong>示例 1：</strong></p>
@@ -3859,7 +3859,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1009.十进制整数的反码</title>
-    <url>/2020/02/16/LeetCode/1009.%E5%8D%81%E8%BF%9B%E5%88%B6%E6%95%B4%E6%95%B0%E7%9A%84%E5%8F%8D%E7%A0%81/</url>
+    <url>/2020021636196/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>每个非负整数 <code>N</code> 都有其二进制表示。例如， <code>5</code> 可以被表示为二进制 <code>&quot;101&quot;</code>，<code>11</code> 可以用二进制 <code>&quot;1011&quot;</code> 表示，依此类推。注意，除 <code>N = 0</code> 外，任何二进制表示中都不含前导零。</p>
 <p>二进制的反码表示是将每个 <code>1</code> 改为 <code>0</code> 且每个 <code>0</code> 变为 <code>1</code>。例如，二进制数 <code>&quot;101&quot;</code> 的二进制反码为 <code>&quot;010&quot;</code>。</p>
 <p>给定十进制数 <code>N</code>，返回其二进制表示的反码所对应的十进制整数。</p>
@@ -3900,7 +3900,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>1137.第 N 个泰波那契数</title>
-    <url>/2020/02/16/LeetCode/1137.%E7%AC%AC%20N%20%E4%B8%AA%E6%B3%B0%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0/</url>
+    <url>/2020021617256/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>泰波那契序列 Tn 定义如下： </p>
 <p>T0 = 0, T1 = 1, T2 = 1, 且在 n &gt;= 0 的条件下 Tn+3 = Tn + Tn+1 + Tn+2</p>
 <p>给你整数 <code>n</code>，请返回第 n 个泰波那契数 Tn 的值。</p>
@@ -3931,7 +3931,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>2.两数相加</title>
-    <url>/2020/02/16/LeetCode/2.%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/</url>
+    <url>/2020021624744/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给出两个 <strong>非空</strong> 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 <strong>逆序</strong> 的方式存储的，并且它们的每个节点只能存储 <strong>一位</strong> 数字。</p>
 <p>如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。</p>
 <p>您可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
@@ -3954,7 +3954,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>852.山脉数组的峰顶索引</title>
-    <url>/2020/02/15/LeetCode/852.%E5%B1%B1%E8%84%89%E6%95%B0%E7%BB%84%E7%9A%84%E5%B3%B0%E9%A1%B6%E7%B4%A2%E5%BC%95/</url>
+    <url>/2020021561782/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>我们把符合下列属性的数组 <code>A</code> 称作山脉：</p>
 <ul>
 <li><code>A.length &gt;= 3</code></li>
@@ -3988,7 +3988,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>905.按奇偶排序数组</title>
-    <url>/2020/02/15/LeetCode/905.%E6%8C%89%E5%A5%87%E5%81%B6%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/</url>
+    <url>/2020021541704/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个非负整数数组 <code>A</code>，返回一个数组，在该数组中， <code>A</code> 的所有偶数元素之后跟着所有奇数元素。</p>
 <p>你可以返回满足此条件的任何数组作为答案。</p>
 <p><strong>示例：</strong></p>
@@ -4016,7 +4016,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>941.有效的山脉数组</title>
-    <url>/2020/02/15/LeetCode/941.%E6%9C%89%E6%95%88%E7%9A%84%E5%B1%B1%E8%84%89%E6%95%B0%E7%BB%84/</url>
+    <url>/2020021532146/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组 <code>A</code>，如果它是有效的山脉数组就返回 <code>true</code>，否则返回 <code>false</code>。</p>
 <p>让我们回顾一下，如果 A 满足下述条件，那么它是一个山脉数组：</p>
 <ul>
@@ -4059,7 +4059,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>605.种花问题</title>
-    <url>/2020/02/14/LeetCode/605.%E7%A7%8D%E8%8A%B1%E9%97%AE%E9%A2%98/</url>
+    <url>/2020021451823/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>假设你有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花卉不能种植在相邻的地块上，它们会争夺水源，两者都会死去。</p>
 <p>给定一个花坛（表示为一个数组包含0和1，其中0表示没种植花，1表示种植了花），和一个数 <strong>n</strong> 。能否在不打破种植规则的情况下种入 <strong>n</strong> 朵花？能则返回True，不能则返回False。</p>
 <p><strong>示例 1:</strong></p>
@@ -4086,7 +4086,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>628.三个数的最大乘积</title>
-    <url>/2020/02/14/LeetCode/628.%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/</url>
+    <url>/2020021464342/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整型数组，在数组中找出由三个数组成的最大乘积，并输出这个乘积。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,2,3]</span><br><span class="line">输出: 6</span><br></pre></td></tr></table></figure>
@@ -4134,7 +4134,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>674.最长连续递增序列</title>
-    <url>/2020/02/14/LeetCode/674.%E6%9C%80%E9%95%BF%E8%BF%9E%E7%BB%AD%E9%80%92%E5%A2%9E%E5%BA%8F%E5%88%97/</url>
+    <url>/2020021413254/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个未经排序的整数数组，找到最长且<strong>连续</strong>的的递增序列。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,3,5,4,7]</span><br><span class="line">输出: 3</span><br><span class="line">解释: 最长连续递增序列是 [1,3,5], 长度为3。</span><br><span class="line">尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为5和7在原数组里被4隔开。 </span><br></pre></td></tr></table></figure>
@@ -4158,7 +4158,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>717.1比特与2比特字符</title>
-    <url>/2020/02/14/LeetCode/717.1%E6%AF%94%E7%89%B9%E4%B8%8E2%E6%AF%94%E7%89%B9%E5%AD%97%E7%AC%A6/</url>
+    <url>/2020021422762/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>有两种特殊字符。第一种字符可以用一比特<code>0</code>来表示。第二种字符可以用两比特(<code>10</code> 或 <code>11</code>)来表示。</p>
 <p>现给一个由若干比特组成的字符串。问最后一个字符是否必定为一个一比特字符。给定的字符串总是由0结束。</p>
 <p><strong>示例 1:</strong></p>
@@ -4192,7 +4192,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>724.寻找数组的中心索引</title>
-    <url>/2020/02/14/LeetCode/724.%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/</url>
+    <url>/2020021440098/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数类型的数组 <code>nums</code>，请编写一个能够返回数组<strong>“中心索引”</strong>的方法。</p>
 <p>我们是这样定义数组<strong>中心索引</strong>的：数组中心索引的左侧所有元素相加的和等于右侧所有元素相加的和。</p>
 <p>如果数组不存在中心索引，那么我们应该返回 -1。如果数组有多个中心索引，那么我们应该返回最靠近左边的那一个。</p>
@@ -4222,7 +4222,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>747.至少是其他数字两倍的最大数</title>
-    <url>/2020/02/14/LeetCode/747.%E8%87%B3%E5%B0%91%E6%98%AF%E5%85%B6%E4%BB%96%E6%95%B0%E5%AD%97%E4%B8%A4%E5%80%8D%E7%9A%84%E6%9C%80%E5%A4%A7%E6%95%B0/</url>
+    <url>/2020021435259/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>在一个给定的数组<code>nums</code>中，总是存在一个最大元素 。</p>
 <p>查找数组中的最大元素是否至少是数组中每个其他数字的两倍。</p>
 <p>如果是，则返回最大元素的索引，否则返回-1。</p>
@@ -4253,7 +4253,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>561.数组拆分</title>
-    <url>/2020/02/13/LeetCode/561.%E6%95%B0%E7%BB%84%E6%8B%86%E5%88%86%E2%85%A0/</url>
+    <url>/2020021324149/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定长度为 <strong>2n</strong> 的数组, 你的任务是将这些数分成 <strong>n</strong> 对, 例如 (a1, b1), (a2, b2), …, (an, bn) ，使得从1 到 n 的 min(ai, bi) 总和最大。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,4,3,2]</span><br><span class="line"></span><br><span class="line">输出: 4</span><br><span class="line">解释: n 等于 2, 最大总和为 4 &#x3D; min(1, 2) + min(3, 4).</span><br></pre></td></tr></table></figure>
@@ -4287,7 +4287,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>581.最短无序连续子数组</title>
-    <url>/2020/02/13/LeetCode/581.%E6%9C%80%E7%9F%AD%E6%97%A0%E5%BA%8F%E8%BF%9E%E7%BB%AD%E5%AD%90%E6%95%B0%E7%BB%84/</url>
+    <url>/2020021335388/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组，你需要寻找一个<strong>连续的子数组</strong>，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。</p>
 <p>你找到的子数组应是<strong>最短</strong>的，请输出它的长度。</p>
 <p><strong>示例 1:</strong></p>
@@ -4316,7 +4316,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>448.找到所有数组中消失的数字</title>
-    <url>/2020/02/12/LeetCode/448.%E6%89%BE%E5%88%B0%E6%89%80%E6%9C%89%E6%95%B0%E7%BB%84%E4%B8%AD%E6%B6%88%E5%A4%B1%E7%9A%84%E6%95%B0%E5%AD%97/</url>
+    <url>/2020021242765/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p><strong>Tags：</strong></p>
 <p>给定一个范围在 1 ≤ a[i] ≤ <em>n</em> ( <em>n</em> = 数组大小 ) 的 整型数组，数组中的元素一些出现了两次，另一些只出现一次。</p>
 <p>找到所有在 [1, <em>n</em>] 范围之间没有出现在数组中的数字。</p>
@@ -4346,7 +4346,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>414.第三大的数</title>
-    <url>/2020/02/11/LeetCode/414.%E7%AC%AC%E4%B8%89%E5%A4%A7%E7%9A%84%E6%95%B0/</url>
+    <url>/2020021138826/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个非空数组，返回此数组中第三大的数。如果不存在，则返回数组中最大的数。要求算法时间复杂度必须是O(n)。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [3, 2, 1]</span><br><span class="line"></span><br><span class="line">输出: 1</span><br><span class="line"></span><br><span class="line">解释: 第三大的数是 1.</span><br></pre></td></tr></table></figure>
@@ -4371,7 +4371,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>287.寻找重复数</title>
-    <url>/2020/02/10/LeetCode/287.%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0/</url>
+    <url>/2020021052913/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个包含 <em>n</em> + 1 个整数的数组 <em>nums</em>，其数字都在 1 到 <em>n</em> 之间（包括 1 和 <em>n</em>），可知至少存在一个重复的整数。假设只有一个重复的整数，找出这个重复的数。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,3,4,2,2]</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
@@ -4410,7 +4410,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>283.移动零</title>
-    <url>/2020/02/09/LeetCode/283.%E7%A7%BB%E5%8A%A8%E9%9B%B6/</url>
+    <url>/2020020928492/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [0,1,0,3,12]</span><br><span class="line">输出: [1,3,12,0,0]</span><br></pre></td></tr></table></figure>
@@ -4437,7 +4437,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>268.缺失数字</title>
-    <url>/2020/02/09/LeetCode/268.%E7%BC%BA%E5%A4%B1%E6%95%B0%E5%AD%97/</url>
+    <url>/2020020958118/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个包含 <code>0, 1, 2, ..., n</code> 中 <em>n</em> 个数的序列，找出 0 .. <em>n</em> 中没有出现在序列中的那个数。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [3,0,1]</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
@@ -4467,7 +4467,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>189.旋转数组</title>
-    <url>/2020/02/08/LeetCode/189.%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/</url>
+    <url>/2020020820560/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组，将数组中的元素向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,2,3,4,5,6,7] 和 k &#x3D; 3</span><br><span class="line">输出: [5,6,7,1,2,3,4]</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: [7,1,2,3,4,5,6]</span><br><span class="line">向右旋转 2 步: [6,7,1,2,3,4,5]</span><br><span class="line">向右旋转 3 步: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
@@ -4504,7 +4504,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>217.存在重复元素</title>
-    <url>/2020/02/08/LeetCode/217.%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0/</url>
+    <url>/2020020860940/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组，判断是否存在重复元素。</p>
 <p>如果任何值在数组中出现至少两次，函数返回 true。如果数组中每个元素都不相同，则返回 false。</p>
 <p><strong>示例 1:</strong></p>
@@ -4550,7 +4550,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>219.存在重复元素Ⅱ</title>
-    <url>/2020/02/08/LeetCode/219.%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D%E5%85%83%E7%B4%A0%E2%85%A1/</url>
+    <url>/2020020837186/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组和一个整数 <em>k</em>，判断数组中是否存在两个不同的索引 <em>i</em> 和 <em>j</em>，使得 <strong>nums [i] = nums [j]</strong>，并且 <em>i</em> 和 <em>j</em> 的差的绝对值最大为 <em>k</em>。</p>
 <p><strong>示例 1:</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: nums &#x3D; [1,2,3,1], k &#x3D; 3</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
@@ -4579,7 +4579,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
   </entry>
   <entry>
     <title>204.计数质数</title>
-    <url>/2020/02/07/LeetCode/204.%E8%AE%A1%E6%95%B0%E8%B4%A8%E6%95%B0/</url>
+    <url>/2020020719049/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>统计所有小于非负整数 n 的质数的数量。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">示例:</span><br><span class="line"></span><br><span class="line">输入: 10</span><br><span class="line">输出: 4</span><br><span class="line">解释: 小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。</span><br></pre></td></tr></table></figure>
 <h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><blockquote>
