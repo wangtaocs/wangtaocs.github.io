@@ -1,6 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>物理机安装CentOS</title>
+    <url>/202102223d55054c/</url>
+    <content><![CDATA[<p>记一次捡垃圾之旅。<br>一直想在家里装个NAS，利用起来闲置的带宽，但是蜗牛星际这种矿渣都开始有奸商开始抄了，本来只需不到300块钱就能搞一个，后来快四百了，这还不包括硬盘，在家里装个2T的NAS的话，得七百多块钱了，性价比就不高了。后来看着看着就看垃圾佬捡垃圾的视频了，一时兴起，昨天我就真的去回收站捡垃圾去了，还真让我捡了个，花了50块钱，捡垃圾真香！</p>
+<p>下面展示一下具体配置：<br>CPU：AMD Athlon Ⅱ X2 245<br>内存：DDR3  2GB<br>硬盘：东芝500GB 7200r</p>
+<hr>
+<p>本来想装个黑群晖的，后来又想把这个当服务器了，遂想装个CentOS，搞了两个晚上才搞好，主要是卡在装网卡驱动上了，记录一下：</p>
+<p>我本来想着装个Server版本的，因为内存只有两个G，但是装好了一直连不上网，我还以为是我装的Minimal版的原因，所以又装了GUI版的，发现还是不行，后来查了半天资料，哦，才想到网卡是没驱动，所以一直看着没网卡。</p>
+<p>接下来主要就是搞定网卡，连上网。主要参考了这篇博客：<a href="https://blog.csdn.net/justcyf/article/details/52453868">https://blog.csdn.net/justcyf/article/details/52453868</a></p>
+<ol>
+<li><p>查看设备信息，确定自己网卡型号</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lspci -nn | grep -i net</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载驱动<br>下载驱动的地址：<a href="https://mirror.imt-systems.com/elrepo/archive/elrepo/el7/x86_64/RPMS/">https://mirror.imt-systems.com/elrepo/archive/elrepo/el7/x86_64/RPMS/</a></p>
+<p>先查看内核版本：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+<p>然后找对应内核的驱动，这里博主也没说怎么对应的，我就把找到的4个版本的驱动都试了一遍，最后一遍才成功……成功的时候会显示Done！</p>
+</li>
+<li><p>安装驱动</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">su rpm -ivh kmod-forcedeth-0.64-1.el7.elrepo.x86_64.rpm </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动服务<br>先查看哪些服务在运行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lsmod | grep forcedeth</span><br></pre></td></tr></table></figure>
+<p>没反应就是啥也没启动。<br>激活驱动：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">modprobe forcedeth</span><br></pre></td></tr></table></figure>
+<p>然后就可以看到forcedeth了：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lsmod | grep forcedeth</span><br><span class="line">forcedeth              71574  0 </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再<code>ifconfig</code>就能看到网卡了</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MyBatis Generator的使用</title>
+    <url>/20210205c5aa4d75/</url>
+    <content><![CDATA[<p>使用MyBatis Generator(MBG)可以自动生成model层中的对象，并可根据数据库中的表字段，自动生成Getter和Setter，还可以自定义生成其他的方法，例如：toString()方法等。当数据库中有多张表时，使用MBG可以自动生成对象，免去编写大量重复的代码。</p>
+<p>下面简单的记录MBG的使用：</p>
+<h1 id="设计数据库表"><a href="#设计数据库表" class="headerlink" title="设计数据库表"></a>设计数据库表</h1><p>新建一个数据库<code>mbg_test</code>，使用Navicat设计两张数据库表：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Navicat MySQL Data Transfer</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Source Server         : root</span></span><br><span class="line"><span class="comment">Source Server Version : 50733</span></span><br><span class="line"><span class="comment">Source Host           : localhost:3306</span></span><br><span class="line"><span class="comment">Source Database       : mbg_test</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Target Server Type    : MYSQL</span></span><br><span class="line"><span class="comment">Target Server Version : 50733</span></span><br><span class="line"><span class="comment">File Encoding         : 65001</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Date: 2021-02-05 21:18:17</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for product</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`product`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`product`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`title`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`price`</span> <span class="built_in">decimal</span>(<span class="number">10</span>,<span class="number">2</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`create_time`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span>,</span><br><span class="line">  <span class="string">`update_time`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for user</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`user`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`password`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`create_time`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span>,</span><br><span class="line">  <span class="string">`update_time`</span> datetime <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="keyword">CURRENT_TIMESTAMP</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br></pre></td></tr></table></figure>
+<h1 id="新建Maven工程"><a href="#新建Maven工程" class="headerlink" title="新建Maven工程"></a>新建Maven工程</h1><ol>
+<li><p>向<code>pom.xml</code>中添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.4.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.38<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- MyBatis 生成器 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>搭建项目结构：<br><a href="https://imgchr.com/i/yJUTfg"><img src="https://s3.ax1x.com/2021/02/05/yJUTfg.png" alt="yJUTfg.png" style="zoom:50%;" /></a></p>
+</li>
+<li><p>新建并编辑<code>generatorConfig.xml</code>文件：<br>具体的标签配置可以参照《MyBatis从入门到精通》的 5.1 XML配置详解</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">generatorConfiguration</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">&quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">&quot;MySqlContext&quot;</span> <span class="attr">targetRuntime</span>=<span class="string">&quot;MyBatis3&quot;</span> <span class="attr">defaultModelType</span>=<span class="string">&quot;flat&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;beginningDelimiter&quot;</span> <span class="attr">value</span>=<span class="string">&quot;`&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;endingDelimiter&quot;</span> <span class="attr">value</span>=<span class="string">&quot;`&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;javaFileEncoding&quot;</span> <span class="attr">value</span>=<span class="string">&quot;UTF-8&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--可以自定义生成model的代码注释--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">commentGenerator</span> <span class="attr">type</span>=<span class="string">&quot;com.mybatis.demo.mbg.CommentGenerator&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;suppressDate&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;addRemarkComments&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">commentGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--配置数据库连接--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">connectionURL</span>=<span class="string">&quot;jdbc:mysql://localhost:3306/mbg_test?useSSL=false&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">userId</span>=<span class="string">&quot;root&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">password</span>=<span class="string">&quot;123456&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--指定生成model的路径--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;com.mybatis.demo.mbg.model&quot;</span> <span class="attr">targetProject</span>=<span class="string">&quot;src/main/java&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaModelGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--指定生成mapper.xml的路径, windows中使用 &quot;\&quot;, 类Unix使用 &quot;/&quot;--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;com.mybatis.demo.mbg.mapper&quot;</span>  <span class="attr">targetProject</span>=<span class="string">&quot;src/main/resources&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--指定生成mapper接口的的路径--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">type</span>=<span class="string">&quot;XMLMAPPER&quot;</span> <span class="attr">targetPackage</span>=<span class="string">&quot;com.mybatis.demo.mbg.mapper&quot;</span>  <span class="attr">targetProject</span>=<span class="string">&quot;src/main/java&quot;</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--生成全部表tableName设为%--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">&quot;%&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">generatedKey</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> <span class="attr">sqlStatement</span>=<span class="string">&quot;MySql&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建并编辑<code>Generator.java</code>文件：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mybatis.demo.mbg;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangtao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> 0.1 2021-02-05 21:50</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.MyBatisGenerator;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.config.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.config.xml.ConfigurationParser;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.internal.DefaultShellCallback;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//MBG 执行过程中的警告信息</span></span><br><span class="line">        List&lt;String&gt; warnings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        <span class="comment">//当生成的代码重复时，覆盖原代码</span></span><br><span class="line">        <span class="keyword">boolean</span> overwrite = <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">//读取我们的 MBG 配置文件</span></span><br><span class="line">        InputStream is = Generator.class.getResourceAsStream(<span class="string">&quot;/generator/generatorConfig.xml&quot;</span>);</span><br><span class="line">        ConfigurationParser cp = <span class="keyword">new</span> ConfigurationParser(warnings);</span><br><span class="line">        Configuration config = cp.parseConfiguration(is);</span><br><span class="line">        is.close();</span><br><span class="line"></span><br><span class="line">        DefaultShellCallback callback = <span class="keyword">new</span> DefaultShellCallback(overwrite);</span><br><span class="line">        <span class="comment">//创建 MBG</span></span><br><span class="line">        MyBatisGenerator myBatisGenerator = <span class="keyword">new</span> MyBatisGenerator(config, callback, warnings);</span><br><span class="line">        <span class="comment">//执行生成代码</span></span><br><span class="line">        myBatisGenerator.generate(<span class="keyword">null</span>);</span><br><span class="line">        <span class="comment">//输出警告信息</span></span><br><span class="line">        <span class="keyword">for</span>(String warning : warnings)&#123;</span><br><span class="line">            System.out.println(warning);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建并编辑<code>CommentGenerator.java</code>文件，以生成文档注释：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mybatis.demo.mbg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.IntrospectedColumn;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.IntrospectedTable;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.dom.java.Field;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.internal.DefaultCommentGenerator;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.internal.util.StringUtility;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义注释生成器</span></span><br><span class="line"><span class="comment"> * Created by macro on 2018/4/26.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommentGenerator</span> <span class="keyword">extends</span> <span class="title">DefaultCommentGenerator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> addRemarkComments = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置用户配置的参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addConfigurationProperties</span><span class="params">(Properties properties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.addConfigurationProperties(properties);</span><br><span class="line">        <span class="keyword">this</span>.addRemarkComments = StringUtility.isTrue(properties.getProperty(<span class="string">&quot;addRemarkComments&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 给字段添加注释</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFieldComment</span><span class="params">(Field field, IntrospectedTable introspectedTable,</span></span></span><br><span class="line"><span class="function"><span class="params">                                IntrospectedColumn introspectedColumn)</span> </span>&#123;</span><br><span class="line">        String remarks = introspectedColumn.getRemarks();</span><br><span class="line">        <span class="comment">//根据参数和备注信息判断是否添加备注信息</span></span><br><span class="line">        <span class="keyword">if</span> (addRemarkComments &amp;&amp; StringUtility.stringHasValue(remarks)) &#123;</span><br><span class="line">            addFieldJavaDoc(field, remarks);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 给model的字段添加注释</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addFieldJavaDoc</span><span class="params">(Field field, String remarks)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//文档注释开始</span></span><br><span class="line">        field.addJavaDocLine(<span class="string">&quot;/**&quot;</span>);</span><br><span class="line">        <span class="comment">//获取数据库字段的备注信息</span></span><br><span class="line">        String[] remarkLines = remarks.split(System.getProperty(<span class="string">&quot;line.separator&quot;</span>));</span><br><span class="line">        <span class="keyword">for</span> (String remarkLine : remarkLines) &#123;</span><br><span class="line">            field.addJavaDocLine(<span class="string">&quot; * &quot;</span> + remarkLine);</span><br><span class="line">        &#125;</span><br><span class="line">        addJavadocTag(field, <span class="keyword">false</span>);</span><br><span class="line">        field.addJavaDocLine(<span class="string">&quot; */&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<code>Generator.java</code>，即可生成对应数据库表的model、Mapper接口、mapper.xml映射文件。</p>
+</li>
+</ol>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>创建并编辑<code>UserMapperTest.java</code>，用来测试接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mybatis.demo.mbg.mapper;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangtao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> 0.1 2021-02-05 22:35</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.Reader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</span><br><span class="line"><span class="keyword">import</span> org.junit.BeforeClass;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.mybatis.demo.mbg.model.User;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> SqlSessionFactory sqlSessionFactory;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@BeforeClass</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Reader reader = Resources.getResourceAsReader(<span class="string">&quot;mybatis-config.xml&quot;</span>);</span><br><span class="line">            sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(reader);</span><br><span class="line">            reader.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException ignore) &#123;</span><br><span class="line">            ignore.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSession <span class="title">getSqlSession</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sqlSessionFactory.openSession();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSelectByPrimaryKey</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//获取 sqlSession</span></span><br><span class="line">        SqlSession sqlSession = getSqlSession();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//获取 UserMapper 接口</span></span><br><span class="line">            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">            <span class="comment">//调用 selectByPrimaryKey 方法，查询 id = 1 的用户</span></span><br><span class="line">            User user = userMapper.selectByPrimaryKey(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">            System.out.println(user);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//不要忘记关闭 sqlSession</span></span><br><span class="line">            sqlSession.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>能查到数据库中的数据，表明MBG成功了</p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>安装并配置docker</title>
+    <url>/202102033717081c/</url>
+    <content><![CDATA[<p><a href="https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11JjCU5g">https://developer.aliyun.com/mirror/docker-ce?spm=a2c6h.13651102.0.0.3e221b11JjCU5g</a></p>
+<p><a href="https://blog.csdn.net/u011337602/article/details/104541261">https://blog.csdn.net/u011337602/article/details/104541261</a></p>
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu20.10安装配置maven</title>
+    <url>/2021020164b72101/</url>
+    <content><![CDATA[<ol>
+<li><p>下载maven：<br><a href="https://maven.apache.org/download.cgi">https://maven.apache.org/download.cgi</a></p>
+</li>
+<li><p>解压到/opt文件夹下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf apache-maven-3.6.3-bin.tar.gz -C /opt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置环境变量：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/profile</span><br></pre></td></tr></table></figure>
+<p>将以下内容追加到文件中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">set</span> Maven environment</span></span><br><span class="line">export M2_HOME=/opt/apache-maven</span><br><span class="line">export PATH=$M2_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+<p>更新源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看maven版本：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mvn -v</span><br></pre></td></tr></table></figure>
+<p>检查不报错，即为安装成功。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu20.10安装并配置mysql</title>
+    <url>/20210131ee667999/</url>
+    <content><![CDATA[<h1 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h1><p><a href="https://blog.csdn.net/liang19890820/article/details/105071479">https://blog.csdn.net/liang19890820/article/details/105071479</a></p>
+<ol>
+<li><p>使用命令行安装：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置mysql密码</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mysql_secure_installation</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>允许本地root直连<br>进入mysql配置界面：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo mysql</span><br></pre></td></tr></table></figure>
+<p>将认证方式改为密码登录：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> ALTER USER <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED WITH mysql_native_password BY <span class="string">&#x27;123456&#x27;</span>;</span></span><br></pre></td></tr></table></figure>
+<p>查看用户登录方式：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> SELECT user, authentication_string, plugin, host FROM mysql.user;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>退出mysql</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; exit</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这样就可以登录mysql了：<code>mysql -uroot -p</code></p>
+<h1 id="安装一个mysql图形化界面"><a href="#安装一个mysql图形化界面" class="headerlink" title="安装一个mysql图形化界面"></a>安装一个mysql图形化界面</h1><p>我选择了mysql-workbench，因为开源免费</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">snap install mysql-workbench-community</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux目录配置的依据——FHS</title>
+    <url>/20210119786270d3/</url>
+    <content><![CDATA[<p>今天读到了<strong>《鸟哥的LINUX的私房菜》</strong>的<strong>5.3.1 Linux目录配置的依据——FHS</strong>，终于以解我用了半年多Ubuntu以来，对根目录下各个文件夹的内容的一些疑惑，遂写一篇博客用来记录一下。我只是简单介绍一下，如果有深究的需要，那么就去看原书吧。</p>
+<p>Filesystem Hierarchy Standard (FHS)：文件系统层次结构标准，有了这个标准就可以对很多系统文件进行规范分类了。</p>
+<p><a href="https://imgchr.com/i/s2m00K"><img src="https://s3.ax1x.com/2021/01/19/s2m00K.png" alt="s2m00K.png" style="zoom:50%;" /></a></p>
+<p>接下来，我逐一说明一下，各文件夹都是什么</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/bin</td>
+<td>主要是很多能被执行的命令，例如：ls，cat等等，这是个链接文件，链接的是：/usr/bin</td>
+</tr>
+<tr>
+<td>/boot</td>
+<td>启动文件</td>
+</tr>
+<tr>
+<td>/cdrom</td>
+<td>光驱cd中的文件，如果电脑没光驱，这个文件夹中就不会有文件，鸟哥的书中，根目录下并没有这个文件夹，可能是Ubuntu做了一些改变</td>
+</tr>
+<tr>
+<td>/dev</td>
+<td>设备文件，是device的缩写，</td>
+</tr>
+<tr>
+<td>/etc</td>
+<td>配置文件，这不是个单词的缩写，而是and so on等等的缩写=etc，意为一些零碎的东西</td>
+</tr>
+<tr>
+<td>/home</td>
+<td>家目录，这个应该不陌生，每个用户都会有一个自己的/home</td>
+</tr>
+<tr>
+<td>/lib<br/>lib32<br/>/lib64<br/>/libx32</td>
+<td>均为链接文件，链接的是/usr下的对应文件，实际意义均是函数库文件</td>
+</tr>
+<tr>
+<td>/lost+found</td>
+<td>当文件系统发生错误时, 将一些遗失的片段放置到这个目录下</td>
+</tr>
+<tr>
+<td>/media</td>
+<td>多媒体文件，可删除的设备</td>
+</tr>
+<tr>
+<td>/mnt</td>
+<td>临时挂载的设备，与/media功能相同</td>
+</tr>
+<tr>
+<td>/opt</td>
+<td>第三方软件的存放目录，是option的缩写</td>
+</tr>
+<tr>
+<td>/proc</td>
+<td>这个目录是一个虚拟文件系统，查看属性的确是不占任何硬盘空间，大小是0bytes</td>
+</tr>
+<tr>
+<td>/root</td>
+<td>root用户的家目录</td>
+</tr>
+<tr>
+<td>/run</td>
+<td>系统启动后产生的各种信息的存放位置，可用内存模拟</td>
+</tr>
+<tr>
+<td>/sbin</td>
+<td>链接到/usr中对应文件，也是一些能执行的命令，但可能没有/bin中的的命令重要</td>
+</tr>
+<tr>
+<td>/snap</td>
+<td>Ubuntu自带的商店</td>
+</tr>
+<tr>
+<td>/srv</td>
+<td>网络服务所要使用的数据文件，是service的缩写</td>
+</tr>
+<tr>
+<td>/tmp</td>
+<td>一般用户执行文件程序暂时存放文件的地方，</td>
+</tr>
+<tr>
+<td>/usr</td>
+<td>这个最有意思了，我一直以为是user的缩写，原来是unix software resource的缩写，见名知意，就是UNIX系统软件存放资源的地方，因为Linux是类UNIX的嘛（/usr≈Windows中的“C:\Windows (当中的一部份) + C:\Program files\”这两个目录的综合体）</td>
+</tr>
+<tr>
+<td>/var</td>
+<td>经常性变动的文件，包括缓存、日志以及某些软件运行产生的文件，包括程序文件(lock file, run file),或者例如 MySQL数据库的文件等等，是varible的缩写吧</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>所以，一般我们要动的文件夹主要是：</p>
+<ul>
+<li>/etc，因为我们经常需要配置点东西</li>
+<li>/home，我们自己的文件都放在这，当然经常访问了</li>
+<li>/mnt，我的Ubuntu桌面版上所有的硬盘都挂载在这里了</li>
+<li>/opt，我们自己安装点文件，得放在这吧</li>
+</ul>
+<p>别的可能就不经常动了，如果需要动，那可就要小心了。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ubuntu的小记</title>
+    <url>/202011291c7300b7/</url>
+    <content><![CDATA[<ol>
+<li><p>新版应用商店安装:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt intall gnome-software</span><br></pre></td></tr></table></figure>
+<p><a href="https://imgchr.com/i/Dc8PIg"><img src="https://s3.ax1x.com/2020/11/29/Dc8PIg.png" alt="Dc8PIg.png"></a></p>
+<p>左边的叫gnome-software;右边的叫software-center;都不好用,连vscode都搜不到,不过左边的还能浏览一点,右边的什么都加载不出来</p>
+</li>
+<li><p>安装java开发环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 这个安装的是open-jdk</span></span><br><span class="line">sudo apt install default-jre</span><br><span class="line">sudo apt install default-jdk</span><br><span class="line">java --version</span><br></pre></td></tr></table></figure>
+<p>啊！Linux也太方便了。</p>
+<hr>
+<p>安装oracle-jdk比较麻烦</p>
+<p>法一：<a href="https://jingyan.baidu.com/article/25648fc1797a649191fd00ca.html">https://jingyan.baidu.com/article/25648fc1797a649191fd00ca.html</a></p>
+<p>法二：（我的电脑不管用）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加java源</span></span><br><span class="line">sudo add-apt-repository ppa:linuxuprising/java</span><br><span class="line"><span class="meta">#</span><span class="bash"> 更新源</span></span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install oracle-java15-installer</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>appImageLauncher使用教程</title>
     <url>/202011267ca87167/</url>
     <content><![CDATA[<p>appimage格式的文件类似于windows上的绿色免安装版软件,安装appImageLauncher可以管理这些应用</p>
@@ -14,9 +285,9 @@
       </categories>
   </entry>
   <entry>
-    <title>在Ubuntu上挂载NTFS,并读写</title>
+    <title>在Ubuntu上自动挂载NTFS,并读写</title>
     <url>/20201126eacca14f/</url>
-    <content><![CDATA[<p>我的电脑安装了双系统,HDD在Ubuntu中使用磁盘工具自动开机挂载没有写入权限,操作起来很不方便,使用以下方法解决:</p>
+    <content><![CDATA[<h1 id="自动挂载的姿势之一"><a href="#自动挂载的姿势之一" class="headerlink" title="自动挂载的姿势之一"></a>自动挂载的姿势之一</h1><p>我的电脑安装了双系统,HDD在Ubuntu中使用磁盘工具自动开机挂载没有写入权限,操作起来很不方便,使用以下方法解决:</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看所有的HDD分区</span></span><br><span class="line">sudo fdisk -l</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修复磁盘分区</span></span><br><span class="line">sudo ntfsfix /dev/sdb1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 以读写权限挂载磁盘</span></span><br><span class="line">sudo mount -o rw /dev/sda1 /mnt/Data/</span><br><span class="line">sudo mount -o rw /dev/sda2 /mnt/Entertainment/</span><br><span class="line">sudo mount -o rw /dev/sda3 /mnt/Learn/</span><br></pre></td></tr></table></figure>
 <p>如果还是不行,请赋予/mnt中的文件夹最高的权限</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo chmod 777 /mnt/Data/</span><br><span class="line">sudo chmod 777 /mnt/Entertainment/</span><br><span class="line">sudo chmod 777 /mnt/Learn/</span><br></pre></td></tr></table></figure>
@@ -24,6 +295,20 @@
 <p>在/home中创建一个脚本<code>automount-rw.sh</code></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> automount-rw.sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> auto mount NTFS <span class="string">&#x27;ro&#x27;</span> -&gt; <span class="string">&#x27;rw&#x27;</span></span></span><br><span class="line">echo &quot;密码&quot;|sudo -S mount -o rw /dev/sda1 /mnt/Data/</span><br><span class="line">echo &quot;密码&quot;|sudo -S mount -o rw /dev/sda2 /mnt/Entertainment/</span><br><span class="line">echo &quot;密码&quot;|sudo -S mount -o rw /dev/sda3 /mnt/Learn/</span><br></pre></td></tr></table></figure>
 <p>这样做不好的地方是密码以明文的形式放在了脚本中,个人的电脑可以这么搞.</p>
+<h1 id="自动挂载的姿势之二"><a href="#自动挂载的姿势之二" class="headerlink" title="自动挂载的姿势之二"></a>自动挂载的姿势之二</h1><p>2021.2.15</p>
+<p>今天看了鸟哥的私房菜的<strong>7.4 设置启动挂载</strong>，才知道原来根文件系统也是通过系统配置自动挂载的，以前从来都没有思考过。通过查看<code>cat /etc/fstab</code>就可以了解系统在开机时是如何自动挂载文件系统的，值得说的一点是<code>/</code>根文件系统是最先被挂载的，有了根文件系统，才能挂载其他的文件系统。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> /etc/fstab: static file system information.</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># Use &#x27;blkid&#x27; to print the universally unique identifier for a</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> device; this may be used with UUID= as a more robust way to name devices</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> that works even <span class="keyword">if</span> disks are added and removed. See fstab(5).</span></span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="bash"><span class="comment"># &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> / was on /dev/nvme0n1p3 during installation</span></span><br><span class="line">UUID=d0be529a-c200-4bad-9086-bdbe580a4255 /               ext4    errors=remount-ro 0       1</span><br><span class="line"><span class="meta">#</span><span class="bash"> /boot/efi was on /dev/nvme0n1p2 during installation</span></span><br><span class="line">UUID=25A5-9DBA  /boot/efi       vfat    umask=0077      0       1</span><br><span class="line"><span class="meta">#</span><span class="bash"> /home was on /dev/nvme0n1p4 during installation</span></span><br><span class="line">UUID=6ad9690a-dfef-4fb0-a6da-a3aff8c8b622 /home           ext4    defaults        0       2</span><br><span class="line">/swapfile                                 none            swap    sw              0       0</span><br><span class="line">LABEL=Data /mnt/Data auto nosuid,nodev,nofail,x-gvfs-show,noauto 0 0</span><br><span class="line">LABEL=Entertainment /mnt/Entertainment auto nosuid,nodev,nofail,x-gvfs-show,noauto 0 0</span><br><span class="line">LABEL=Learn /mnt/Learn auto nosuid,nodev,nofail,x-gvfs-show,noauto 0 0</span><br></pre></td></tr></table></figure>
+<p>这是我的<code>/etc/fstab</code>文件的内容，可以知道先挂载了根文件系统，然后挂载了efi，方便bios启动后，引导内核的启动，然后挂载了<code>/home</code>目录，这里顺便再说一下<code>/swapfile</code>这个文件系统，根据我粗浅的了解，以前ubuntu在安装时，创建一个与内存大小相当的交换分区有助于提高性能，我将它理解为虚拟内存（不知道合不合理），但现在电脑的配置都比较高了，基本用不着交换分区了，比如我的电脑内存16G，很够用了。想起来以前安装ubuntu16.04的时候还是需要划分一个交换分区的。</p>
+<p>后边的这三个应该就是之前写的自动挂载脚本所创建的内容了，可以看到，拿Data这个文件系统来说，<strong>挂载点</strong>是：<code>/mnt/Data</code>；<strong>磁盘分区的文件系统</strong>是auto；<strong>文件系统参数</strong>是：<code>nosuid,nodev,nofail,x-gvfs-show,noauto</code>；最后两栏是<strong>能否被dump备份命令作用</strong>以及<strong>是否以fsck检验扇区</strong>，这两个都是0</p>
+<p>之前写的自动挂载脚本在开机进入操作系统后才会被执行，今天看了书，可以优化一下了，原来的自动挂载脚本可以删掉了，鸟叔说挂载时最好还是用UUID去挂载，所以使用<code>sudo blkid</code>查看磁盘的UUID：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(base) wangtao@pc:~$ sudo blkid</span><br><span class="line">[sudo] wangtao 的密码： </span><br><span class="line">/dev/nvme0n1p3: UUID=&quot;d0be529a-c200-4bad-9086-bdbe580a4255&quot; BLOCK_SIZE=&quot;4096&quot; TYPE=&quot;ext4&quot; PARTUUID=&quot;9e9e48fc-c69b-4eb3-97e4-58b43f56de6c&quot;</span><br><span class="line">/dev/loop0: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop1: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop2: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop3: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop4: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop5: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop6: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop7: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/nvme0n1p1: LABEL=&quot;MS&quot; BLOCK_SIZE=&quot;512&quot; UUID=&quot;C25E6DFF5E6DEC9B&quot; TYPE=&quot;ntfs&quot; PARTLABEL=&quot;Basic data partition&quot; PARTUUID=&quot;ba4c815e-781d-44bf-ac01-cda07d2cfeab&quot;</span><br><span class="line">/dev/nvme0n1p2: UUID=&quot;25A5-9DBA&quot; BLOCK_SIZE=&quot;512&quot; TYPE=&quot;vfat&quot; PARTLABEL=&quot;EFI system partition&quot; PARTUUID=&quot;80565be5-f68a-470e-86c2-1c9bc74e88de&quot;</span><br><span class="line">/dev/nvme0n1p4: UUID=&quot;6ad9690a-dfef-4fb0-a6da-a3aff8c8b622&quot; BLOCK_SIZE=&quot;4096&quot; TYPE=&quot;ext4&quot; PARTUUID=&quot;bf1e37df-7442-4c60-9312-bdb432e29c58&quot;</span><br><span class="line">/dev/sda1: LABEL=&quot;Data&quot; BLOCK_SIZE=&quot;512&quot; UUID=&quot;9AC8F872C8F84E4F&quot; TYPE=&quot;ntfs&quot; PARTLABEL=&quot;Basic data partition&quot; PARTUUID=&quot;c5f722e6-b530-4fe4-a93b-e0c72e5fb08c&quot;</span><br><span class="line">/dev/sda2: LABEL=&quot;Entertainment&quot; BLOCK_SIZE=&quot;512&quot; UUID=&quot;1E0039C50039A4A5&quot; TYPE=&quot;ntfs&quot; PARTLABEL=&quot;Basic data partition&quot; PARTUUID=&quot;c11b7960-95c2-47ea-ac64-e39059a2daa6&quot;</span><br><span class="line">/dev/sda3: LABEL=&quot;Learn&quot; BLOCK_SIZE=&quot;512&quot; UUID=&quot;88123AB2123AA4DA&quot; TYPE=&quot;ntfs&quot; PARTLABEL=&quot;Basic data partition&quot; PARTUUID=&quot;6cb3ae63-879c-4558-b483-77c6ff882408&quot;</span><br><span class="line">/dev/loop8: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop9: TYPE=&quot;squashfs&quot;</span><br><span class="line">/dev/loop10: TYPE=&quot;squashfs&quot;</span><br></pre></td></tr></table></figure>
+<p>然后修改<code>/etc/fstab</code>的内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> automount HDD</span></span><br><span class="line">UUID=9AC8F872C8F84E4F /mnt/Data auto defaults 0 0</span><br><span class="line">UUID=1E0039C50039A4A5 /mnt/Entertainment auto defaults 0 0</span><br><span class="line">UUID=88123AB2123AA4DA /mnt/Learn auto defaults 0 0</span><br></pre></td></tr></table></figure>
+<p>重启即可。</p>
+<p>成功了记得去挂载点看看就行了，linux向来是报忧不报喜的，哈哈~</p>
+<hr>
+<p>2021.2.27</p>
+<p>今天打算上传一下博客，发现磁盘权限全都变成只读了，我还以为是<code>/etc/fstab</code>出了问题，可劲百度。后来才知道，双系统的Windows有个快速启动的功能，会占用磁盘，导致ubuntu进系统的时候只能以只读的方式挂载。所以需要关闭windows的快速启动：以管理员权限运行cmd：<code>powercfg /h off</code>即可。然后回到ubuntu把磁盘修复一下就可以了。最后可以用<code>mount -l</code>可以查看磁盘的挂载权限状态。</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -1462,25 +1747,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
   </entry>
   <entry>
-    <title>119.杨辉三角 II</title>
-    <url>/202007149168/</url>
-    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
-<p><img src="https://s1.ax1x.com/2020/07/14/UUA7VA.gif" alt="UUA7VA.gif"></p>
-<p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: [1,3,3,1]</span><br></pre></td></tr></table></figure>
-<p><strong>进阶：</strong></p>
-<p>你可以优化你的算法到 <em>O</em>(<em>k</em>) 空间复杂度吗？</p>
-<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>跟118题思路一样</p>
-<h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getRow</span>(<span class="params">self, rowIndex: <span class="built_in">int</span></span>) -&gt; List[int]:</span></span><br><span class="line">        res = [<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res)-<span class="number">1</span> &lt; rowIndex:</span><br><span class="line">            res = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res, res+[<span class="number">0</span>])]</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>118.杨辉三角</title>
     <url>/2020071434917/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负整数 <em>numRows，</em>生成杨辉三角的前 <em>numRows</em> 行。</p>
@@ -1497,6 +1763,25 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 </blockquote>
 <h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate</span>(<span class="params">self, numRows: <span class="built_in">int</span></span>) -&gt; List[List[int]]:</span></span><br><span class="line">        <span class="keyword">if</span> numRows == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        res = [[<span class="number">1</span>]]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res) &lt; numRows:</span><br><span class="line">            newRow = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res[-<span class="number">1</span>], res[-<span class="number">1</span>]+[<span class="number">0</span>])]</span><br><span class="line">            res.append(newRow)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
 ]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>119.杨辉三角 II</title>
+    <url>/202007149168/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
+<p><img src="https://s1.ax1x.com/2020/07/14/UUA7VA.gif" alt="UUA7VA.gif"></p>
+<p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: [1,3,3,1]</span><br></pre></td></tr></table></figure>
+<p><strong>进阶：</strong></p>
+<p>你可以优化你的算法到 <em>O</em>(<em>k</em>) 空间复杂度吗？</p>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>跟118题思路一样</p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getRow</span>(<span class="params">self, rowIndex: <span class="built_in">int</span></span>) -&gt; List[int]:</span></span><br><span class="line">        res = [<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res)-<span class="number">1</span> &lt; rowIndex:</span><br><span class="line">            res = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res, res+[<span class="number">0</span>])]</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>LeetCode</category>
       </categories>
@@ -2651,6 +2936,24 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>404.左叶子之和</title>
+    <url>/2020031127616/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>计算给定二叉树的所有左叶子之和。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  9  20</span><br><span class="line">    &#x2F;  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24</span><br></pre></td></tr></table></figure>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><p>什么叫左叶子？</p>
+<p>答：左孩子节点不为空且左孩子没有孩子节点。</p>
+<p>递归判断左右子树，返回所有左叶子之和。</p>
+<h3 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sumOfLeftLeaves</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//左叶子：</span></span><br><span class="line">    <span class="keyword">if</span> (root-&gt;left != <span class="literal">NULL</span> &amp;&amp; root-&gt;left-&gt;left == <span class="literal">NULL</span> &amp;&amp; root-&gt;left-&gt;right == <span class="literal">NULL</span>)</span><br><span class="line">        res += root-&gt;left-&gt;val;</span><br><span class="line">    <span class="keyword">return</span> res + sumOfLeftLeaves(root-&gt;left) + sumOfLeftLeaves(root-&gt;right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>437.路径总和 III</title>
     <url>/2020031136949/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，它的每个结点都存放着一个整数值。</p>
@@ -2672,24 +2975,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>pathSum()函数：通过调用help()函数，遍历根节点，并递归遍历左右子树中所有和为sum的路径数</li>
 </ul>
 <h3 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">help</span><span class="params">(struct TreeNode *p, <span class="keyword">int</span> sum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (p == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (p-&gt;val == sum)</span><br><span class="line">        res++;</span><br><span class="line">    res += help(p-&gt;left, sum - p-&gt;val);</span><br><span class="line">    res += help(p-&gt;right, sum - p-&gt;val);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pathSum</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> sum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> cnt = help(root, sum);</span><br><span class="line">    <span class="keyword">return</span> cnt + pathSum(root-&gt;left, sum) + pathSum(root-&gt;right, sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>tree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>404.左叶子之和</title>
-    <url>/2020031127616/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>计算给定二叉树的所有左叶子之和。</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  9  20</span><br><span class="line">    &#x2F;  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24</span><br></pre></td></tr></table></figure>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><p>什么叫左叶子？</p>
-<p>答：左孩子节点不为空且左孩子没有孩子节点。</p>
-<p>递归判断左右子树，返回所有左叶子之和。</p>
-<h3 id="2-代码"><a href="#2-代码" class="headerlink" title="2.代码"></a>2.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sumOfLeftLeaves</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//左叶子：</span></span><br><span class="line">    <span class="keyword">if</span> (root-&gt;left != <span class="literal">NULL</span> &amp;&amp; root-&gt;left-&gt;left == <span class="literal">NULL</span> &amp;&amp; root-&gt;left-&gt;right == <span class="literal">NULL</span>)</span><br><span class="line">        res += root-&gt;left-&gt;val;</span><br><span class="line">    <span class="keyword">return</span> res + sumOfLeftLeaves(root-&gt;left) + sumOfLeftLeaves(root-&gt;right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -3611,33 +3896,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>445.两数相加 II</title>
-    <url>/2020022030492/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个<strong>非空</strong>链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储单个数字。将这两数相加会返回一个新的链表。</p>
-<p>你可以假设除了数字 0 之外，这两个数字都不会以零开头。</p>
-<p><strong>进阶:</strong></p>
-<p>如果输入链表不能修改该如何处理？换句话说，你不能对列表中的节点进行翻转。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: (7 -&gt; 2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">输出: 7 -&gt; 8 -&gt; 0 -&gt; 7</span><br></pre></td></tr></table></figure>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>反转链表+逐位相加</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><p>这道题我本来还没思路，结果进阶说：不能翻转怎么办？</p>
-<p>还能怎么办，我不进阶了，哈哈哈哈哈哈，快乐就完事了！😂</p>
-<p>（直接把第2题和第206题的代码粘过来了）</p>
-<p>直接：反转、反转，相加，反转</p>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct ListNode *next;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">struct ListNode *<span class="title">reverseList</span><span class="params">(struct ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">p</span>, *<span class="title">q</span>, *<span class="title">r</span>;</span></span><br><span class="line">    p = head;</span><br><span class="line">    r = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        q = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        q-&gt;next = r;</span><br><span class="line">        r = q;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct ListNode *<span class="title">addTwo</span><span class="params">(struct ListNode *l1, struct ListNode *l2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">l3</span> =</span> (struct ListNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct ListNode));</span><br><span class="line">    l3-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">p</span> =</span> l1, *q = l2, *r = l3;</span><br><span class="line">    <span class="keyword">int</span> a, b, c, flag = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span> || q != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        a = p != <span class="literal">NULL</span> ? p-&gt;val : <span class="number">0</span>;</span><br><span class="line">        b = q != <span class="literal">NULL</span> ? q-&gt;val : <span class="number">0</span>;</span><br><span class="line">        c = (a + b + flag) % <span class="number">10</span>;</span><br><span class="line">        flag = (a + b + flag) / <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        r-&gt;next = (struct ListNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct ListNode));</span><br><span class="line">        r = r-&gt;next;</span><br><span class="line">        r-&gt;val = c;</span><br><span class="line">        r-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        <span class="keyword">if</span> (q != <span class="literal">NULL</span>)</span><br><span class="line">            q = q-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (flag)</span><br><span class="line">    &#123;</span><br><span class="line">        r-&gt;next = (struct ListNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct ListNode));</span><br><span class="line">        r = r-&gt;next;</span><br><span class="line">        r-&gt;val = <span class="number">1</span>;</span><br><span class="line">        r-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l3-&gt;next;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">struct ListNode *<span class="title">addTwoNumbers</span><span class="params">(struct ListNode *l1, struct ListNode *l2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    l1 = reverseList(l1);</span><br><span class="line">    l2 = reverseList(l2);</span><br><span class="line">    <span class="keyword">return</span> reverseList(addTwo(l1, l2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我太机智了，这是我AC最快的一次，哈哈哈哈哈哈哈！</p>
-<p>先埋下这个坑，日后再来填！😝</p>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>linked-list</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>328.奇偶链表</title>
     <url>/2020022052539/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。</p>
@@ -3660,6 +3918,33 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 </ol>
 <h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct ListNode *next;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function">struct ListNode *<span class="title">oddEvenList</span><span class="params">(struct ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!head)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">odd</span> =</span> head, *even = head-&gt;next, *headOfEven = head-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (odd-&gt;next &amp;&amp; even-&gt;next)</span><br><span class="line">    &#123;</span><br><span class="line">        odd-&gt;next = even-&gt;next;</span><br><span class="line">        odd = odd-&gt;next;</span><br><span class="line">        even-&gt;next = odd-&gt;next;</span><br><span class="line">        even = even-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    odd-&gt;next = headOfEven;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这应该是我自己写出的最优美的代码了！</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>linked-list</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>445.两数相加 II</title>
+    <url>/2020022030492/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个<strong>非空</strong>链表来代表两个非负整数。数字最高位位于链表开始位置。它们的每个节点只存储单个数字。将这两数相加会返回一个新的链表。</p>
+<p>你可以假设除了数字 0 之外，这两个数字都不会以零开头。</p>
+<p><strong>进阶:</strong></p>
+<p>如果输入链表不能修改该如何处理？换句话说，你不能对列表中的节点进行翻转。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: (7 -&gt; 2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">输出: 7 -&gt; 8 -&gt; 0 -&gt; 7</span><br></pre></td></tr></table></figure>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>反转链表+逐位相加</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><p>这道题我本来还没思路，结果进阶说：不能翻转怎么办？</p>
+<p>还能怎么办，我不进阶了，哈哈哈哈哈哈，快乐就完事了！😂</p>
+<p>（直接把第2题和第206题的代码粘过来了）</p>
+<p>直接：反转、反转，相加，反转</p>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct ListNode *next;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">struct ListNode *<span class="title">reverseList</span><span class="params">(struct ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">p</span>, *<span class="title">q</span>, *<span class="title">r</span>;</span></span><br><span class="line">    p = head;</span><br><span class="line">    r = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        q = p;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        q-&gt;next = r;</span><br><span class="line">        r = q;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct ListNode *<span class="title">addTwo</span><span class="params">(struct ListNode *l1, struct ListNode *l2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">l3</span> =</span> (struct ListNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct ListNode));</span><br><span class="line">    l3-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">p</span> =</span> l1, *q = l2, *r = l3;</span><br><span class="line">    <span class="keyword">int</span> a, b, c, flag = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span> || q != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        a = p != <span class="literal">NULL</span> ? p-&gt;val : <span class="number">0</span>;</span><br><span class="line">        b = q != <span class="literal">NULL</span> ? q-&gt;val : <span class="number">0</span>;</span><br><span class="line">        c = (a + b + flag) % <span class="number">10</span>;</span><br><span class="line">        flag = (a + b + flag) / <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        r-&gt;next = (struct ListNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct ListNode));</span><br><span class="line">        r = r-&gt;next;</span><br><span class="line">        r-&gt;val = c;</span><br><span class="line">        r-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        <span class="keyword">if</span> (q != <span class="literal">NULL</span>)</span><br><span class="line">            q = q-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (flag)</span><br><span class="line">    &#123;</span><br><span class="line">        r-&gt;next = (struct ListNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct ListNode));</span><br><span class="line">        r = r-&gt;next;</span><br><span class="line">        r-&gt;val = <span class="number">1</span>;</span><br><span class="line">        r-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> l3-&gt;next;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">struct ListNode *<span class="title">addTwoNumbers</span><span class="params">(struct ListNode *l1, struct ListNode *l2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    l1 = reverseList(l1);</span><br><span class="line">    l2 = reverseList(l2);</span><br><span class="line">    <span class="keyword">return</span> reverseList(addTwo(l1, l2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我太机智了，这是我AC最快的一次，哈哈哈哈哈哈哈！</p>
+<p>先埋下这个坑，日后再来填！😝</p>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -3847,6 +4132,37 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>234.回文链表</title>
+    <url>/2020021755897/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请判断一个链表是否为回文链表。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;2-&gt;1</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
+<p><strong>进阶：</strong><br>你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？</p>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>遍历+双指针</li>
+<li>快慢指针+翻转链表</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li><p>我使用的是第一种算法，首先，遍历整个链表，将所有元素存到数组中，然后使用头尾指针判断数组即可。</p>
+<p>但是这种算法不是最优的，时空复杂度均为O(n)</p>
+</li>
+</ul>
+<ul>
+<li>第二种算法，首先使用快慢指针找到链表的中点（做过），再将后半段链表翻转，并与前半段链表比较即可。</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(struct ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">p</span> =</span> head;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        len++;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    p = head;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> *data = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(len * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        data[m++] = p-&gt;val;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = len - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (data[i] == data[j])</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>linked-list</tag>
+        <tag>two-pointers</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>237.删除链表中的节点</title>
     <url>/2020021755666/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。</p>
@@ -3896,37 +4212,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
       <tags>
         <tag>linked-list</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>234.回文链表</title>
-    <url>/2020021755897/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请判断一个链表是否为回文链表。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;2-&gt;1</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
-<p><strong>进阶：</strong><br>你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？</p>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>遍历+双指针</li>
-<li>快慢指针+翻转链表</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li><p>我使用的是第一种算法，首先，遍历整个链表，将所有元素存到数组中，然后使用头尾指针判断数组即可。</p>
-<p>但是这种算法不是最优的，时空复杂度均为O(n)</p>
-</li>
-</ul>
-<ul>
-<li>第二种算法，首先使用快慢指针找到链表的中点（做过），再将后半段链表翻转，并与前半段链表比较即可。</li>
-</ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(struct ListNode *head)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span> *<span class="title">p</span> =</span> head;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        len++;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    p = head;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> *data = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(len * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        data[m++] = p-&gt;val;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = len - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (data[i] == data[j])</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>linked-list</tag>
-        <tag>two-pointers</tag>
       </tags>
   </entry>
   <entry>
@@ -4331,36 +4616,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>724.寻找数组的中心索引</title>
-    <url>/2020021440098/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数类型的数组 <code>nums</code>，请编写一个能够返回数组<strong>“中心索引”</strong>的方法。</p>
-<p>我们是这样定义数组<strong>中心索引</strong>的：数组中心索引的左侧所有元素相加的和等于右侧所有元素相加的和。</p>
-<p>如果数组不存在中心索引，那么我们应该返回 -1。如果数组有多个中心索引，那么我们应该返回最靠近左边的那一个。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">nums &#x3D; [1, 7, 3, 6, 5, 6]</span><br><span class="line">输出: 3</span><br><span class="line">解释: </span><br><span class="line">索引3 (nums[3] &#x3D; 6) 的左侧数之和(1 + 7 + 3 &#x3D; 11)，与右侧数之和(5 + 6 &#x3D; 11)相等。</span><br><span class="line">同时, 3 也是第一个符合要求的中心索引。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">nums &#x3D; [1, 2, 3]</span><br><span class="line">输出: -1</span><br><span class="line">解释: </span><br><span class="line">数组中不存在满足此条件的中心索引。</span><br></pre></td></tr></table></figure>
-<p><strong>说明:</strong></p>
-<ul>
-<li><code>nums</code> 的长度范围为 <code>[0, 10000]</code>。</li>
-<li>任何一个 <code>nums[i]</code> 将会是一个范围在 <code>[-1000, 1000]</code>的整数。</li>
-</ul>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>前缀和（参考官解）</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li><code>leftSum == sum - leftSum - nums[i]</code>时，就找到了最左边的中心索引</li>
-</ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pivotIndex</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, leftSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">        sum += nums[i];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftSum == sum - nums[i] - leftSum)</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        leftSum += nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>717.1比特与2比特字符</title>
     <url>/2020021422762/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>有两种特殊字符。第一种字符可以用一比特<code>0</code>来表示。第二种字符可以用两比特(<code>10</code> 或 <code>11</code>)来表示。</p>
@@ -4386,6 +4641,36 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>如果栈底还剩一个元素，那么返回true，否则返回false。</li>
 </ul>
 <h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isOneBitCharacter</span><span class="params">(<span class="keyword">int</span> *bits, <span class="keyword">int</span> bitsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bitsSize == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; bitsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (bits[i] == <span class="number">1</span> &amp;&amp; (bits[i + <span class="number">1</span>] == <span class="number">1</span> || bits[i + <span class="number">1</span>] == <span class="number">0</span>))</span><br><span class="line">            i += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (bits[i] == <span class="number">0</span> &amp;&amp; i != bitsSize - <span class="number">1</span>)</span><br><span class="line">            i++;</span><br><span class="line">        <span class="keyword">if</span> (i == bitsSize - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>724.寻找数组的中心索引</title>
+    <url>/2020021440098/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数类型的数组 <code>nums</code>，请编写一个能够返回数组<strong>“中心索引”</strong>的方法。</p>
+<p>我们是这样定义数组<strong>中心索引</strong>的：数组中心索引的左侧所有元素相加的和等于右侧所有元素相加的和。</p>
+<p>如果数组不存在中心索引，那么我们应该返回 -1。如果数组有多个中心索引，那么我们应该返回最靠近左边的那一个。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">nums &#x3D; [1, 7, 3, 6, 5, 6]</span><br><span class="line">输出: 3</span><br><span class="line">解释: </span><br><span class="line">索引3 (nums[3] &#x3D; 6) 的左侧数之和(1 + 7 + 3 &#x3D; 11)，与右侧数之和(5 + 6 &#x3D; 11)相等。</span><br><span class="line">同时, 3 也是第一个符合要求的中心索引。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">nums &#x3D; [1, 2, 3]</span><br><span class="line">输出: -1</span><br><span class="line">解释: </span><br><span class="line">数组中不存在满足此条件的中心索引。</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li><code>nums</code> 的长度范围为 <code>[0, 10000]</code>。</li>
+<li>任何一个 <code>nums[i]</code> 将会是一个范围在 <code>[-1000, 1000]</code>的整数。</li>
+</ul>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>前缀和（参考官解）</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li><code>leftSum == sum - leftSum - nums[i]</code>时，就找到了最左边的中心索引</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pivotIndex</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>, leftSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">        sum += nums[i];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (leftSum == sum - nums[i] - leftSum)</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        leftSum += nums[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -4583,33 +4868,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>283.移动零</title>
-    <url>/2020020928492/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [0,1,0,3,12]</span><br><span class="line">输出: [1,3,12,0,0]</span><br></pre></td></tr></table></figure>
-<p><strong>说明</strong>:</p>
-<ol>
-<li>必须在原数组上操作，不能拷贝额外的数组。</li>
-<li>尽量减少操作次数。</li>
-</ol>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>双指针法</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li>指针<code>i</code>用于寻找零，指针<code>j</code>用于寻找指针<code>i</code>后边不为零的数，并令<code>nums[i]=nums[j]</code>，然后再令<code>nums[j]=0</code>，遍历整个数组。</li>
-</ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; numsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (j &lt; numsSize)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[j] != <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    nums[i] = nums[j];</span><br><span class="line">                    nums[j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-        <tag>two-pointers</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>268.缺失数字</title>
     <url>/2020020958118/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个包含 <code>0, 1, 2, ..., n</code> 中 <em>n</em> 个数的序列，找出 0 .. <em>n</em> 中没有出现在序列中的那个数。</p>
@@ -4637,6 +4895,33 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <tag>array</tag>
         <tag>bit-manipu</tag>
         <tag>math</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>283.移动零</title>
+    <url>/2020020928492/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [0,1,0,3,12]</span><br><span class="line">输出: [1,3,12,0,0]</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong>:</p>
+<ol>
+<li>必须在原数组上操作，不能拷贝额外的数组。</li>
+<li>尽量减少操作次数。</li>
+</ol>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>双指针法</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li>指针<code>i</code>用于寻找零，指针<code>j</code>用于寻找指针<code>i</code>后边不为零的数，并令<code>nums[i]=nums[j]</code>，然后再令<code>nums[j]=0</code>，遍历整个数组。</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; numsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (j &lt; numsSize)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[j] != <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    nums[i] = nums[j];</span><br><span class="line">                    nums[j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+        <tag>two-pointers</tag>
       </tags>
   </entry>
   <entry>
