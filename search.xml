@@ -3058,8 +3058,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>tree</tag>
         <tag>dynamic-programming</tag>
+        <tag>tree</tag>
       </tags>
   </entry>
   <entry>
@@ -3381,8 +3381,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>tree</tag>
         <tag>stack</tag>
+        <tag>tree</tag>
       </tags>
   </entry>
   <entry>
@@ -3423,8 +3423,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>tree</tag>
         <tag>stack</tag>
+        <tag>tree</tag>
       </tags>
   </entry>
   <entry>
@@ -3488,8 +3488,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>tree</tag>
         <tag>stack</tag>
+        <tag>tree</tag>
         <tag>design</tag>
       </tags>
   </entry>
@@ -3529,8 +3529,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>tree</tag>
         <tag>stack</tag>
+        <tag>tree</tag>
       </tags>
   </entry>
   <entry>
