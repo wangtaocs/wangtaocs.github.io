@@ -1,6 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>53.最大子序和</title>
+    <url>/20210310396fd427/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个整数数组 <code>nums</code> ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [-2,1,-3,4,-1,2,1,-5,4]</span><br><span class="line">输出：6</span><br><span class="line">解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [1]</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [0]</span><br><span class="line">输出：0</span><br></pre></td></tr></table></figure>
+<p><strong>示例 4：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [-1]</span><br><span class="line">输出：-1</span><br></pre></td></tr></table></figure>
+<p><strong>示例 5：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：nums &#x3D; [-100000]</span><br><span class="line">输出：-100000</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= nums.length &lt;= 3 * 10^4</code></li>
+<li><code>-10^5 &lt;= nums[i] &lt;= 10^5</code></li>
+</ul>
+<p><strong>进阶：</strong>如果你已经实现复杂度为 <code>O(n)</code> 的解法，尝试使用更为精妙的 <strong>分治法</strong> 求解。</p>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>没有很好的思路，参考的官方题解……</p>
+<p>思路大概是这样：把数组的第一个元素先当做最大和，然后开始遍历数组，如果当前指针的前一个数字大于零，则将它加到现在指针所指向的值；否则不对数组做任何更新操作。然后取出数组中的最大元素并返回。</p>
+<p>我理解为：在遍历过程中，正数是有益于寻找最大和的，所以遇到正数时，就将其进行向后累加；而遇到负数时，其对结果是不利的，所以会到此为止。<br>例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//原序列</span></span><br><span class="line">nums = [-<span class="number">2</span>,<span class="number">1</span>,-<span class="number">3</span>,<span class="number">4</span>,-<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,-<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"><span class="comment">//遍历后的序列</span></span><br><span class="line">nums = [-<span class="number">2</span>,<span class="number">1</span>,-<span class="number">2</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>遍历后的序列上的每一位数字表示当前位置具有的连续子数组最大和。所以返回整个数组的最大值即可。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxRes = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.length; i++)</span><br><span class="line">            <span class="keyword">if</span>(nums[i - <span class="number">1</span>] &gt; <span class="number">0</span>)</span><br><span class="line">                nums[i] += nums[i - <span class="number">1</span>];</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">return</span> nums[nums.length - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我的题解：时间复杂度：O(2n); 空间复杂度：O(1)</p>
+<hr>
+<p>官方的题解是这样的：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pre = <span class="number">0</span>, maxAns = nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x : nums) &#123;</span><br><span class="line">            pre = Math.max(pre + x, x);</span><br><span class="line">            maxAns = Math.max(maxAns, pre);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxAns;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官方题解的巧妙之处在于，在遍历数组的时，同时做了两件事：1.使用pre指针更新数组；2.使用maxAns一直指向更新数组的最大值，最后直接返回maxAns即可。</p>
+<p>时间复杂度：O(n); 空间复杂度：O(1)</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+        <tag>dynamic-programming</tag>
+        <tag>divide-and-conquer</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C程序编译执行过程</title>
+    <url>/20210307639039ec/</url>
+    <content><![CDATA[<p>最近在看CSAPP（Computer System: A Programmer’s Perspective, 深入理解计算机系统），看到第三章 程序的机器级表示，第二节讲了一下C程序的编译执行过程，以前在《C Primer Plus》上也看到过类似的内容，感觉比较有意思，遂记录一下。</p>
+<p>源文件只是以字节序列的形式存储在磁盘上，它是如何运行在机器上的呢？</p>
+<p>源文件会经历以下历程：</p>
+<ol>
+<li><p><strong>预处理（Preprocessing）</strong>：将#include等头文件进行置换，形成完整的程序文件，一般预处理后，文件会变大。得到的是文本文件。<br>例如：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// preprocessing.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.14</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = PI;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>gcc -E preprocessing.c -o preprocessing.i</code>预编译后：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// preprocessing.i</span></span><br><span class="line"># <span class="number">1</span> <span class="string">&quot;preprocessing.c&quot;</span></span><br><span class="line"># <span class="number">1</span> <span class="string">&quot;&lt;built-in&gt;&quot;</span></span><br><span class="line"># <span class="number">1</span> <span class="string">&quot;&lt;command-line&gt;&quot;</span></span><br><span class="line"># <span class="number">31</span> <span class="string">&quot;&lt;command-line&gt;&quot;</span></span><br><span class="line"># <span class="number">1</span> <span class="string">&quot;/usr/include/stdc-predef.h&quot;</span> <span class="number">1</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"># <span class="number">32</span> <span class="string">&quot;&lt;command-line&gt;&quot;</span> <span class="number">2</span></span><br><span class="line"># <span class="number">1</span> <span class="string">&quot;preprocessing.c&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">3.14</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>int a = PI;</code>被宏定义的PI值进行了替换。</p>
+</li>
+<li><p><strong>编译（Compilation）</strong>：使用编译器，将完整的C代码编译成汇编代码。得到的仍然是文本文件。<br>以3.2.2的程序为例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// mstore.c</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">mult2</span><span class="params">(<span class="keyword">long</span>, <span class="keyword">long</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">multstore</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y, <span class="keyword">long</span> *dest)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> t = mult2(x, y);</span><br><span class="line">    *dest = t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>gcc -S mstore.i -o mstore.s</code>进行编译后：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line"><span class="meta">	.file</span>	<span class="string">&quot;mstore.c&quot;</span></span><br><span class="line"><span class="meta">	.text</span></span><br><span class="line"><span class="meta">	.globl</span>	multstore</span><br><span class="line"><span class="meta">	.type</span>	multstore, @function</span><br><span class="line"><span class="symbol">multstore:</span></span><br><span class="line"><span class="symbol">.LFB0:</span></span><br><span class="line"><span class="meta">	.cfi_startproc</span></span><br><span class="line">	endbr64</span><br><span class="line">	pushq	%rbx</span><br><span class="line"><span class="meta">	.cfi_def_cfa_offset</span> <span class="number">16</span></span><br><span class="line"><span class="meta">	.cfi_offset</span> <span class="number">3</span>, -<span class="number">16</span></span><br><span class="line">	<span class="keyword">movq</span>	%rdx, %rbx</span><br><span class="line">	<span class="keyword">call</span>	mult2@PLT</span><br><span class="line">	<span class="keyword">movq</span>	%rax, (%rbx)</span><br><span class="line">	popq	%rbx</span><br><span class="line"><span class="meta">	.cfi_def_cfa_offset</span> <span class="number">8</span></span><br><span class="line">	<span class="keyword">ret</span></span><br><span class="line"><span class="meta">	.cfi_endproc</span></span><br><span class="line"><span class="symbol">.LFE0:</span></span><br><span class="line"><span class="meta">	.size</span>	multstore, .-multstore</span><br><span class="line"><span class="meta">	.ident</span>	<span class="string">&quot;GCC: (Ubuntu 10.2.0-13ubuntu1) 10.2.0&quot;</span></span><br><span class="line"><span class="meta">	.section</span>	.note<span class="number">.</span>GNU-stack,<span class="string">&quot;&quot;</span>,@progbits</span><br><span class="line"><span class="meta">	.section</span>	.note<span class="number">.</span>gnu<span class="number">.</span>property,<span class="string">&quot;a&quot;</span></span><br><span class="line"><span class="meta">	.align</span> <span class="number">8</span></span><br><span class="line"><span class="meta">	.long</span>	 1f - 0f</span><br><span class="line"><span class="meta">	.long</span>	 4f - 1f</span><br><span class="line"><span class="meta">	.long</span>	 <span class="number">5</span></span><br><span class="line"><span class="number">0</span>:</span><br><span class="line"><span class="meta">	.string</span>	 <span class="string">&quot;GNU&quot;</span></span><br><span class="line"><span class="number">1</span>:</span><br><span class="line"><span class="meta">	.align</span> <span class="number">8</span></span><br><span class="line"><span class="meta">	.long</span>	 <span class="number">0xc0000002</span></span><br><span class="line"><span class="meta">	.long</span>	 3f - 2f</span><br><span class="line"><span class="number">2</span>:</span><br><span class="line"><span class="meta">	.long</span>	 <span class="number">0x3</span></span><br><span class="line"><span class="number">3</span>:</span><br><span class="line"><span class="meta">	.align</span> <span class="number">8</span></span><br><span class="line"><span class="number">4</span>:</span><br></pre></td></tr></table></figure>
+<p>以“.”开头的都是指导汇编器和链接器工作的伪指令，可以忽略。</p>
+</li>
+<li><p><strong>汇编（Assemble）</strong>：将汇编代码转换成机器代码，得到的是二进制的目标文件。<br>使用<code>gcc -c mstore.s -o mstore.o</code>进行汇编；因为二进制文件无法直接查看，因此可以使用<code>objdump -d mstore.o</code>反汇编进行查看：</p>
+<figure class="highlight x86asm"><table><tr><td class="code"><pre><span class="line">mstore<span class="number">.</span>o：     文件格式 elf64-x86-<span class="number">64</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of <span class="meta">section</span> .text:</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000000000</span> &lt;multstore&gt;:</span><br><span class="line">   <span class="number">0</span>:	f3 0f 1e fa          	endbr64 </span><br><span class="line">   <span class="number">4</span>:	<span class="number">53</span>                   	<span class="keyword">push</span>   %rbx</span><br><span class="line">   <span class="number">5</span>:	<span class="number">48</span> <span class="number">89</span> d3             	<span class="keyword">mov</span>    %rdx,%rbx</span><br><span class="line">   <span class="number">8</span>:	e8 <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>       	callq  d &lt;multstore+<span class="number">0xd</span>&gt;</span><br><span class="line"><span class="symbol">   d:</span>	<span class="number">48</span> <span class="number">89</span> <span class="number">03</span>             	<span class="keyword">mov</span>    %rax,(%rbx)</span><br><span class="line">  <span class="number">10</span>:	5b                   	<span class="keyword">pop</span>    %rbx</span><br><span class="line">  <span class="number">11</span>:	c3                   	retq   </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>链接（Linking）</strong>：链接多个目标文件以及库文件等，最终得到可执行文件。</p>
+</li>
+</ol>
+<p>总结这些只是为了了解C代码是如何变成机器代码，并最终被CPU执行的。当然我可以一步到位，直接由C代码得到可执行程序：<br><code>gcc mstore.c -o mstore</code></p>
+]]></content>
+      <categories>
+        <category>C</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>搭建个人家庭服务器</title>
+    <url>/20210228a4ca4f79/</url>
+    <content><![CDATA[<p>前几天我从回收站捡了回垃圾，并安装了CentOS系统，今天就利用我的家庭网络，搭建一个个人服务器。</p>
+<h1 id="1-申请公网ip"><a href="#1-申请公网ip" class="headerlink" title="1.申请公网ip"></a>1.申请公网ip</h1><p>我家里是200M电信宽带，去网上查了下，电信可以申请公网ip，这样可以省下很大一部分精力搞内网穿透。至于怎么申请，可以采用一些话术，比如说家里要装监控，需要公网ip，或者什么也不说，就直接申请，千万不要说家里要部署服务器，至于为啥，我也不知道，广大网友都是这么说的，反正搞到公网ip就行了。</p>
+<p>这里想插一嘴，公网ip其实也不是永远固定的，经过我几天的折腾我发现每次重启光猫后，指定的公网ip都会变化，那为什么还叫公网ip呢，我理解是每次光猫与电信机房建立连接时，机房都会分配一个ip给我的光猫，只要这个连接不中断，我就会一直占有这个ip，别人就可以从公网ping到我，而当我与机房的连接中断时，机房就会将这个ip地址收回，就像java的垃圾回收一样，这个ip地址下次就会分配给别的光猫。只有专线才是固定的，永远不会变，但是很贵。还有一点，只有下行带宽是200M，上行带宽我测了一下，只有50M。</p>
+<h1 id="2-转发"><a href="#2-转发" class="headerlink" title="2.转发"></a>2.转发</h1><p>这里我其实踩了很多坑，其实有了公网ip后，应该明白的一点就是，怎么做路由，怎么让request发送到指定的物理机。</p>
+<p>这里还是有必要再提一下电信的宽带，当申请到公网ip后，这个ip是与这条接到光猫上的宽带绑定的，电信的光猫对外有拨号上网的功能，对内有路由的功能，网上很多思路都是进入光猫的超级管理员模式，将接在光猫上的服务器做桥接，或是更暴力一点，直接搞DMZ主机（我简单了解了一下DMZ，这个会把服务器的所有端口暴露在外，响应所有请求，不太安全）。我进行了以下尝试：</p>
+<ol>
+<li>进入光猫的超级管理员模式，用户名为<code>telecomadmin</code>，密码是<code>nE7jA%5m</code>，这里看别人居然还需要抓包破解啥的，但我偶然遇到一个帖子，说可以试试这个密码，没想到还真的可以。进入到超级管理员模式后，我试着进行桥接，但不幸的是，我的光猫无法联网了，最终我不小心删除了光猫的拨号上网的配置文件，导致我不得不联系维修人员，在获得了拨号上网的逻辑ID后，我才又连上了网，但此时光猫已经被我使用超级管理员权限复位好几回了……</li>
+<li>既然桥接失败了，那只能考虑转发了。我又一次进入了光猫的后台，只不过是普通用户模式，我偶然发现了，电信的光猫可以做端口映射，很简单，照着填就可以了。我在网上查了一下，很多人都说不起作用，但我还是试了试，没想到还真的成功了。</li>
+</ol>
+<p>至此，我的家庭服务器就搭建好了。</p>
+<h1 id="3-测试"><a href="#3-测试" class="headerlink" title="3.测试"></a>3.测试</h1><p>那怎么测试呢，ping一下？不行，就算不做端口映射，也能ping成功，因为光猫也会响应。所以我在服务器上安装了ssh服务，用我的ubuntu进行远程登录。</p>
+<ol>
+<li>在服务器端（CentOS）安装openssh-server服务</li>
+<li>在ubuntu上安装openssh客户端</li>
+</ol>
+<p>用电脑连接手机热点，确保请求是从公网发起的，然后用ssh连接服务器，连上就说明成功了。</p>
+<hr>
+<p>下一次尝试，将个人博客部署在服务器上，就真的说明能用了。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>物理机安装CentOS</title>
     <url>/202102223d55054c/</url>
     <content><![CDATA[<p>记一次捡垃圾之旅。<br>一直想在家里装个NAS，利用起来闲置的带宽，但是蜗牛星际这种矿渣都开始有奸商开始抄了，本来只需不到300块钱就能搞一个，后来快四百了，这还不包括硬盘，在家里装个2T的NAS的话，得七百多块钱了，性价比就不高了。后来看着看着就看垃圾佬捡垃圾的视频了，一时兴起，昨天我就真的去回收站捡垃圾去了，还真让我捡了个，花了50块钱，捡垃圾真香！</p>
@@ -1851,14 +1950,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 ]]></content>
   </entry>
   <entry>
-    <title>2.线性表</title>
-    <url>/2020071142354/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>数据结构与算法</category>
-      </categories>
-  </entry>
-  <entry>
     <title>26.删除排序数组中的重复项</title>
     <url>/2020071128724/</url>
     <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个<strong>排序数组</strong>，你需要在<strong><a href="http://baike.baidu.com/item/原地算法">原地</a></strong>删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。</p>
@@ -2056,6 +2147,15 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>简单的二叉树层次遍历；</p>
 <p>加一个flag标志，将奇数层的节点列表反转即可。</p>
 <h4 id="Python："><a href="#Python：" class="headerlink" title="Python："></a>Python：</h4>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">zigzagLevelOrder</span>(<span class="params">self, root: TreeNode</span>) -&gt; List[List[int]]:</span></span><br><span class="line">        <span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line">        q = Queue()</span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">if</span> root == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        q.put(root)</span><br><span class="line">        level = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> q.empty():</span><br><span class="line">            n = q.qsize()</span><br><span class="line">            level_list = []</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                cur = q.get()</span><br><span class="line">                level_list.append(cur.val)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> cur.left != <span class="literal">None</span>:</span><br><span class="line">                    q.put(cur.left)</span><br><span class="line">                <span class="keyword">if</span> cur.right != <span class="literal">None</span>:</span><br><span class="line">                    q.put(cur.right)</span><br><span class="line">            <span class="keyword">if</span> level % <span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">                level_list.reverse()</span><br><span class="line">            print(<span class="built_in">str</span>(level) + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(level_list))</span><br><span class="line">            level += <span class="number">1</span></span><br><span class="line">            res.append(level_list)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/202007010/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>LeetCode</category>
       </categories>
@@ -3058,8 +3158,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>dynamic-programming</tag>
         <tag>tree</tag>
+        <tag>dynamic-programming</tag>
       </tags>
   </entry>
   <entry>
@@ -3381,8 +3481,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>stack</tag>
         <tag>tree</tag>
+        <tag>stack</tag>
       </tags>
   </entry>
   <entry>
@@ -3423,8 +3523,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>stack</tag>
         <tag>tree</tag>
+        <tag>stack</tag>
       </tags>
   </entry>
   <entry>
@@ -3488,8 +3588,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>stack</tag>
         <tag>tree</tag>
+        <tag>stack</tag>
         <tag>design</tag>
       </tags>
   </entry>
@@ -3529,8 +3629,8 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <category>LeetCode</category>
       </categories>
       <tags>
-        <tag>stack</tag>
         <tag>tree</tag>
+        <tag>stack</tag>
       </tags>
   </entry>
   <entry>
