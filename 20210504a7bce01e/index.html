@@ -1,0 +1,374 @@
+<!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#222"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-W.png?v=5.1.4"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-W.png?v=5.1.4"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-W.png?v=5.1.4"><link rel="mask-icon" href="/images/favicon-W.png?v=5.1.4" color="#222"><meta name="keywords" content="Hexo, NexT"><meta name="description" content="相机的标定与矫正在讲解什么是标定与矫正前，有必要梳理一下相机的成像原理。 相机是一个比较复杂的光学系统，但可以将其抽象为一个理想的几何模型：小孔成像 成像原理光线经过一个光学系统，在成像元件上可以获得像。 小孔成像  \frac{U}{V}&#x3D;\frac{W}{X}因为小孔成像不能为CCD成像提供足够的光线，所以引入了透镜，从而汇集更多的光线，但这也带来了畸变 理想透镜成像1  \frac{1}{f"><meta property="og:type" content="article"><meta property="og:title" content="相机的标定与矫正"><meta property="og:url" content="http://www.wangtaocs.top/20210504a7bce01e/index.html"><meta property="og:site_name" content="王涛"><meta property="og:description" content="相机的标定与矫正在讲解什么是标定与矫正前，有必要梳理一下相机的成像原理。 相机是一个比较复杂的光学系统，但可以将其抽象为一个理想的几何模型：小孔成像 成像原理光线经过一个光学系统，在成像元件上可以获得像。 小孔成像  \frac{U}{V}&#x3D;\frac{W}{X}因为小孔成像不能为CCD成像提供足够的光线，所以引入了透镜，从而汇集更多的光线，但这也带来了畸变 理想透镜成像1  \frac{1}{f"><meta property="og:locale"><meta property="og:image" content="https://z3.ax1x.com/2021/05/03/geqs2T.png"><meta property="og:image" content="https://bkimg.cdn.bcebos.com/pic/50da81cb39dbb6fde37bf7400a24ab18972b37b7?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxMTY=,g_7,xp_5,yp_5/format,f_auto"><meta property="og:image" content="https://img-blog.csdn.net/20161210142437060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"><meta property="og:image" content="https://img-blog.csdn.net/20161210142740999?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"><meta property="og:image" content="https://img-blog.csdn.net/20161210143514044?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"><meta property="og:image" content="https://img-blog.csdn.net/20161210144703071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"><meta property="og:image" content="https://z3.ax1x.com/2021/05/03/gml3FJ.png"><meta property="og:image" content="https://z3.ax1x.com/2021/05/03/gmlsfA.png"><meta property="og:image" content="https://z3.ax1x.com/2021/05/03/gml5kQ.png"><meta property="og:image" content="https://z3.ax1x.com/2021/05/03/gm1c4J.jpg"><meta property="og:image" content="https://z3.ax1x.com/2021/05/03/gm3uaF.png"><meta property="article:published_time" content="2021-05-04T11:22:03.000Z"><meta property="article:modified_time" content="2021-05-04T11:24:36.840Z"><meta property="article:author" content="王涛"><meta property="article:tag" content="blog"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://z3.ax1x.com/2021/05/03/geqs2T.png"><script type="text/javascript" id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"",scheme:"Gemini",version:"5.1.4",sidebar:{position:"left",display:"post",offset:12,b2t:!1,scrollpercent:!1,onmobile:!1},fancybox:!0,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},duoshuo:{userId:"0",author:"博主"},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><link rel="canonical" href="http://www.wangtaocs.top/20210504a7bce01e/"><title>相机的标定与矫正 | 王涛</title><meta name="generator" content="Hexo 5.2.0"></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">王涛</span> <span class="logo-line-after"><i></i></span></a></div><h1 class="site-subtitle" itemprop="description">独立思考，发现世界。</h1></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-question-circle"></i><br>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="http://www.wangtaocs.top/20210504a7bce01e/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content=""><meta itemprop="description" content=""><meta itemprop="image" content="/images/avatar.gif"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="王涛"></span><header class="post-header"><h2 class="post-title" itemprop="name headline">相机的标定与矫正</h2><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-04T19:22:03+08:00">2021-05-04 </time></span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">机器视觉</span></a></span></span><div class="post-wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">字数统计&#58;</span> <span title="字数统计">1.4k </span><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span title="阅读时长">5</span></div></div></header><div class="post-body" itemprop="articleBody"><h1 id="相机的标定与矫正"><a href="#相机的标定与矫正" class="headerlink" title="相机的标定与矫正"></a>相机的标定与矫正</h1><p>在讲解什么是标定与矫正前，有必要梳理一下相机的成像原理。</p><p>相机是一个比较复杂的光学系统，但可以将其抽象为一个理想的几何模型：小孔成像</p><h2 id="成像原理"><a href="#成像原理" class="headerlink" title="成像原理"></a>成像原理</h2><p>光线经过一个光学系统，在成像元件上可以获得像。</p><h3 id="小孔成像"><a href="#小孔成像" class="headerlink" title="小孔成像"></a>小孔成像</h3><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/geqs2T"><img src="https://z3.ax1x.com/2021/05/03/geqs2T.png" alt="geqs2T.png"></a></p><script type="math/tex;mode=display">\frac{U}{V}=\frac{W}{X}</script><p>因为小孔成像不能为CCD成像提供足够的光线，所以引入了透镜，从而汇集更多的光线，但这也带来了<strong>畸变</strong></p><h3 id="理想透镜成像1"><a href="#理想透镜成像1" class="headerlink" title="理想透镜成像1"></a>理想透镜成像<sup><a href="#fn_1" id="reffn_1">1</a></sup></h3><p><img src="https://bkimg.cdn.bcebos.com/pic/50da81cb39dbb6fde37bf7400a24ab18972b37b7?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxMTY=,g_7,xp_5,yp_5/format,f_auto" alt="img" style="zoom:80%"></p><script type="math/tex;mode=display">\frac{1}{f}=\frac{1}{u}+\frac{1}{v}</script><h2 id="相机成像过程"><a href="#相机成像过程" class="headerlink" title="相机成像过程"></a>相机成像过程</h2><p>基于理想光学透镜的成像原理，再辅以四种坐标系的变换，现实世界中的物体就可以映射为图像了</p><h3 id="四大坐标系"><a href="#四大坐标系" class="headerlink" title="四大坐标系"></a>四大坐标系</h3><ol><li>世界坐标系：描述世界中物体位置的绝对坐标系</li><li>相机坐标系：以相机为原点建立的坐标系，单位为m</li><li>图像坐标系：光心对应图像上的点，以其为原点建立的坐标系</li><li>像素坐标系：图像的左上角为原点建立的坐标系</li></ol><h3 id="坐标系间的变换"><a href="#坐标系间的变换" class="headerlink" title="坐标系间的变换"></a>坐标系间的变换</h3><h4 id="世界坐标系→相机坐标系"><a href="#世界坐标系→相机坐标系" class="headerlink" title="世界坐标系→相机坐标系"></a>世界坐标系→相机坐标系</h4><p><img src="https://img-blog.csdn.net/20161210142437060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:80%"></p><p>转换矩阵为：</p><script type="math/tex;mode=display">\begin{bmatrix}
+R & T\\ 
+\vec{0} & 1
+\end{bmatrix}</script><p>R为旋转矩阵，T为平移矩阵</p><h4 id="相机坐标系→图像坐标系"><a href="#相机坐标系→图像坐标系" class="headerlink" title="相机坐标系→图像坐标系"></a>相机坐标系→图像坐标系</h4><p><img src="https://img-blog.csdn.net/20161210142740999?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:80%"></p><p>投影透视关系，从3D转换到2D，在这一过程中，深度信息丢失，怎么丢失的呢？</p><p>在投影透视关系中，物理世界中的一点在直线pP上时，都会被投影到图像上的同一点，二维的直线被压缩成了一维的点，在这个过程中，丢失了一个维度的信息。</p><p>观察这个计算：</p><script type="math/tex;mode=display">Z_{C}\left[\begin{array}{l}
+x \\
+y \\
+1
+\end{array}\right]=\left[\begin{array}{llll}
+f & 0 & 0 & 0 \\
+0 & f & 0 & 0 \\
+0 & 0 & 1 & 0
+\end{array}\right]\left[\begin{array}{c}
+X_{c} \\
+Y_{c} \\
+Z_{c} \\
+1
+\end{array}\right]</script><p>等号左边有一个公有系数Zc，移到等号右边，变为：</p><script type="math/tex;mode=display">\left[\begin{array}{l}
+x \\
+y \\
+1
+\end{array}\right]=\left[\begin{array}{llll}
+\frac{f}{Z_{C}} & 0 & 0 & 0 \\
+0 & \frac{f}{Z_{C}} & 0 & 0 \\
+0 & 0 & \frac{1}{Z_{C}} & 0
+\end{array}\right]\left[\begin{array}{c}
+X_{c} \\
+Y_{c} \\
+Z_{c} \\
+1
+\end{array}\right]</script><p>此时投影点p的单位还是mm，并不是pixel，需要进一步转换到像素坐标系。</p><h4 id="图像坐标系→像素坐标系"><a href="#图像坐标系→像素坐标系" class="headerlink" title="图像坐标系→像素坐标系"></a>图像坐标系→像素坐标系</h4><p><img src="https://img-blog.csdn.net/20161210143514044?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:80%"></p><p>dx与dy分别表示每个像素在横轴x和纵轴y上的物理尺寸，单位为:毫米/像素。那么x/dx的单位就是像素了。即最后u与v的单位变成了像素。转换矩阵为：</p><script type="math/tex;mode=display">\left[\begin{array}{ccc}
+\frac{1}{d x} & 0 & u_{0} \\
+0 & \frac{1}{d y} & v_{0} \\
+0 & 0 & 1
+\end{array}\right]</script><h4 id="综上"><a href="#综上" class="headerlink" title="综上"></a>综上</h4><p>通过上面四个坐标系的转换就可以得到一个点从世界坐标系如何转换到像素坐标系</p><p><img src="https://img-blog.csdn.net/20161210144703071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p><p>即：</p><script type="math/tex;mode=display">\left[\begin{array}{l}
+u \\
+v \\
+1
+\end{array}\right]=\frac{1}{Z_{C}} \times\left[\begin{array}{cccc}
+\frac{f}{d x} & 0 & u_{0} & 0 \\
+0 & \frac{f}{d x} & v_{0} & 0 \\
+0 & 0 & 1 & 0
+\end{array}\right] \times\left[\begin{array}{cc}
+R & T \\
+\overrightarrow{0} & 1
+\end{array}\right] \times\left[\begin{array}{c}
+X_{W} \\
+Y_{W} \\
+Z_{W} \\
+1
+\end{array}\right]</script><h2 id="相机标定2"><a href="#相机标定2" class="headerlink" title="相机标定2"></a>相机标定<sup><a href="#fn_2" id="reffn_2">2</a></sup></h2><blockquote><p>标定，主要是指使用标准的计量仪器对所使用仪器的准确度（精度）进行检测是否符合标准，一般大多用于精密度较高的仪器。标定也可以认为是校准。</p></blockquote><p>所以我理解，相机标定是<strong>校准相机</strong>，方便我们进行后边的工作。具体一点，害！还是求内参。</p><p>相机的标定原理是比较复杂的，如果想探寻原理，非<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/888718">张正友标定法</a>不看了，这里我只想追求结果，就先不看他了。</p><h3 id="用Matlab进行双目相机标定"><a href="#用Matlab进行双目相机标定" class="headerlink" title="用Matlab进行双目相机标定"></a>用Matlab进行双目相机标定</h3><p>具体操作看<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43956351/article/details/94394892">这篇博客</a>，这里只对结果进行简单的分析</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/gml3FJ"><img src="https://z3.ax1x.com/2021/05/03/gml3FJ.png" alt="gml3FJ.png"></a></p><p>主要看这些参数：</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/gmlsfA"><img src="https://z3.ax1x.com/2021/05/03/gmlsfA.png" alt="gmlsfA.png"></a></p><p>内参矩阵：</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/gml5kQ"><img src="https://z3.ax1x.com/2021/05/03/gml5kQ.png" alt="gml5kQ.png"></a></p><p>这里的f也不是真的焦距，而是f/dx和f/dy；Matlab求出的内参矩阵是<strong>转置</strong>过的，在程序中使用时还需要再转置回去。</p><p>分析一下标定结果：</p><ol><li><p>图片分辨率为640*480，u0 = 264, v0 = 247，</p><p>u0,v0是图像中心点的坐标。而u0应该等于320，v0应该等于240，误差很大</p></li><li><p>“焦距”=518</p></li></ol><h2 id="畸变矫正"><a href="#畸变矫正" class="headerlink" title="畸变矫正"></a>畸变矫正</h2><p>之前在引入理想透镜成像中，我们引入了畸变，现在该解决畸变问题了，详细可看<a target="_blank" rel="noopener" href="http://zhaoxuhui.top/blog/2018/04/17/CameraCalibration.html">这篇博客</a>的畸变部分的讲解。</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/gm1c4J"><img src="https://z3.ax1x.com/2021/05/03/gm1c4J.jpg" alt="gm1c4J.jpg"></a></p><ol><li>径向畸变：由于透镜的形状造成。对于透镜来说，远离透镜中心的光线比靠近透镜中心的光线更加弯曲。<br>eg：鱼眼畸变，桶形畸变</li><li>切向畸变：相机的组装造成。制造缺陷，透镜与成像平面不平行。感光元件CCD不是矩形，而是平行四边形</li></ol><p>解决畸变问题只需要在写程序时加载畸变参数就可以矫正图像了，Opencv也有相应的接口。</p><p>这里想注明一下参数<br><a target="_blank" rel="noopener" href="https://imgtu.com/i/gm3uaF"><img src="https://z3.ax1x.com/2021/05/03/gm3uaF.png" alt="gm3uaF.png"></a></p><p>畸变参数的一般顺序是k1,k2,p1,p2,k3。之所以把k3放在最后其实也很容易理解，因为前面说了一般k1,k2用来处理径向畸变足矣，k3相对而言用的比较少。 在获得了畸变参数以后，也就找到了真实观测的带畸变的像素与无畸变的像素间的关系，重采样即可实现影像校正。</p><p>在这里径向畸变参数k1=0.2090, k2=-0.2842；切向畸变参数p1=0, p2=0。</p><blockquote id="fn_1"><sup>1</sup>. 来自百度百科<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%88%90%E5%83%8F%E5%85%AC%E5%BC%8F">成像公式</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a></blockquote><blockquote id="fn_2"><sup>2</sup>. 到底什么是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%A0%87%E5%AE%9A/304113">标定</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a></blockquote></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/20210425cbac9f0f/" rel="next" title="researchLogTest"><i class="fa fa-chevron-left"></i> researchLogTest</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></div></article><div class="post-spread"></div></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><section class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><p class="site-author-name" itemprop="name"></p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">135</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/index.html"><span class="site-state-item-count">12</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/index.html"><span class="site-state-item-count">21</span> <span class="site-state-item-name">标签</span></a></div></nav></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E7%9A%84%E6%A0%87%E5%AE%9A%E4%B8%8E%E7%9F%AB%E6%AD%A3"><span class="nav-number">1.</span> <span class="nav-text">相机的标定与矫正</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%83%8F%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">成像原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%AD%94%E6%88%90%E5%83%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">小孔成像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E6%83%B3%E9%80%8F%E9%95%9C%E6%88%90%E5%83%8F1"><span class="nav-number">1.1.2.</span> <span class="nav-text">理想透镜成像1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E6%88%90%E5%83%8F%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">相机成像过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E5%A4%A7%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.2.1.</span> <span class="nav-text">四大坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%B3%BB%E9%97%B4%E7%9A%84%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">坐标系间的变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%96%E7%95%8C%E5%9D%90%E6%A0%87%E7%B3%BB%E2%86%92%E7%9B%B8%E6%9C%BA%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">世界坐标系→相机坐标系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E5%9D%90%E6%A0%87%E7%B3%BB%E2%86%92%E5%9B%BE%E5%83%8F%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">相机坐标系→图像坐标系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E5%9D%90%E6%A0%87%E7%B3%BB%E2%86%92%E5%83%8F%E7%B4%A0%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">图像坐标系→像素坐标系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%BC%E4%B8%8A"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">综上</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A2"><span class="nav-number">1.3.</span> <span class="nav-text">相机标定2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8Matlab%E8%BF%9B%E8%A1%8C%E5%8F%8C%E7%9B%AE%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A"><span class="nav-number">1.3.1.</span> <span class="nav-text">用Matlab进行双目相机标定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%95%B8%E5%8F%98%E7%9F%AB%E6%AD%A3"><span class="nav-number">1.4.</span> <span class="nav-text">畸变矫正</span></a></li></ol></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="copyright">&copy; <span itemprop="copyrightYear">2021</span> <span class="with-love"><i class="fa fa-user"></i> </span><span class="author" itemprop="copyrightHolder">王涛</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span class="post-meta-item-text">Site words total count&#58;</span> <span title="Site words total count">74.5k</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><script type="text/javascript">// Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });</script><script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>
