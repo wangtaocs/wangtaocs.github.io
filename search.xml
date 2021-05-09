@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>对极几何</title>
+    <url>/202105099103d3fa/</url>
+    <content><![CDATA[<h1 id="双目视觉的对极几何"><a href="#双目视觉的对极几何" class="headerlink" title="双目视觉的对极几何"></a>双目视觉的对极几何</h1><ol>
+<li><p>对极几何是什么？</p>
+<p>对极几何是相机在两个不同的位置生成的两幅图像，其拍摄位置和生成图像之间存在特殊的几何关系。其基本几何模型如下：</p>
+<p><a href="https://imgtu.com/i/gYkU6s"><img src="https://z3.ax1x.com/2021/05/09/gYkU6s.png" alt="gYkU6s.png" style="zoom: 67%;" /></a></p>
+</li>
+<li><p>对极几何的作用</p>
+<ol>
+<li>解决立体匹配的问题，这里把C0和C1想象成两个相机，各获得一副图像，图像的内容会存在一定的约束关系，依靠这种关系，我们可以确定物体的深度</li>
+<li>解决相机位姿与拍摄点的相对位置问题。把C0和C1想象成一个相机在两个不同的位置获得的两幅图像，根据约束关系，可以推导出相机的位姿。</li>
+</ol>
+<p>双目主要利用第一条。</p>
+</li>
+<li><p>基本概念</p>
+<ol>
+<li>极点（Epipoles）：两个相机得基线与两个成像平面得交点，如上图中的e0、e1</li>
+<li>极线（Epipolar Lines）：空间中点在成像平面上的投影点与极点的连线，如上图中的l0、l1</li>
+<li>极平面（Epipolar Plane）：空间中的点与两个相机的光轴中心点所组成的平面，如上图c0、c1、p所在的平面</li>
+</ol>
+</li>
+<li><p>对极约束</p>
+<p>假定相机参数已知，那么对于空间中P点，它将和两个相机的中心点O1和O2，唯一确定对极几何的几何关系，极点、极线、极平面都将确定，而对极约束描叙的就是：<strong>在平面1上成像为p的所有空间点，其必定投影在平面2的极线上，反之亦然。</strong></p>
+</li>
+</ol>
+<h2 id="双目相机获得深度图的原理"><a href="#双目相机获得深度图的原理" class="headerlink" title="双目相机获得深度图的原理"></a>双目相机获得深度图的原理</h2><p>双目相机获得深度图的原理</p>
+<p><a href="https://imgtu.com/i/guK3WR"><img src="https://z3.ax1x.com/2021/05/04/guK3WR.jpg" alt="guK3WR.jpg" style="zoom:50%;" /></a></p>
+<p>如图，可抽象为双目相机成像的鸟瞰图，$O_{R}$与$O_{T}$分别为左右相机的光心，红色线为相机CCD，$A$、$B$为相机CCD的中点，设相机CCD的长度为$L$，物体P在左右相机的CCD上的像点分别为$P_{R}$、$P_{T}$，像点距离CCD左端的距离分别为$x_{R}$、$x_{T}$，相机的焦距为$f$，相机光心的距离为$b$，求物体的距离$Z$</p>
+<p><a href="https://imgtu.com/i/gul3Wj"><img src="https://z3.ax1x.com/2021/05/04/gul3Wj.jpg" alt="gul3Wj.jpg" style="zoom:50%;" /></a></p>
+<p>视差：</p>
+<script type="math/tex; mode=display">
+disparity=X_{R}-X_{T}</script><p><a href="https://imgtu.com/i/gul4te"><img src="https://z3.ax1x.com/2021/05/04/gul4te.png" alt="gul4te.png"></a></p>
+<p>物体越近，视差越大；物体越远，视差越小。</p>
+<h2 id="关键矩阵"><a href="#关键矩阵" class="headerlink" title="关键矩阵"></a>关键矩阵</h2><p>双目相机获得的图像存在约束关系，这种约束关系就是靠这三个关键矩阵来描述的：<strong>本质矩阵、基础矩阵、单应性矩阵</strong>。它们可以建立两个视图公共点之间的坐标联系，或者完成公共点之间的坐标转换。它们就像立体视觉双视图之间的桥梁，让彼此紧密相连，形成一个整体，才算有了立体视觉系统的概念。</p>
+<h3 id="本质矩阵和基础矩阵"><a href="#本质矩阵和基础矩阵" class="headerlink" title="本质矩阵和基础矩阵"></a>本质矩阵和基础矩阵</h3><p>变量说明：</p>
+<ol>
+<li>d1、d2为深度，是一个标量</li>
+<li>K1、K2为左右相机的内参</li>
+<li>R、t为旋转和平移矩阵</li>
+<li>p1、p2为图像坐标系</li>
+<li>x1、x2为像素坐标系</li>
+</ol>
+<p>设空间点p在左相机坐标系下的坐标为P，则在右相机坐标系下的坐标为RP+t；在左右像平面上的投影为p1和p2，则：</p>
+<script type="math/tex; mode=display">
+d_{1}p_{1}=K_{1}P,d_{2}p_{2}=K_{2}(RP+t)</script><p>等号左边的p齐次坐标，如果对空间点也取齐次，即将空间点归一化到$Z=1$的平面，d就变成了1，上式变成：</p>
+<script type="math/tex; mode=display">
+p_{1}=K_{1}P,p_{2}=K_{2}(RP+t)</script><p>将矩阵K移到等号左边：</p>
+<script type="math/tex; mode=display">
+K_{1}^{-1}p_{1}=P,K_{2}^{-1}p_{2}=(RP+t)</script><p>设：</p>
+<script type="math/tex; mode=display">
+x_{1}=K_{1}^{-1}p_{1}=P,x_{2}=K_{2}^{-1}p_{2}=(RP+t) \tag{1}</script><p>则：</p>
+<script type="math/tex; mode=display">
+x_{2}=Rx_{1}+t</script><p>两边左叉乘 t ：</p>
+<script type="math/tex; mode=display">
+t\times x_{2}=t\times Rx_{1}+t\times t</script><p>其中，</p>
+<script type="math/tex; mode=display">
+t\times t=0</script><p>所以：</p>
+<script type="math/tex; mode=display">
+t\times x_{2}=t\times Rx_{1}</script><p>两边左乘$x_{2}^{\mathrm{T}}$：</p>
+<script type="math/tex; mode=display">
+x_{2}^{\mathrm{T}}t\times x_{2}=x_{2}^{\mathrm{T}}t\times Rx_{1} \tag{3}</script><p>左边显然等于0，则：</p>
+<script type="math/tex; mode=display">
+x_{2}^{\mathrm{T}}t\times Rx_{1}=0 \tag{2}</script><p>其中的$t\times R$就成为<strong>本质矩阵</strong>，用E表示：</p>
+<script type="math/tex; mode=display">
+E=t\times R</script><p>也可以记为：</p>
+<script type="math/tex; mode=display">
+E=t\verb!^!R</script><p>其中$t\verb!^!$为t的反对称矩阵。</p>
+<p>将(1)式代入(2)式中，可得：</p>
+<script type="math/tex; mode=display">
+(K_{2}^{-1}p_{2})^{\mathrm{T}}t\verb!^!RK_{1}^{-1}p_{1}=0</script><p>即：</p>
+<script type="math/tex; mode=display">
+p_{2}^{\mathrm{T}}K_{2}^{\mathrm{-T}}t\verb!^!RK_{1}^{-1}p_{1}=0</script><p>其中的$K_{2}^{\mathrm{-T}}t\verb!^!RK_{1}^{-1}$称为<strong>基础矩阵</strong>，用F表示：</p>
+<script type="math/tex; mode=display">
+F=K_{2}^{\mathrm{-T}}t\verb!^!RK_{1}^{-1}</script><h3 id="单应性矩阵"><a href="#单应性矩阵" class="headerlink" title="单应性矩阵"></a>单应性矩阵</h3><p>直接将左视图像素坐标转换到右视图像素坐标。特定条件是<strong>同一平面</strong>。表达式：</p>
+<script type="math/tex; mode=display">
+p_{2}=Hp_{1},p_{1}=H^{-1}p_{2}</script><p>单应性矩阵不仅可以描述同一平面的像素点之间的关系，而且同一个平面在任意坐标系之间都可以建立单应性变换关系。比如影像坐标系与影像坐标系之间，世界坐标系和影像坐标系之间，如下图所示：</p>
+<p><a href="https://imgtu.com/i/gYdxhT"><img src="https://z3.ax1x.com/2021/05/09/gYdxhT.png" alt="gYdxhT.png"></a></p>
+<p>在双目立体视觉内，单应性变换是张式相机标定法的理论基础，纯平的标定板平面和影像平面存在单应性变换关系，同时它们存在世界坐标系到影像坐标系之间的投影变换关系，两个关系对等即可解出相机的内外参数。</p>
+<p><a href="https://imgtu.com/i/gYwVN6"><img src="https://z3.ax1x.com/2021/05/09/gYwVN6.png" alt="gYwVN6.png"></a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://blog.csdn.net/rs_lys/article/details/113854675?spm=1001.2014.3001.5501">立体视觉入门指南（2）：关键矩阵（本质矩阵，基础矩阵，单应矩阵）</a></p>
+<p><a href="http://harrymei.github.io/2018/06/18/%E5%AF%B9%E6%9E%81%E5%87%A0%E4%BD%95%E7%9A%84%E7%90%86%E8%A7%A3/">对极几何的理解</a></p>
+<hr>
+<p>(3)式中</p>
+<script type="math/tex; mode=display">
+x_{2}^{\mathrm{T}}t\times x_{2}=0</script><p>是为什么呢？</p>
+<ol>
+<li>t叉乘x2的结果向量必定垂直于x2</li>
+<li>x2的转置必定与这个结果向量垂直</li>
+<li>所以结果为0</li>
+</ol>
+]]></content>
+      <categories>
+        <category>机器视觉</category>
+      </categories>
+  </entry>
+  <entry>
     <title>相机的标定与矫正</title>
     <url>/20210504a7bce01e/</url>
     <content><![CDATA[<h1 id="相机的标定与矫正"><a href="#相机的标定与矫正" class="headerlink" title="相机的标定与矫正"></a>相机的标定与矫正</h1><p>在讲解什么是标定与矫正前，有必要梳理一下相机的成像原理。</p>
@@ -9,7 +105,7 @@
 <h3 id="小孔成像"><a href="#小孔成像" class="headerlink" title="小孔成像"></a>小孔成像</h3><p><a href="https://imgtu.com/i/geqs2T"><img src="https://z3.ax1x.com/2021/05/03/geqs2T.png" alt="geqs2T.png"></a></p>
 <script type="math/tex; mode=display">
 \frac{U}{V}=\frac{W}{X}</script><p>因为小孔成像不能为CCD成像提供足够的光线，所以引入了透镜，从而汇集更多的光线，但这也带来了<strong>畸变</strong></p>
-<h3 id="理想透镜成像1"><a href="#理想透镜成像1" class="headerlink" title="理想透镜成像1"></a>理想透镜成像<sup><a href="#fn_1" id="reffn_1">1</a></sup></h3><p><img src="https://bkimg.cdn.bcebos.com/pic/50da81cb39dbb6fde37bf7400a24ab18972b37b7?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxMTY=,g_7,xp_5,yp_5/format,f_auto" alt="img" style="zoom:80%;" /></p>
+<h3 id="理想透镜成像1"><a href="#理想透镜成像1" class="headerlink" title="理想透镜成像1"></a>理想透镜成像<sup><a href="#fn_1" id="reffn_1">1</a></sup></h3><p><a href="https://imgtu.com/i/gY0maq"><img src="https://z3.ax1x.com/2021/05/09/gY0maq.jpg" alt="gY0maq.jpg"></a></p>
 <script type="math/tex; mode=display">
 \frac{1}{f}=\frac{1}{u}+\frac{1}{v}</script><h2 id="相机成像过程"><a href="#相机成像过程" class="headerlink" title="相机成像过程"></a>相机成像过程</h2><p>基于理想光学透镜的成像原理，再辅以四种坐标系的变换，现实世界中的物体就可以映射为图像了</p>
 <h3 id="四大坐标系"><a href="#四大坐标系" class="headerlink" title="四大坐标系"></a>四大坐标系</h3><ol>
@@ -18,14 +114,15 @@
 <li>图像坐标系：光心对应图像上的点，以其为原点建立的坐标系</li>
 <li>像素坐标系：图像的左上角为原点建立的坐标系</li>
 </ol>
-<h3 id="坐标系间的变换"><a href="#坐标系间的变换" class="headerlink" title="坐标系间的变换"></a>坐标系间的变换</h3><h4 id="世界坐标系→相机坐标系"><a href="#世界坐标系→相机坐标系" class="headerlink" title="世界坐标系→相机坐标系"></a>世界坐标系→相机坐标系</h4><p><img src="https://img-blog.csdn.net/20161210142437060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:80%;" /></p>
+<h3 id="坐标系间的变换"><a href="#坐标系间的变换" class="headerlink" title="坐标系间的变换"></a>坐标系间的变换</h3><p>为了方便计算，引入了<a href="https://blog.csdn.net/baidu_38172402/article/details/89013617">齐次坐标</a></p>
+<h4 id="世界坐标系→相机坐标系"><a href="#世界坐标系→相机坐标系" class="headerlink" title="世界坐标系→相机坐标系"></a>世界坐标系→相机坐标系</h4><p><a href="https://imgtu.com/i/gY00zD"><img src="https://z3.ax1x.com/2021/05/09/gY00zD.png" alt="gY00zD.png"></a></p>
 <p>转换矩阵为：</p>
 <script type="math/tex; mode=display">
 \begin{bmatrix}
 R & T\\ 
 \vec{0} & 1
 \end{bmatrix}</script><p>R为旋转矩阵，T为平移矩阵</p>
-<h4 id="相机坐标系→图像坐标系"><a href="#相机坐标系→图像坐标系" class="headerlink" title="相机坐标系→图像坐标系"></a>相机坐标系→图像坐标系</h4><p><img src="https://img-blog.csdn.net/20161210142740999?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:80%;" /></p>
+<h4 id="相机坐标系→图像坐标系"><a href="#相机坐标系→图像坐标系" class="headerlink" title="相机坐标系→图像坐标系"></a>相机坐标系→图像坐标系</h4><p><a href="https://imgtu.com/i/gY0got"><img src="https://z3.ax1x.com/2021/05/09/gY0got.png" alt="gY0got.png"></a></p>
 <p>投影透视关系，从3D转换到2D，在这一过程中，深度信息丢失，怎么丢失的呢？</p>
 <p>在投影透视关系中，物理世界中的一点在直线pP上时，都会被投影到图像上的同一点，二维的直线被压缩成了一维的点，在这个过程中，丢失了一个维度的信息。</p>
 <p>观察这个计算：</p>
@@ -59,7 +156,7 @@ Y_{c} \\
 Z_{c} \\
 1
 \end{array}\right]</script><p>此时投影点p的单位还是mm，并不是pixel，需要进一步转换到像素坐标系。</p>
-<h4 id="图像坐标系→像素坐标系"><a href="#图像坐标系→像素坐标系" class="headerlink" title="图像坐标系→像素坐标系"></a>图像坐标系→像素坐标系</h4><p><img src="https://img-blog.csdn.net/20161210143514044?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述" style="zoom:80%;" /></p>
+<h4 id="图像坐标系→像素坐标系"><a href="#图像坐标系→像素坐标系" class="headerlink" title="图像坐标系→像素坐标系"></a>图像坐标系→像素坐标系</h4><p><a href="https://imgtu.com/i/gY05Qg"><img src="https://z3.ax1x.com/2021/05/09/gY05Qg.png" alt="gY05Qg.png"></a></p>
 <p>dx与dy分别表示每个像素在横轴x和纵轴y上的物理尺寸，单位为:毫米/像素。那么x/dx的单位就是像素了。即最后u与v的单位变成了像素。转换矩阵为：</p>
 <script type="math/tex; mode=display">
 \left[\begin{array}{ccc}
@@ -67,7 +164,7 @@ Z_{c} \\
 0 & \frac{1}{d y} & v_{0} \\
 0 & 0 & 1
 \end{array}\right]</script><h4 id="综上"><a href="#综上" class="headerlink" title="综上"></a>综上</h4><p>通过上面四个坐标系的转换就可以得到一个点从世界坐标系如何转换到像素坐标系</p>
-<p><img src="https://img-blog.csdn.net/20161210144703071?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY2hlbnRyYXZlbGxpbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p><a href="https://imgtu.com/i/gY0oLj"><img src="https://z3.ax1x.com/2021/05/09/gY0oLj.png" alt="gY0oLj.png"></a></p>
 <p>即：</p>
 <script type="math/tex; mode=display">
 \left[\begin{array}{l}
@@ -126,11 +223,6 @@ Z_{W} \\
       <categories>
         <category>机器视觉</category>
       </categories>
-  </entry>
-  <entry>
-    <title>researchLogTest</title>
-    <url>/20210425cbac9f0f/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>记录在Ubuntu20.10上安装Steam</title>
