@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>在Ubuntu20上安装配置Opnecv3.1.0(C++)</title>
+    <url>/20210513bc5902fd/</url>
+    <content><![CDATA[<p>最近在学习一些双目立体匹配的算法，大部分开源的代码还都是基于C++的，所以我需要在我的Ubuntu20.10上安装配置C++版本的Opencv，没想到这么麻烦，所以记录一下。</p>
+<p>我使用的环境是：</p>
+<ul>
+<li>Ubuntu20.10</li>
+<li>Opencv3.1.0</li>
+<li>Clion</li>
+</ul>
+<p>以下为安装步骤：</p>
+<h1 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h1><ol>
+<li><p>在Opencv<a href="https://opencv.org/">官网</a>下载source压缩包，然后在本地解压。</p>
+</li>
+<li><p>编译并安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建并进入 build 文件夹</span></span><br><span class="line">mkdir build</span><br><span class="line">cd bulid</span><br><span class="line"><span class="meta">#</span><span class="bash"> 使用 cmake 进行编译</span></span><br><span class="line">cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local ..</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 多线程编译，更快。我的电脑4核，所以是j4</span></span><br><span class="line">make -j4</span><br><span class="line"></span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p>这样其实就安装好了</p>
+</li>
+</ol>
+<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>安装好了之后需要验证一下，使用这段代码进行验证：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argv,<span class="keyword">char</span>** argc)</span></span>&#123;</span><br><span class="line">	Mat image;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//按照自己的目录</span></span><br><span class="line">    image = cv::imread(<span class="string">&quot;../electrode.jpg&quot;</span>, <span class="number">1</span> );</span><br><span class="line">    <span class="keyword">if</span> ( !image.data )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;No image data \n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    namedWindow(<span class="string">&quot;Display Image&quot;</span>, WINDOW_AUTOSIZE );</span><br><span class="line">    imshow(<span class="string">&quot;Display Image&quot;</span>, image);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="一些bug的解决方式"><a href="#一些bug的解决方式" class="headerlink" title="一些bug的解决方式"></a>一些bug的解决方式</h1><ol>
+<li><p><code>/usr/include/c++/7/cstdlib:75:15: fatal error: stdlib.h: 没有那个文件或目录</code></p>
+<p>在cmake时，添加一项参数：<code>-DENABLE_PRECOMPILED_HEADERS=OFF</code>，所以我的cmake命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local .. -DENABLE_PRECOMPILED_HEADERS=OFF</span><br></pre></td></tr></table></figure>
+<p>然后再make、make install就可以了</p>
+</li>
+<li><p>使用代码验证时，需要配置一下Clion的<code>CMakelists.txt</code>：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line"></span><br><span class="line">target_link_libraries( ClionTest $&#123;OpenCV_LIBS&#125; ) // ClionTest是项目名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行代码时，出现类似以下这样的错误，代表缺少一些显示窗口的库：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">OpenCV Error: Unspecified error (The function is not implemented. Rebuild the library with Windows, GTK+ 2.x or Carbon support. If you are on Ubuntu or Debian, install libgtk2.0-dev and pkg-config, then re-run cmake or configure script) in cvNamedWindow, file /home/wangtaocs/Downloads/opencv-3.1.0/modules/highgui/src/window.cpp, line 527</span><br><span class="line">terminate called after throwing an instance of &#x27;cv::Exception&#x27;</span><br><span class="line">  what():  /home/wangtaocs/Downloads/opencv-3.1.0/modules/highgui/src/window.cpp:527: error: (-2) The function is not implemented. Rebuild the library with Windows, GTK+ 2.x or Carbon support. If you are on Ubuntu or Debian, install libgtk2.0-dev and pkg-config, then re-run cmake or configure script in function cvNamedWindow</span><br></pre></td></tr></table></figure>
+<p>解决办法是：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">apt-get install libgtk2.0-dev pkg-config</span><br></pre></td></tr></table></figure>
+<p>然后重新进行上边的步骤，编译安装opencv即可</p>
+</li>
+</ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.jianshu.com/p/88ad5441c2ae">Ubuntu下安装配置opencv3.2.0 以及代码测试</a></p>
+<p><a href="https://blog.csdn.net/u010632165/article/details/81431030">OpenCV Error: Unspecified Error(The Function is not implemented)</a></p>
+]]></content>
+      <categories>
+        <category>机器视觉</category>
+      </categories>
+  </entry>
+  <entry>
     <title>对极几何</title>
     <url>/202105099103d3fa/</url>
     <content><![CDATA[<h1 id="双目视觉的对极几何"><a href="#双目视觉的对极几何" class="headerlink" title="双目视觉的对极几何"></a>双目视觉的对极几何</h1><ol>
