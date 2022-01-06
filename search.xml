@@ -2476,6 +2476,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
     <content><![CDATA[<ol>
 <li>Python的骚方法太多了，看一看图个乐，不要太在意。更不要看那些一行的代码，那不是给人看的！要注重的是算法本身，先把基本功打扎实了，解题方法可以按照标签来。</li>
 <li>贪心、分治、动态规划</li>
+<li>test</li>
 </ol>
 ]]></content>
   </entry>
