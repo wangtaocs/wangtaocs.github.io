@@ -4074,6 +4074,34 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>572.另一个树的子树</title>
+    <url>/2020031335055/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个非空二叉树 <strong>s</strong> 和 <strong>t</strong>，检验 <strong>s</strong> 中是否包含和 <strong>t</strong> 具有相同结构和节点值的子树。<strong>s</strong> 的一个子树包括 <strong>s</strong> 的一个节点和这个节点的所有子孙。<strong>s</strong> 也可以看做它自身的一棵子树。</p>
+<p><strong>示例 1:</strong><br>给定的树 s:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
+<p>给定的树 t：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4 </span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
+<p>返回 <strong>true</strong>，因为 t 与 s 的一个子树拥有相同的结构和节点值。</p>
+<p><strong>示例 2:</strong><br>给定的树 s：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br><span class="line">   &#x2F;</span><br><span class="line">  0</span><br></pre></td></tr></table></figure>
+<p>给定的树 t：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
+<p>返回 <strong>false</strong>。</p>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
+<li><p>什么叫子树？</p>
+<p>答：树B是树A的子集。即A与B相等；或B是A的左子树或右子树的子树。</p>
+</li>
+</ol>
+<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSame</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> (s &amp;&amp; t) &amp;&amp; s-&gt;val == t-&gt;val &amp;&amp; isSame(s-&gt;left, t-&gt;left) &amp;&amp; isSame(s-&gt;right, t-&gt;right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSubtree</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t != <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> isSame(s, t) || isSubtree(s-&gt;left, t) || isSubtree(s-&gt;right, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>563.二叉树的坡度</title>
     <url>/202003139306/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，计算<strong>整个树</strong>的坡度。</p>
@@ -4102,34 +4130,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
       <tags>
         <tag>recursion</tag>
-        <tag>tree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>572.另一个树的子树</title>
-    <url>/2020031335055/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个非空二叉树 <strong>s</strong> 和 <strong>t</strong>，检验 <strong>s</strong> 中是否包含和 <strong>t</strong> 具有相同结构和节点值的子树。<strong>s</strong> 的一个子树包括 <strong>s</strong> 的一个节点和这个节点的所有子孙。<strong>s</strong> 也可以看做它自身的一棵子树。</p>
-<p><strong>示例 1:</strong><br>给定的树 s:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
-<p>给定的树 t：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4 </span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
-<p>返回 <strong>true</strong>，因为 t 与 s 的一个子树拥有相同的结构和节点值。</p>
-<p><strong>示例 2:</strong><br>给定的树 s：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br><span class="line">   &#x2F;</span><br><span class="line">  0</span><br></pre></td></tr></table></figure>
-<p>给定的树 t：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
-<p>返回 <strong>false</strong>。</p>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
-<li><p>什么叫子树？</p>
-<p>答：树B是树A的子集。即A与B相等；或B是A的左子树或右子树的子树。</p>
-</li>
-</ol>
-<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSame</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> (s &amp;&amp; t) &amp;&amp; s-&gt;val == t-&gt;val &amp;&amp; isSame(s-&gt;left, t-&gt;left) &amp;&amp; isSame(s-&gt;right, t-&gt;right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSubtree</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t != <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> isSame(s, t) || isSubtree(s-&gt;left, t) || isSubtree(s-&gt;right, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
         <tag>tree</tag>
       </tags>
   </entry>
