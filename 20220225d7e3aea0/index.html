@@ -1,0 +1,325 @@
+<!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="theme-color" content="#222"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css"><link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-W.png?v=5.1.4"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-W.png?v=5.1.4"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-W.png?v=5.1.4"><link rel="mask-icon" href="/images/favicon-W.png?v=5.1.4" color="#222"><meta name="keywords" content="Hexo, NexT"><meta name="description" content="5 ways to synchronize data from MongoDb to ElasticSearch  1.Server同步 在服务端（Spring Boot或Spring Cloud）对MongoDB进行CRUD操作时，同时对ES进行相同操作。 优点：对两者同时操作，代码层面解决同步问题。 缺点：  服务端改动较大，可以在common模块中集成对两种数据库的CUD操作 可靠性一般，"><meta property="og:type" content="article"><meta property="og:title" content="MongoDB与ES同步"><meta property="og:url" content="http://www.wangtaocs.top/20220225d7e3aea0/index.html"><meta property="og:site_name" content="王涛"><meta property="og:description" content="5 ways to synchronize data from MongoDb to ElasticSearch  1.Server同步 在服务端（Spring Boot或Spring Cloud）对MongoDB进行CRUD操作时，同时对ES进行相同操作。 优点：对两者同时操作，代码层面解决同步问题。 缺点：  服务端改动较大，可以在common模块中集成对两种数据库的CUD操作 可靠性一般，"><meta property="og:locale"><meta property="og:image" content="https://s1.ax1x.com/2022/06/25/jktJRP.jpg"><meta property="og:image" content="https://s1.ax1x.com/2022/06/25/jktyR0.jpg"><meta property="og:image" content="https://s1.ax1x.com/2022/06/25/jkt6zV.jpg"><meta property="og:image" content="https://s1.ax1x.com/2022/06/25/jktsGq.jpg"><meta property="og:image" content="https://s1.ax1x.com/2022/06/25/jktrin.jpg"><meta property="og:image" content="https://s1.ax1x.com/2022/06/25/jktBIs.jpg"><meta property="og:image" content="https://jkrxr34vq2.feishu.cn/space/api/box/stream/download/asynccode/?code=NTRmN2U2NGE3NDU2ZDM3OGFmMjkwNDQ0Y2FmZmE4ZDNfbm51eTdpdTlmeUd4UEFhb21NdHhBcFZwRDY1TlNFQ1FfVG9rZW46Ym94Y25JWnpvMjluSjdHN2ZZZjh2RWpqT0JjXzE2NTYxNDgzNDI6MTY1NjE1MTk0Ml9WNA"><meta property="article:published_time" content="2022-02-25T08:29:17.000Z"><meta property="article:modified_time" content="2022-07-05T07:41:21.660Z"><meta property="article:author" content="王涛"><meta property="article:tag" content="blog"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://s1.ax1x.com/2022/06/25/jktJRP.jpg"><script type="text/javascript" id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"",scheme:"Gemini",version:"5.1.4",sidebar:{position:"left",display:"post",offset:12,b2t:!1,scrollpercent:!1,onmobile:!1},fancybox:!0,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},duoshuo:{userId:"0",author:"博主"},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><link rel="canonical" href="http://www.wangtaocs.top/20220225d7e3aea0/"><title>MongoDB与ES同步 | 王涛</title><meta name="generator" content="Hexo 5.2.0"></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">王涛</span> <span class="logo-line-after"><i></i></span></a></div><h1 class="site-subtitle" itemprop="description">独立思考，发现世界。</h1></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-question-circle"></i><br>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="http://www.wangtaocs.top/20220225d7e3aea0/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content=""><meta itemprop="description" content=""><meta itemprop="image" content="/images/avatar.gif"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="王涛"></span><header class="post-header"><h2 class="post-title" itemprop="name headline">MongoDB与ES同步</h2><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-25T16:29:17+08:00">2022-02-25 </time></span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Dig-from-here/" itemprop="url" rel="index"><span itemprop="name">Dig from here</span></a></span></span><div class="post-wordcount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">字数统计&#58;</span> <span title="字数统计">1.2k </span><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长 &asymp;</span> <span title="阅读时长">4</span></div></div></header><div class="post-body" itemprop="articleBody"><blockquote><p><a target="_blank" rel="noopener" href="https://www.linkedin.com/pulse/5-way-sync-data-from-mongodb-es-kai-hao">5 ways to synchronize data from MongoDb to ElasticSearch</a></p></blockquote><h1 id="1-Server同步"><a href="#1-Server同步" class="headerlink" title="1.Server同步"></a>1.Server同步</h1><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/jktJRP"><img src="https://s1.ax1x.com/2022/06/25/jktJRP.jpg" alt="jktJRP.jpg" style="zoom:67%"></a></p><p>在服务端（Spring Boot或Spring Cloud）对MongoDB进行CRUD操作时，同时对ES进行相同操作。</p><p>优点：对两者同时操作，代码层面解决同步问题。</p><p>缺点：</p><ol><li>服务端改动较大，可以在common模块中集成对两种数据库的CUD操作</li><li>可靠性一般，任一方CUD操作出现问题时，可能会产生<strong>数据不一致</strong>问题</li><li>对Server的性能开销较大，得同时操作两种数据库</li></ol><h1 id="2-手动同步-增量更新"><a href="#2-手动同步-增量更新" class="headerlink" title="2.手动同步+增量更新"></a>2.手动同步+增量更新</h1><p><a target="_blank" rel="noopener" href="https://github.com/compose/transporter">Transporter</a>可以将数据从MongoDB同步到ES，但重要的是Transporter只同步一次。当工作完成时，Transporter的工作就结束了。<strong>无法实现增量同步</strong></p><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/changeStreams/#:~:text=Change streams allow applications to,and immediately react to them.">Change Stream</a>是MongoDB从3.6开始支持的新特性。可以实现增量同步。</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/jktyR0"><img src="https://s1.ax1x.com/2022/06/25/jktyR0.jpg" alt="jktyR0.jpg" style="zoom:67%"></a></p><blockquote><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019300099">MongoDB Change Stream初体验</a></p></blockquote><h1 id="3-ES插件"><a href="#3-ES插件" class="headerlink" title="3.ES插件"></a>3.ES插件</h1><p>ES有一个插件叫<a target="_blank" rel="noopener" href="https://github.com/richardwilly98/elasticsearch-river-mongodb">elasticsearch-river-mongodb</a>，在ES 1.x中被广泛使用，但在ES 2.x被弃用。如果使用ES 1.x，可以使用这个插件。</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/jkt6zV"><img src="https://s1.ax1x.com/2022/06/25/jkt6zV.jpg" alt="jkt6zV.jpg" style="zoom:67%"></a></p><h1 id="4-JDBC-input-plugin-for-logstash"><a href="#4-JDBC-input-plugin-for-logstash" class="headerlink" title="4.JDBC input plugin for logstash"></a>4.JDBC input plugin for logstash</h1><p>通过添加一个Mongo输入和ES输出插件，我们可以利用logstash存储的缓冲、输入、输出和过滤功能来完成这项工作。</p><p>实际上是定时从mongo中获取新数据写入es。如果在mongo中更新或删除数据，es中是不会跟着变化的。大量的冗余数据传输，实时性差，仅适用于少量数据。</p><p>JDBC输入插件是一种选择，但它<strong>需要JDBC驱动程序</strong>的支持。MongoDB没有得到良好支持的免费JDBC驱动程序。</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/jktsGq"><img src="https://s1.ax1x.com/2022/06/25/jktsGq.jpg" alt="jktsGq.jpg" style="zoom:67%"></a></p><h1 id="5-Mongo-ES-connector"><a href="#5-Mongo-ES-connector" class="headerlink" title="5.Mongo-ES connector"></a>5.Mongo-ES connector</h1><blockquote><p><a target="_blank" rel="noopener" href="https://www.bloghome.com.cn/post/elasticsearchzui-jia-shi-jian-zhi-cong-mongodbdao-elasticsearch.html">使用Mongo-connector同步ES</a></p></blockquote><p><a target="_blank" rel="noopener" href="https://github.com/yougov/mongo-connector">Mongo-connector</a>是一个python包的实时同步服务。它创建了一个从mongodb集群到一个或多个目标系统的管道。它需要mongo在replica-set模式下运行，同步mongo中的数据到目标，然后跟踪Mongo <strong>oplog</strong>，实时跟踪MongoDB中的操作。它需要一个名为“elastic2_doc_manager”的包来将数据写入ES。</p><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/jktrin"><img src="https://s1.ax1x.com/2022/06/25/jktrin.jpg" alt="jktrin.jpg" style="zoom:67%"></a></p><h1 id="6-Monstache"><a href="#6-Monstache" class="headerlink" title="6.Monstache"></a>6.Monstache</h1><blockquote><p><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/171650.html">通过Monstache实时同步MongoDB数据到阿里云ES - 检索分析服务Elasticsearch版 - 阿里云</a></p></blockquote><p><a target="_blank" rel="noopener" href="https://rwynn.github.io/monstache-site/">Monstache</a>使用MongoDB <strong>oplog</strong>作为事件源。需要确保MongoDB通过部署副本集来配置为生成oplog。</p><ul><li><p>MongoDB、阿里云ES及Monstache服务部署在专有网络VPC（Virtual Private Cloud）内，所有数据私网通信，高速且安全。</p></li><li><p>Monstache基于MongoDB的oplog实现实时数据同步及订阅，支持MongoDB与高版本ES之间的数据同步，同时支持MongoDB的变更流和聚合管道功能，并且拥有丰富的<a target="_blank" rel="noopener" href="https://rwynn.github.io/monstache-site/">特性</a>。</p></li><li><p>Monstache不仅支持软删除和硬删除，还支持数据库删除和集合删除，能够确保ES端实时与源端数据保持一致。</p></li></ul><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/jktBIs"><img src="https://s1.ax1x.com/2022/06/25/jktBIs.jpg" alt="jktBIs.jpg" style="zoom:67%"></a></p><p>Mongo-ES connector和Monstache都是使用MongoDB oplog作为事件源，基于MongoDB的replica进行同步，因为多加了一个副本集，所以有<strong>数据冗余</strong>的问题。connector使用python开发，monstache使用Go语言开发。</p><h1 id="7-netcore"><a href="#7-netcore" class="headerlink" title="7.netcore"></a>7.netcore</h1><blockquote><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/snaildev/p/8616524.html">基于netcore实现mongodb和ElasticSearch之间的数据实时同步的工具(Mongo2Es)</a></p></blockquote><p>Mongo2Es是用来保持你的mongoDB collections和你的elasticsearch index之间的数据实时同步.它是用mongo oplog来监听你的mongdb数据是否发生变化,无论是增删改查它都会及时反映到你的elasticsearch index上.在使用本工具之前你必须保证你的mongoDB是符合replica结构的,如果不是请先正确设置之后再使用此工具.</p><p><img src="https://jkrxr34vq2.feishu.cn/space/api/box/stream/download/asynccode/?code=NTRmN2U2NGE3NDU2ZDM3OGFmMjkwNDQ0Y2FmZmE4ZDNfbm51eTdpdTlmeUd4UEFhb21NdHhBcFZwRDY1TlNFQ1FfVG9rZW46Ym94Y25JWnpvMjluSjdHN2ZZZjh2RWpqT0JjXzE2NTYxNDgzNDI6MTY1NjE1MTk0Ml9WNA" alt="img" style="zoom:67%"></p><p>支持一对一,一对多,多对一和多对多的数据传输方式.</p><ul><li><p><strong>一对一</strong> - 一个mongodb的collection对应一个elasticsearch的index之间的数据同步</p></li><li><p><strong>一对多</strong> - 一个mongodb的collection对应多个elasticsearch的index之间的数据同步</p></li><li><p><strong>多对一</strong> - 多个mongodb的collection对应一个elasticsearch的index之间的数据同步</p></li><li><p><strong>多对多</strong> - 多个mongodb的collection对应多个elasticsearch的index之间的数据同步</p></li></ul><p>这个工具是GitHub上开源的一个工具，地址是：<a target="_blank" rel="noopener" href="https://github.com/SnailDev/SnailDev.Mongo2Es">https://github.com/SnailDev/SnailDev.Mongo2Es</a></p><p>使用C#开发的，就是不知道靠不靠谱</p><h1 id="8-mongo-sync-elasticsearch"><a href="#8-mongo-sync-elasticsearch" class="headerlink" title="8.mongo-sync-elasticsearch"></a>8.mongo-sync-elasticsearch</h1><blockquote><p><a target="_blank" rel="noopener" href="https://github.com/levonmo/mongo-sync-elasticsearch">https://github.com/levonmo/mongo-sync-elasticsearch</a></p></blockquote><p>mongodb数据同步到elasticsearch的中间件，支持全量，增量(新增修改删除)，实时同步等多种同步情景。(sync MongoDB to Elasticsearch in realtime) （MongoDB sync to es/Elasticsearch）</p><p>Go语言开发，不知道靠不靠谱</p><h1 id="综上所述"><a href="#综上所述" class="headerlink" title="综上所述"></a>综上所述</h1><ol><li>Server同步的好处是同步方式都是自己定义的，灵活，可控，缺点是得写大量的开发代码</li><li>elasticsearch-river-mongodb在ES2.x已经被弃用了，不推荐</li><li>JDBC input plugin for logstash需要JDBC支持，不推荐</li><li>netcore和mongo-sync-elasticsearch都是个人开源的工具，支持不好，不太推荐</li></ol><p>推荐以下：</p><ol><li>Monstache，支持好，阿里云比较承认</li><li>Mongo-connector</li><li>上述第二条，先手动同步，再增量更新，我自己想出来的，不知道这样靠不靠谱</li></ol></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/202201286eb5e523/" rel="next" title="单体架构与微服务"><i class="fa fa-chevron-left"></i> 单体架构与微服务</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"><a href="/202202282385b230/" rel="prev" title="IoC和DI">IoC和DI <i class="fa fa-chevron-right"></i></a></div></div></footer></div></article><div class="post-spread"></div></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><section class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><p class="site-author-name" itemprop="name"></p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">156</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/index.html"><span class="site-state-item-count">15</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/index.html"><span class="site-state-item-count">22</span> <span class="site-state-item-name">标签</span></a></div></nav></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Server%E5%90%8C%E6%AD%A5"><span class="nav-number">1.</span> <span class="nav-text">1.Server同步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%89%8B%E5%8A%A8%E5%90%8C%E6%AD%A5-%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0"><span class="nav-number">2.</span> <span class="nav-text">2.手动同步+增量更新</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-ES%E6%8F%92%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">3.ES插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-JDBC-input-plugin-for-logstash"><span class="nav-number">4.</span> <span class="nav-text">4.JDBC input plugin for logstash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-Mongo-ES-connector"><span class="nav-number">5.</span> <span class="nav-text">5.Mongo-ES connector</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Monstache"><span class="nav-number">6.</span> <span class="nav-text">6.Monstache</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-netcore"><span class="nav-number">7.</span> <span class="nav-text">7.netcore</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-mongo-sync-elasticsearch"><span class="nav-number">8.</span> <span class="nav-text">8.mongo-sync-elasticsearch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%BC%E4%B8%8A%E6%89%80%E8%BF%B0"><span class="nav-number">9.</span> <span class="nav-text">综上所述</span></a></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div class="copyright">&copy; <span itemprop="copyrightYear">2022</span> <span class="with-love"><i class="fa fa-user"></i> </span><span class="author" itemprop="copyrightHolder">王涛</span> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-area-chart"></i> </span><span class="post-meta-item-text">Site words total count&#58;</span> <span title="Site words total count">97.2k</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script><script type="text/javascript">// Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });</script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });</script><script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script></body></html>

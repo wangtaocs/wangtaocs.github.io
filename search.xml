@@ -1,36 +1,584 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>剑指 Offer 35. 复杂链表的复制</title>
-    <url>/2022011659073e2f/</url>
-    <content><![CDATA[<p>请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。</p>
-<p><strong>示例 1：</strong></p>
-<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e1.png" alt=""><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br><span class="line">输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br></pre></td></tr></table></figure><br><strong>示例 2：</strong></p>
-<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e2.png" alt=""><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [[1,1],[2,1]]</span><br><span class="line">输出：[[1,1],[2,1]]</span><br></pre></td></tr></table></figure><br><strong>示例 3：</strong></p>
-<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e3.png" alt=""><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [[3,null],[3,0],[3,null]]</span><br><span class="line">输出：[[3,null],[3,0],[3,null]]</span><br></pre></td></tr></table></figure><br><strong>示例 4：</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; []</span><br><span class="line">输出：[]</span><br><span class="line">解释：给定的链表为空（空指针），因此返回 null。</span><br></pre></td></tr></table></figure></p>
-<p><strong>提示：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-10000 &lt;&#x3D; Node.val &lt;&#x3D; 10000</span><br><span class="line">Node.random 为空（null）或指向链表中的节点。</span><br><span class="line">节点数目不超过 1000 。</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong>本题与主站 138 题相同：<a href="https://leetcode-cn.com/problems/copy-list-with-random-pointer/">https://leetcode-cn.com/problems/copy-list-with-random-pointer/</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>一开始没理解懂题意,写的脑残代码,<code>next</code>和<code>random</code>字段是不能直接复制的,要不指向的就是原链表的各个节点了.这题简单理解就是<strong>深拷贝</strong>还是参考了<a href="https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/solution/fu-za-lian-biao-de-fu-zhi-by-leetcode-so-9ik5/">官网题解</a>,递归或者叫回溯,解决的真的很巧啊,法二更是秀了我一脸.</p>
-<p>我就记录一下使用map记录映射的方法吧:</p>
-<p>使用map,将旧节点与新节点做了映射.因为旧节点为key,所以复制的时候,只有一个对应的新节点会被创建,并与旧节点做映射,而headNew的<code>next</code>和<code>random</code>字段都是通过递归函数赋值的.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// Definition for a Node.</span></span><br><span class="line"><span class="comment">class Node &#123;</span></span><br><span class="line"><span class="comment">    int val;</span></span><br><span class="line"><span class="comment">    Node next;</span></span><br><span class="line"><span class="comment">    Node random;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public Node(int val) &#123;</span></span><br><span class="line"><span class="comment">        this.val = val;</span></span><br><span class="line"><span class="comment">        this.next = null;</span></span><br><span class="line"><span class="comment">        this.random = null;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    Map&lt;Node, Node&gt; cachedNode = <span class="keyword">new</span> HashMap&lt;Node, Node&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">copyRandomList</span><span class="params">(Node head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span>(!cachedNode.containsKey(head))&#123;</span><br><span class="line">            Node headNew = <span class="keyword">new</span> Node(head.val);</span><br><span class="line">            cachedNode.put(head, headNew);</span><br><span class="line">            headNew.next = copyRandomList(head.next);</span><br><span class="line">            headNew.random = copyRandomList(head.random);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cachedNode.get(head);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>看到有位叫<a href="https://leetcode-cn.com/u/eipip1e0/">eipip1e0</a>的同学写的代码感觉更好理解一些,我就臭不要脸的放这里记录一下了:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;Node,Node&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">copyRandomList</span><span class="params">(Node head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 终止条件next给过来的node为null；</span></span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 中间处理方法</span></span><br><span class="line">        <span class="comment">// 1. 递归创建节点到最后一个节点，并吧所有创建的节点保存在map中；</span></span><br><span class="line">        Node newNode = <span class="keyword">new</span> Node(head.val);</span><br><span class="line">        map.put(head,newNode);</span><br><span class="line">        newNode.next = copyRandomList(head.next);</span><br><span class="line">        <span class="comment">// 2. 因为递归过程中会创建所有的节点，所以回溯过程中直接进行newNode.random赋值</span></span><br><span class="line">        newNode.random = map.get(head.random);</span><br><span class="line">        <span class="keyword">return</span> newNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>浅析特别的枚举类</title>
+    <url>/202207056ceda54/</url>
+    <content><![CDATA[<h1 id="枚举类反编译"><a href="#枚举类反编译" class="headerlink" title="枚举类反编译"></a>枚举类反编译</h1><p>枚举类关键字<code>enum</code>隐藏了很多细节，导致我们不方便理解，查阅资料后，发现反编译class文件，是一种窥探JVM运行Java代码的一种有效手段。本文大量借鉴了知乎文章<sup><a href="#fn_ 1" id="reffn_ 1"> 1</a></sup></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Gender</span> </span>&#123;</span><br><span class="line">    MALE, FEMALE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<a href="https://varaneckas.com/jad/">jad</a>反编译工具对枚举类Gender进行分析：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.</span></span><br><span class="line"><span class="comment">// Jad home page: http://www.kpdus.com/jad.html</span></span><br><span class="line"><span class="comment">// Decompiler options: packimports(3) </span></span><br><span class="line"><span class="comment">// Source File Name:   Gender.java</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Gender</span> <span class="keyword">extends</span> <span class="title">Enum</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Gender[] values()&#123;</span><br><span class="line">        <span class="keyword">return</span> (Gender[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Gender <span class="title">valueOf</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Gender)Enum.valueOf(Gender, name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Gender</span><span class="params">(String s, <span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Gender MALE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Gender FEMALE;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Gender $VALUES[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        MALE = <span class="keyword">new</span> Gender(<span class="string">&quot;MALE&quot;</span>, <span class="number">0</span>);</span><br><span class="line">        FEMALE = <span class="keyword">new</span> Gender(<span class="string">&quot;FEMALE&quot;</span>, <span class="number">1</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Gender[] &#123;</span><br><span class="line">            MALE, FEMALE</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+<p>由此可以分析出以下结论：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Gender</span> <span class="keyword">extends</span> <span class="title">Enum</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>我们声明的枚举类是final类型的，所以无法被继承</p>
+</li>
+<li><p>我们声明枚举类默认都会继承自抽象类<strong>Enum</strong>，稍后会分析下<strong>Enum</strong>的源码</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Gender MALE;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Gender FEMALE;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Gender $VALUES[];</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>声明的枚举类常量其实是一个<strong>public static final</strong>枚举类对象，所以无法被更改</p>
+</li>
+<li><p><strong>$VALUES[]</strong>数组用来保存所有枚举类对象<br>  (这里稍稍补充一下：<strong>$</strong>是由Java编译器生成的占位符，一般不推荐代码中使用)</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    MALE = <span class="keyword">new</span> Gender(<span class="string">&quot;MALE&quot;</span>, <span class="number">0</span>);</span><br><span class="line">    FEMALE = <span class="keyword">new</span> Gender(<span class="string">&quot;FEMALE&quot;</span>, <span class="number">1</span>);</span><br><span class="line">    $VALUES = (<span class="keyword">new</span> Gender[] &#123;</span><br><span class="line">    MALE, FEMALE</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>静态代码块用来初始化枚举类对象（常量），并初始化VALUES[]数组</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">Gender</span><span class="params">(String s, <span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(s, i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>枚举类的构造方法是私有的，它只能内部调用，所以无法在外部被初始化，即无法被new</p>
+</li>
+<li><p>他调用了超类的构造器，<code>String s</code>是枚举类对象的值，<code>int i</code>是枚举类对象的<strong>ordinal</strong>的值</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Gender[] values()&#123;</span><br><span class="line">    <span class="keyword">return</span> (Gender[])$VALUES.clone();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>静态的values()方法，用于返回所有的类对象，这个<strong>clone()方法</strong>是Object对象的<strong>浅拷贝</strong>方法，只会复制并返回对象的引用<sup><a href="#fn_ 2" id="reffn_ 2"> 2</a></sup></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Gender <span class="title">valueOf</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (Gender)Enum.valueOf(Gender, name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>静态的valueOf()方法，根据name参数返回对应的类对象</li>
+</ol>
+<h1 id="Enum源码分析"><a href="#Enum源码分析" class="headerlink" title="Enum源码分析"></a>Enum源码分析</h1><p>Enum类在java源码中的相对路径为：/rt.jar!/java/lang/Enum.class</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InvalidObjectException;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectStreamException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Enum</span>&lt;<span class="title">E</span> <span class="keyword">extends</span> <span class="title">Enum</span>&lt;<span class="title">E</span>&gt;&gt; <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">E</span>&gt;, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">name</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> ordinal;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">ordinal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ordinal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Enum</span><span class="params">(String name, <span class="keyword">int</span> ordinal)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.ordinal = ordinal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object other)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>==other;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.hashCode();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CloneNotSupportedException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(E o)</span> </span>&#123;</span><br><span class="line">        Enum&lt;?&gt; other = (Enum&lt;?&gt;)o;</span><br><span class="line">        Enum&lt;E&gt; self = <span class="keyword">this</span>;</span><br><span class="line">        <span class="keyword">if</span> (self.getClass() != other.getClass() &amp;&amp; <span class="comment">// optimization</span></span><br><span class="line">            self.getDeclaringClass() != other.getDeclaringClass())</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ClassCastException();</span><br><span class="line">        <span class="keyword">return</span> self.ordinal - other.ordinal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Class&lt;E&gt; <span class="title">getDeclaringClass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Class&lt;?&gt; clazz = getClass();</span><br><span class="line">        Class&lt;?&gt; zuper = clazz.getSuperclass();</span><br><span class="line">        <span class="keyword">return</span> (zuper == Enum.class) ? (Class&lt;E&gt;)clazz : (Class&lt;E&gt;)zuper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; <span class="function">T <span class="title">valueOf</span><span class="params">(Class&lt;T&gt; enumType,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                String name)</span> </span>&#123;</span><br><span class="line">        T result = enumType.enumConstantDirectory().get(name);</span><br><span class="line">        <span class="keyword">if</span> (result != <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        <span class="keyword">if</span> (name == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">&quot;Name is null&quot;</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(</span><br><span class="line">            <span class="string">&quot;No enum constant &quot;</span> + enumType.getCanonicalName() + <span class="string">&quot;.&quot;</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream in)</span> <span class="keyword">throws</span> IOException,</span></span><br><span class="line"><span class="function">        ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InvalidObjectException(<span class="string">&quot;can&#x27;t deserialize enum&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObjectNoData</span><span class="params">()</span> <span class="keyword">throws</span> ObjectStreamException </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> InvalidObjectException(<span class="string">&quot;can&#x27;t deserialize enum&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由此可以分析出以下结论：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">name</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> ordinal;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">ordinal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ordinal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Enum类有两个成员变量：<strong>name</strong>和<strong>ordinal</strong>。其中，name用于记录枚举常量的名字。ordinal用于记录枚举常量在声明时的顺序(从0开始)。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">Enum</span><span class="params">(String name, <span class="keyword">int</span> ordinal)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.ordinal = ordinal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>受保护的构造方法，反编译出来的构造器中，super调用的就是上边这个方法；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object other)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>==other;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.hashCode();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Enum类重写了toString()方法，返回枚举常量的name值。</p>
+</li>
+<li><p>Enum类重写了equals()方法，直接用等号比较。</p>
+</li>
+<li><p>Enum类直接调用Object的hashCode()方法。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> CloneNotSupportedException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Enum类不允许克隆，clone()方法直接抛出异常。（保证枚举永远是单例的）</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(E o)</span> </span>&#123;</span><br><span class="line">    Enum&lt;?&gt; other = (Enum&lt;?&gt;)o;</span><br><span class="line">    Enum&lt;E&gt; self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span> (self.getClass() != other.getClass() &amp;&amp; <span class="comment">// optimization</span></span><br><span class="line">        self.getDeclaringClass() != other.getDeclaringClass())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ClassCastException();</span><br><span class="line">    <span class="keyword">return</span> self.ordinal - other.ordinal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Enum类实现了Comparable接口，直接比较枚举常量的ordinal的值。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T extends Enum&lt;T&gt;&gt; <span class="function">T <span class="title">valueOf</span><span class="params">(Class&lt;T&gt; enumType, String name)</span> </span>&#123;</span><br><span class="line">    T result = enumType.enumConstantDirectory().get(name);</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    <span class="keyword">if</span> (name == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">&quot;Name is null&quot;</span>);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(</span><br><span class="line">        <span class="string">&quot;No enum constant &quot;</span> + enumType.getCanonicalName() + <span class="string">&quot;.&quot;</span> + name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Enum类有一个静态的valueOf()方法，可以根据枚举类型以及name返回对应的枚举常量。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">(ObjectInputStream in)</span> <span class="keyword">throws</span> IOException,ClassNotFoundException </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> InvalidObjectException(<span class="string">&quot;can&#x27;t deserialize enum&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readObjectNoData</span><span class="params">()</span> <span class="keyword">throws</span> ObjectStreamException </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> InvalidObjectException(<span class="string">&quot;can&#x27;t deserialize enum&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Enum类不允许反序列化，为了保证枚举永远是单例的。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Class&lt;E&gt; <span class="title">getDeclaringClass</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Class&lt;?&gt; clazz = getClass();</span><br><span class="line">    Class&lt;?&gt; zuper = clazz.getSuperclass();</span><br><span class="line">    <span class="keyword">return</span> (zuper == Enum.class) ? (Class&lt;E&gt;)clazz : (Class&lt;E&gt;)zuper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>返回表示此枚举常量的枚举类型的Class对象，反射时使用。</li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><blockquote id="fn_ 1">
+<sup> 1</sup>. <a href="https://zhuanlan.zhihu.com/p/55327937">枚举的本质</a><a href="#reffn_ 1" title="Jump back to footnote [ 1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_ 2">
+<sup> 2</sup>. <a href="https://www.runoob.com/java/java-object-clone.html">Java Object clone() 方法</a><a href="#reffn_ 2" title="Jump back to footnote [ 2] in the text."> &#8617;</a>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在枚举类中注入bean</title>
+    <url>/20220625f6aef2f0/</url>
+    <content><![CDATA[<h1 id="使用枚举类统一管理多个接口实现类"><a href="#使用枚举类统一管理多个接口实现类" class="headerlink" title="使用枚举类统一管理多个接口实现类"></a>使用枚举类统一管理多个接口实现类</h1><p>上次使用了模版模式，对策略的行为进行了约束。其中就抽象方法<code>limitFilter()</code>中要执行的方法进行了统一管理，因为这里的方法其实都是一些过滤器，他们的行为是类似的，所以我抽象了一个接口，让所有的过滤器实现这个接口：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IRule</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">filter</span><span class="params">(List&lt;String&gt; list1, List&lt;Integer&gt; list2)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最简单的方法就是直接创建一个类，实现这个接口，目前的过滤器不多，只有4～5个，那还好说，如果后期实现的过滤器越来越多，实现类就越来越多，那就很不好管理了，于是我使用了枚举类统一管理所有的实现类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rules</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Rule1</span> <span class="keyword">implements</span> <span class="title">IRule</span></span>&#123;</span><br><span class="line">        INSTANCE;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List&lt;String&gt; list1, List&lt;Integer&gt; list2)</span> </span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Rule2</span> <span class="keyword">implements</span> <span class="title">IRule</span></span>&#123;</span><br><span class="line">        INSTANCE;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List&lt;String&gt; list1, List&lt;Integer&gt; list2)</span> </span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就可以把所有的实现类放在<strong>Rules</strong>类中了。</p>
+<p>使用枚举类，在无形之中也使用了<strong>单例模式</strong><sup><a href="#fn_ 4" id="reffn_ 4"> 4</a></sup></p>
+<h1 id="使用静态内部类，为枚举类注入bean"><a href="#使用静态内部类，为枚举类注入bean" class="headerlink" title="使用静态内部类，为枚举类注入bean"></a>使用静态内部类，为枚举类注入bean</h1><p>一开始还没什么问题，后来我发现，如果枚举类中想<strong>使用@Autowired或@Resource注入对象时，它直接就空指针了</strong>，这是为啥啊？这个问题的原因见。在我查询了一些资料<sup><a href="#fn_ 1" id="reffn_ 1"> 1</a></sup>后有了思路，<strong>使用静态内部类注入对象</strong>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">Rule1</span> <span class="keyword">implements</span> <span class="title">IRule</span></span>&#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Setter</span></span><br><span class="line">    <span class="keyword">private</span> GaodeFeignClient gaodeClient;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在枚举类中注入bean</span></span><br><span class="line">    <span class="meta">@Component</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">EnumTypeInjector</span></span>&#123;</span><br><span class="line">        <span class="meta">@Resource</span></span><br><span class="line">        <span class="keyword">private</span> GaodeFeignClient gaodeClient;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@PostConstruct</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">postConstruct</span><span class="params">()</span></span>&#123;</span><br><span class="line">            INSTANCE.setGaodeClient(gaodeClient);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">filter</span><span class="params">(List&lt;String&gt; list1, List&lt;Integer&gt; list2)</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我来解释一下这波操作。</p>
+<p>Spring容器在扫描时，会扫描到被@Component注解的类<code>EnumTypeInjector</code>，<code>EnumTypeInjector</code>会被Spring容器认为是一个组件类Bean，Spring容器在启动时，就会将这个类实例化。在这个类中注入了gaodeClient，@PostConstruct注解的方法在Spring Bean的生命周期只会被执行一次，它调用枚举类对象<code>INSTANCE</code>的<code>setGaodeClient()</code>方法，将<code>EnumTypeInjector</code>内部类注入的gaodeClient对象赋值给了枚举类<code>Rule1</code>的类对象<code>INSTANCE</code>，使其完成了注入。</p>
+<ol>
+<li><p>为什么使用静态内部类？使用普通内部类行不行？<br> 首先回答：<strong>使用普通内部类不行，必须使用静态内部类</strong>。因为普通内部类对象会持有一个指向外部类对象的<strong>隐式引用</strong><sup><a href="#fn_ 3" id="reffn_ 3"> 3</a></sup>，这导致想要实例化内部类对象帮我们注入时，必须先有一个外部类对象，而现在的外部类是一个枚举类，枚举类对象是默认单例模式的，它无法由Spring容器管理。但是静态内部类是与外部类没有关联的，给静态内部类加上Spring注解，spring就可以将它实例化，并执行postConstruct()方法，将内部类中注入的bean对象set给外部的枚举类。</p>
+</li>
+<li><p>为什么静态内部类使用了@Component注解？<br> 使用@Component注解静态内部类，可以让Spring容器扫描到这个类，从而加载它，执行他的postConstruct()方法，从而完成注入。</p>
+</li>
+<li><p>@PostConstruct的作用？<sup><a href="#fn_ 2" id="reffn_ 2"> 2</a></sup><br> <a href="https://docs.oracle.com/javase/8/docs/api/javax/annotation/PostConstruct.html">官方文档</a></p>
+<p> <strong>如果想在生成对象时完成某些初始化操作，而偏偏这些初始化操作又依赖于依赖注入，那么久无法在构造函数中实现。为此，可以使用@PostConstruct注解一个方法来完成初始化，@PostConstruct注解的方法将会在依赖注入完成后被自动调用。</strong><br> <strong>@PostConstruct注解的方法将会在依赖注入完成后被自动调用。</strong></p>
+</li>
+</ol>
+<h1 id="为什么使用-Autowired无法为枚举类注入依赖"><a href="#为什么使用-Autowired无法为枚举类注入依赖" class="headerlink" title="为什么使用@Autowired无法为枚举类注入依赖"></a>为什么使用@Autowired无法为枚举类注入依赖</h1><p>枚举类是天然的单例模式，它的构造器是私有的，就算给枚举类加上Spring的注解，Spring容器也无法管理枚举类对象，因为容器无法将它实例化。<br>枚举类对象是由JVM管理的。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><blockquote id="fn_ 1">
+<sup> 1</sup>. <a href="https://www.cnblogs.com/Marydon20170307/p/14311832.html">java枚举类如何获得Spring管理的对象</a><a href="#reffn_ 1" title="Jump back to footnote [ 1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_ 2">
+<sup> 2</sup>. <a href="https://www.cnblogs.com/erlou96/p/13753824.html">@PostConstruct注解</a><a href="#reffn_ 2" title="Jump back to footnote [ 2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_ 3">
+<sup> 3</sup>. <a href="https://www.cnblogs.com/GrimMjx/p/10105626.html">内部类与静态内部类 </a><a href="#reffn_ 3" title="Jump back to footnote [ 3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_ 4">
+<sup> 4</sup>. <a href="https://www.runoob.com/design-pattern/singleton-pattern.html">单例模式</a><a href="#reffn_ 4" title="Jump back to footnote [ 4] in the text."> &#8617;</a>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在策略模式的基础上使用模版模式</title>
+    <url>/2022061587cff3c/</url>
+    <content><![CDATA[<p>前两天使用了策略模式，但是发现还是不够，不够在哪呢？因为我不仅想让SpringBoot执行不同的策略，我还想对这个策略进行限制，让它按照我的想法执行策略，不能在策略接口的实现中胡作非为，那么该怎么办呢？？引入<strong>模版模式</strong>加一个限制，每个具体的策略必须继承自这个抽象的策略就好了。</p>
+<p>下面是具体实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IStrategy</span> </span>&#123;</span><br><span class="line">    <span class="function">DispatchResultVO <span class="title">handler</span><span class="params">(List&lt;Case&gt; caseList, List&lt;UserInformationDto&gt; userInformationList , <span class="keyword">int</span> strategy)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先定义一个抽象类用来对策略进行限制，并实现<code>IStrategy</code>接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractStrategy</span> <span class="keyword">implements</span> <span class="title">IStrategy</span></span>&#123;</span><br><span class="line">	  <span class="comment">// 抽象的方法是需要具体策略实现的</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">limitFilter</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">target</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="comment">// 不抽象的方法是公共的</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">km</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">dispatch</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">		<span class="comment">// 实现 IStrategy 接口中的方法，从而执行不同的策略，这里使用final是禁止子类重写handler方法</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> DispatchResultVO <span class="title">handler</span><span class="params">(List&lt;Case&gt; caseList, List&lt;UserInformationDto&gt; userInformationList, <span class="keyword">int</span> strategy)</span></span>&#123;</span><br><span class="line">        limitFilter();</span><br><span class="line">        target();</span><br><span class="line">        km();</span><br><span class="line">        dispatch();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后具体的策略就不需要实现<code>IStrategy</code>接口了，而是要继承<code>AbstractStrategy</code>抽象类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@StrategyAnnotation(value = 4)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeBest</span> <span class="keyword">extends</span> <span class="title">AbstractStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">limitFilter</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">target</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;TimeBest!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@StrategyAnnotation(value = 1)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkillBest</span> <span class="keyword">extends</span> <span class="title">AbstractStrategy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> maxScore = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">limitFilter</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">target</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;SkillBest!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@StrategyAnnotation(value = 2)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DistanceBest</span> <span class="keyword">extends</span> <span class="title">AbstractStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">limitFilter</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">target</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;DistanceBest!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过这样的限制，具体的策略实现类就只能按照抽象类中实现的handler方法中的定义来运行了。</p>
+<p>具体在Service中使用策略就写成这样：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DispatchAutoServiceImpl</span> <span class="keyword">implements</span> <span class="title">IDispatchAutoService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> StrategyContext strategyContext;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">autoDispatch</span><span class="params">(String startTime, String endTime, <span class="keyword">int</span> type)</span> </span>&#123;</span><br><span class="line">        List&lt;Case&gt; caseList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        List&lt;UserInformationDto&gt; userInformationList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        IStrategy strategyHandler = strategyContext.getStrategy(type);</span><br><span class="line">        DispatchResultVO dispatchResultVO = strategyHandler.handler(caseList,userInformationList,type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在SpringBoot中使用策略模式</title>
+    <url>/20220608f43da7b/</url>
+    <content><![CDATA[<p>此篇博客完全参考该文章：<a href="https://blog.csdn.net/qq_18398239/article/details/107862958">SpringBoot 策略模式的运用</a>，其中些许部分做了修改。</p>
+<p>这两天有这么个需求，需要后台使用不同的策略做计算，个人感觉写if-else实在是有点low，就想着用点设计模式，一开始看的是菜鸟的<a href="https://www.runoob.com/design-pattern/strategy-pattern.html">策略模式</a>，但是发现不好加进SpringBoot项目中，后来找到了上边这篇文章，写的特别简单易懂，就借鉴了下。</p>
+<h2 id="1-自定义注解"><a href="#1-自定义注解" class="headerlink" title="1.自定义注解"></a>1.自定义注解</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> StrategyAnnotation &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 策略</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>各个注解的作用：<a href="https://www.jianshu.com/p/b677210bf05a">@Target:注解的作用目标</a></p>
+<ol>
+<li>@Target(ElementType.TYPE)：<strong>接口、类、枚举、注解</strong></li>
+<li>@Retention(RetentionPolicy.RUNTIME)：这种类型的Annotations将被JVM保留,所以他们能在运行时被JVM或其他使用反射机制的代码所读取和使用。</li>
+<li>@Documented：<strong>说明该注解将被包含在javadoc中</strong></li>
+<li>@Inherited：说明子类可以继承父类中的该注解</li>
+</ol>
+<h2 id="2-策略接口"><a href="#2-策略接口" class="headerlink" title="2.策略接口"></a>2.策略接口</h2><p>原作者在这里使用的是抽象类，但我理解不同的策略其实是不同的动作，策略是动作的抽象，而不是对象的抽象，所以我在这里使用的是接口，具体不同的策略实现这个接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IStrategy</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">handler</span><span class="params">(String strategy)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-1-实现策略接口"><a href="#2-1-实现策略接口" class="headerlink" title="2.1 实现策略接口"></a>2.1 实现策略接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@StrategyAnnotation(value = &quot;timeBest&quot;)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeBest</span> <span class="keyword">implements</span> <span class="title">IStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">handler</span><span class="params">(String strategy)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;时间最优-log&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@StrategyAnnotation(value = &quot;skillBest&quot;)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkillBest</span> <span class="keyword">implements</span> <span class="title">IStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">handler</span><span class="params">(String strategy)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;技能最优-log&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;技能最优&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@StrategyAnnotation(value = &quot;distanceBest&quot;)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DistanceBest</span> <span class="keyword">implements</span> <span class="title">IStrategy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">handler</span><span class="params">(String strategy)</span> </span>&#123;</span><br><span class="line">        log.info(<span class="string">&quot;距离最优-log&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;距离最优&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-构造策略上下文"><a href="#3-构造策略上下文" class="headerlink" title="3.构造策略上下文"></a>3.构造策略上下文</h2><p>构造策略上下文是非常重要的，具体的策略实现了，如何调用？就是通过实例化一个上下文对象来执行策略，这个对象接收不同的参数，从而执行不同的策略。集成到SpringBoot中，我就有些不太会操作了。贴上代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StrategyContext</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;String, Class&gt; strategyMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="comment">// 获取所有使用了自定义注解的Bean</span></span><br><span class="line">        Map&lt;String, Object&gt; annotationBeans = applicationContext.getBeansWithAnnotation(StrategyAnnotation.class);</span><br><span class="line">        <span class="keyword">if</span> (annotationBeans != <span class="keyword">null</span> &amp;&amp; annotationBeans.size() &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span> (Object item : annotationBeans.values())&#123;</span><br><span class="line">                <span class="comment">// 获取 Bean 的运行时类</span></span><br><span class="line">                Class&lt;?&gt; itemClass = item.getClass();</span><br><span class="line">                String strategy = itemClass.getAnnotation(StrategyAnnotation.class).value();</span><br><span class="line">                strategyMap.put(strategy, itemClass);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IStrategy <span class="title">getStrategy</span><span class="params">(String strategyType)</span></span>&#123;</span><br><span class="line">        Class aClass = strategyMap.get(strategyType);</span><br><span class="line">        <span class="keyword">if</span> (aClass == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ServiceException(<span class="string">&quot;暂不支持此策略&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (IStrategy) applicationContext.getBean(aClass);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是通过实现<code>org.springframework.context.ApplicationContextAware</code>接口来实现的，重写了<code>setApplicationContext</code>方法。查看文档，可以知道这个方法的具体作用：</p>
+<blockquote>
+<p>Set the ApplicationContext that this object runs in. Normally this call will be used to initialize the object.</p>
+<p>Invoked after population of normal bean properties but before an init callback such as org.springframework.beans.factory.InitializingBean.afterPropertiesSet() or a custom init-method. Invoked after ResourceLoaderAware.setResourceLoader, ApplicationEventPublisherAware.setApplicationEventPublisher and MessageSourceAware, if applicable.</p>
+</blockquote>
+<p>简言之就是：</p>
+<p>设置对象运行的ApplicationContext。通常此调用将用于初始化该对象。</p>
+<p>调用时机：</p>
+<ol>
+<li>填充普通bean的属性之后，但在<strong>init回调</strong>或<strong>自定义回调</strong>之前被调用。init回调举例：org.springframework.beans.factory.InitializingBean.afterPropertiesSet()</li>
+<li>如果<code>ResourceLoaderAware.setResourceLoader, ApplicationEventPublisherAware.setApplicationEventPublisher</code>和<code>MessageSourceAware</code>适用，则在他俩之后被调用。</li>
+</ol>
+<h2 id="4-使用策略"><a href="#4-使用策略" class="headerlink" title="4.使用策略"></a>4.使用策略</h2><p>这一步就很简单了，只需要在service中注入strategy，就可以调用了。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> StrategyContext strategyContext;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;EngineerVO&gt; <span class="title">recommend</span><span class="params">(String caseId, String strategyType)</span> </span>&#123;</span><br><span class="line">  IStrategy strategyHandler = strategyContext.getStrategy(strategyType);</span><br><span class="line">  strategyHandler.handler(strategyType);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，我们就可以在项目中使用策略模式了，再新建不同的策略，只需要实现<code>IStrategy</code>接口即可。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><h3 id="关于-Component注解"><a href="#关于-Component注解" class="headerlink" title="关于@Component注解"></a>关于@Component注解</h3><p>这里说说<code>@Component</code>注解，不管是实现<code>IStrategy</code>接口还是构造策略上下文，我们都使用的是<code>@Component</code>注解，用别的可以吗？例如<code>@Service</code>，技术上是可以的，肯定不会报错，因为他们底层都是把被注解类变成Bean，但是为什么还得用不同的名字呢？我认为主要还是看场景区分，策略模式跟业务没太大关系，这可以作为一个组件，安插进项目，使代码结构更清晰且易于维护，<code>@Service</code>一般用来注解跟业务相关的代码。如果我们认为实现的策略是跟业务有关的，那么使用<code>@Service</code>也可以。</p>
+<h3 id="关于ApplicationContextAware"><a href="#关于ApplicationContextAware" class="headerlink" title="关于ApplicationContextAware"></a>关于ApplicationContextAware</h3><p>查看文档：</p>
+<blockquote>
+<p>Interface to be implemented by any object that wishes to be notified of the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/ApplicationContext.html"><code>ApplicationContext</code></a> that it runs in.</p>
+<p>Implementing this interface makes sense for example when an object requires access to a set of collaborating beans. Note that configuration via bean references is preferable to implementing this interface just for bean lookup purposes.</p>
+<p>This interface can also be implemented if an object needs access to file resources, i.e. wants to call <code>getResource</code>, wants to publish an application event, or requires access to the MessageSource. However, it is preferable to implement the more specific <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/ResourceLoaderAware.html"><code>ResourceLoaderAware</code></a>, <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/ApplicationEventPublisherAware.html"><code>ApplicationEventPublisherAware</code></a> or <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/MessageSourceAware.html"><code>MessageSourceAware</code></a> interface in such a specific scenario.</p>
+<p>Note that file resource dependencies can also be exposed as bean properties of type <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/io/Resource.html"><code>Resource</code></a>, populated via Strings with automatic type conversion by the bean factory. This removes the need for implementing any callback interface just for the purpose of accessing a specific file resource.</p>
+<p><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/support/ApplicationObjectSupport.html"><code>ApplicationObjectSupport</code></a> is a convenience base class for application objects, implementing this interface.</p>
+<p>For a list of all bean lifecycle methods, see the <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/beans/factory/BeanFactory.html"><code>BeanFactory javadocs</code></a>.</p>
+</blockquote>
+<p>任何对象希望收到ApplicationContext的通知都应该实现这个接口。</p>
+<p>Spring容器会扫描到所有实现了这个接口的bean，在初始化bean后，会调用setApplicationContext()方法，并将applicationContext对象（容器）传递给该方法，从而对容器中的bean进行一些个性化操作。</p>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我的HTTPRequestHolder呢？</title>
+    <url>/20220606a9d6ad09/</url>
+    <content><![CDATA[<p>今天写需求，调同事的接口，同事的接口里需要从<strong>RequestContext</strong>拿一些参数用来查询，我一开始还能查到呢，后边自己“优化”了一下代码，哎嗨？<strong>RequestContext</strong>里咋空了，啥也没了，我的HTTPRequestHolder对象去哪了？</p>
+<p>这就开始debug了。</p>
+<p>由于之前重写的那部分代码为了提高性能，使用了CompletableFuture异步编程，而我“优化”代码的时候，为了减少查询次数，把调用同事接口的代码写进了之前的CompletableFuture代码中。也就是在这个时候，我的HTTPRequest对象就没了，那他是怎么没的呢？</p>
+<p>让我们先看看<strong>RequestContextHolder.getRequestAttributes</strong>的底层实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RequestAttributes <span class="title">getRequestAttributes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  RequestAttributes attributes = requestAttributesHolder.get();</span><br><span class="line">  <span class="keyword">if</span> (attributes == <span class="keyword">null</span>) &#123;</span><br><span class="line">    attributes = inheritableRequestAttributesHolder.get();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> attributes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键就在这个requestAttributesHolder对象：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;RequestAttributes&gt; requestAttributesHolder =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Request attributes&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>它是一个 <strong>ThreadLocal</strong> 对象，当我们在多线程代码中使用它时，HTTPRequestHolder对象是主线程的私有变量，在其他创建的子线程中，<strong>ThreadLocal</strong> 对象并不会被共享，自然其他线程就拿不到HTTPRequestHolder对象了。</p>
+<p>那该怎么解决这个问题呢？</p>
+<p>有两种方法：</p>
+<ol>
+<li><p>将<strong>RequestContext</strong>中的参数传递给被创建的子线程中。<br>这种办法非常简单，在接口里多加个形参就好了，我本来不太喜欢这种暴力的方式，但我的mentor告诉我：</p>
+<blockquote>
+<p>在我现在的场景下，我就应该这么做，因为请求上下文只在主线程中才有意义，子线程中要请求上下文干嘛呢？你就应该把要用的参数直接传递给子线程 </p>
+</blockquote>
+</li>
+<li><p>将主线程中使用的上下文，复制到被创建的子线程中。<br>这是我比较想用的办法，虽然经过mentor的指点，这个办法不太适合，但我还是想探究一下怎么搞:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XxPoolConfig</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取当前系统的CPU 数目</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cpuNums = Runtime.getRuntime().availableProcessors();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 默认线程池</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Executor</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(&quot;xxPool&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ThreadPoolTaskExecutor <span class="title">threadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ThreadPoolTaskExecutor executor = <span class="keyword">new</span> ThreadPoolTaskExecutor();</span><br><span class="line">        <span class="comment">// 核心线程数：线程池创建时候初始化的线程数</span></span><br><span class="line">        <span class="keyword">if</span>(cpuNums==<span class="number">1</span>) &#123;</span><br><span class="line">            executor.setCorePoolSize(<span class="number">5</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            executor.setCorePoolSize(<span class="number">10</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 最大线程数：线程池最大的线程数，只有在缓冲队列满了之后才会申请超过核心线程数的线程</span></span><br><span class="line">        executor.setMaxPoolSize(cpuNums * <span class="number">5</span>);</span><br><span class="line">        <span class="comment">//队列中最大的数目</span></span><br><span class="line">        executor.setQueueCapacity(<span class="number">16</span>);</span><br><span class="line">        <span class="comment">//线程名称前缀</span></span><br><span class="line">        executor.setThreadNamePrefix(<span class="string">&quot;CalenderThreadPool_&quot;</span>);</span><br><span class="line">        <span class="comment">//rejection-policy：当pool已经达到max size的时候，如何处理新任务</span></span><br><span class="line">        <span class="comment">//CALLER_RUNS：不在新线程中执行任务，而是由调用者所在的线程来执行</span></span><br><span class="line">        <span class="comment">//对拒绝task的处理策略</span></span><br><span class="line">        executor.setRejectedExecutionHandler(<span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy());</span><br><span class="line">        <span class="comment">//线程空闲后的最大存活时间</span></span><br><span class="line">        executor.setKeepAliveSeconds(<span class="number">60</span>);</span><br><span class="line">        <span class="comment">// 设置线程装饰器</span></span><br><span class="line">        executor.setTaskDecorator(<span class="keyword">new</span> ContextDecorator());</span><br><span class="line">        <span class="comment">//加载</span></span><br><span class="line">        executor.initialize();</span><br><span class="line">        <span class="keyword">return</span> executor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键就在：<code>executor.setTaskDecorator(new ContextDecorator());</code>，给线程设置一个装饰器，在装饰器的具体实现类中进行复制：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextDecorator</span> <span class="keyword">implements</span> <span class="title">TaskDecorator</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Runnable <span class="title">decorate</span><span class="params">(Runnable runnable)</span> </span>&#123;</span><br><span class="line">      	<span class="comment">// 获取主线程中的上下文</span></span><br><span class="line">        RequestAttributes context = RequestContextHolder.currentRequestAttributes();</span><br><span class="line">        <span class="keyword">return</span> () -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">              	<span class="comment">// 将上下文复制到新的线程中</span></span><br><span class="line">                RequestContextHolder.setRequestAttributes(context, <span class="keyword">true</span>);</span><br><span class="line">                runnable.run();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                RequestContextHolder.resetRequestAttributes();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>下篇文章具体研究一下ThreadLocal。</p>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MySQL索引</title>
+    <url>/2022040743a71ae4/</url>
+    <content><![CDATA[<h1 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h1><p>提高查询性能</p>
+<h1 id="What"><a href="#What" class="headerlink" title="What"></a>What</h1><p>索引是存储引擎用于快速找到记录的一种数据结构</p>
+<p><a href="https://imgtu.com/i/jkUEjK"><img src="https://s1.ax1x.com/2022/06/25/jkUEjK.md.png" alt="jkUEjK.md.png"  /></a></p>
+<h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><h3 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h3><p>一种特殊类型的索引，它查找的是文本中的关键词，而不是直接比较索引中的值。全文索引更类似于搜索引擎做的事情，而不是简单的WHERE条件匹配。</p>
+<h3 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h3><h3 id="空间索引"><a href="#空间索引" class="headerlink" title="空间索引"></a>空间索引</h3><p>为空间数据（点线面）类型字段建立的索引</p>
+<h3 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h3><p>唯一索引表明当前字段内的值不重复；唯一索引不一定是主键索引，一张表中可以有多个唯一索引；唯一索引允许字段的值为null</p>
+<h3 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h3><p>特殊的唯一索引，逻辑键，不真实存在；主键索引不允许字段值为null，即不允许主键（id）为空</p>
+<h2 id="索引方法（算法）"><a href="#索引方法（算法）" class="headerlink" title="索引方法（算法）"></a>索引方法（算法）</h2><h3 id="BTREE"><a href="#BTREE" class="headerlink" title="BTREE"></a>BTREE</h3><p>使用B-Tree数据结构来存储数据，InnoDB使用的是B+Tree，在一个多列BTREE索引中，索引列的顺序意味着索引首先按照最左列进行排序，然后是第二列。</p>
+<h3 id="HASH"><a href="#HASH" class="headerlink" title="HASH"></a>HASH</h3><p>InnoDB支持Hash索引，但是InnoDB中Hash索引的创建由存储引擎自动优化创建，不能人为干预是否为表创建Hash索引</p>
+<h2 id="索引方式（策略）"><a href="#索引方式（策略）" class="headerlink" title="索引方式（策略）"></a>索引方式（策略）</h2><h3 id="前缀索引"><a href="#前缀索引" class="headerlink" title="前缀索引"></a>前缀索引</h3><p>索引开始的部分字符，节约索引空间，提高索引效率</p>
+<p>索引的选择性：选择足够长的前缀以保证较高的<strong>选择性</strong>（比如只选择前七个字符就能确定唯一或唯二的数据）</p>
+<h3 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h3><p>MySQL5.0+ 引入索引合并策略，使用多个单列索引来指定唯一行</p>
+<p>这是一种优化策略，多数情况下表名原来的单列索引没有建好，而导致无法确定唯一行</p>
+<p>多列索引是有顺序的，这个顺序非常重要</p>
+<h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>聚簇索引不是一种单独的索引类型，而是一种数据存储方式，InnoDB的聚簇索引实际上在同一个数据结构中保存了BTREE索引和数据行</p>
+<p>数据行实际上存储在索引的叶子页</p>
+<p>因为无法把数据行存放在两个不同的地方，所以一个表只能有一个聚簇索引。</p>
+<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p><strong>包含（覆盖）所有需要查询的字段</strong>的值而<strong>无需回表</strong></p>
+<p>由于InnoDB的聚簇索引，覆盖索引对InnoDB表特别有用。InnoDB的二级索引在叶子节点中保存了行的主键值，所以如果二级主键能够覆盖查询，则可以避免对主键索引的二次查询</p>
+<h3 id="前缀压缩索引"><a href="#前缀压缩索引" class="headerlink" title="前缀压缩索引"></a>前缀压缩索引</h3><p>MyISAM存储引擎；减小索引的大小，从而让更多的索引放入内存中</p>
+<h1 id="索引不是“银弹”"><a href="#索引不是“银弹”" class="headerlink" title="索引不是“银弹”"></a>索引不是“银弹”</h1><p>只有当某些字段需要提高查询性能时，并且使用索引带来的好处大于额外工作，这样才有必要使用索引。小表全表扫描，大表再建索引。</p>
+<p>索引不是只有好处的，添加索引会使数据写入变慢，因为还得更新索引。</p>
+<h1 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h1><p>经过上边的一通分析，感觉索引这个概念还是有些遥不可及，其实最简单的往往是最常用的，以下我将针对我们的项目进行举例分析。</p>
+<p>首先最常用的索引类型是<strong>普通索引</strong>和<strong>唯一索引</strong>，空间索引常用于GIS（地理信息系统），全文索引更类似于搜索引擎做的事，我们会用<strong>ES做全局搜索</strong></p>
+<p>例一：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`lc_object`</span> (</span><br><span class="line"></span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">COLLATE</span> utf8_unicode_ci <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">`tenant_id`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">COLLATE</span> utf8_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">200</span>) <span class="keyword">COLLATE</span> utf8_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">`api_name`</span> <span class="built_in">varchar</span>(<span class="number">200</span>) <span class="keyword">COLLATE</span> utf8_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">`type`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;1系统-2自定义&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line"></span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`index_lc_object_tenant`</span> (<span class="string">`tenant_id`</span>)</span><br><span class="line"></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 <span class="keyword">COLLATE</span>=utf8_unicode_ci;</span><br></pre></td></tr></table></figure>
+<p>这是咱们系统里的<code>lc_object</code>表，表中的<code>id</code>就是主键，<code>tenant_id</code>就是手动建立的普通索引<strong>KEY</strong>，可以看到主键索引PRIMARY KEY也是一种KEY，一种特殊的唯一索引。</p>
+<p>例二：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`bs_holiday`</span> (</span><br><span class="line"></span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">COLLATE</span> utf8_unicode_ci <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;主键&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="string">`tenant_id`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">COLLATE</span> utf8_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">&#x27;所属租户&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line"></span><br><span class="line">  <span class="keyword">UNIQUE</span> <span class="keyword">KEY</span> <span class="string">`pf_holiday_id_uindex`</span> (<span class="string">`id`</span>)</span><br><span class="line"></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 <span class="keyword">COLLATE</span>=utf8_unicode_ci <span class="keyword">COMMENT</span>=<span class="string">&#x27;平台节假日主表&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>这是咱们系统里的<code>lc_holiday</code>表，表中的<code>id</code>就是主键，同时主键建了唯一索引<strong>UNIQUE KEY</strong></p>
+<p>不过我这里有些小小见解，主键其实已经是一种特殊的唯一索引了，没有必要在给他建个唯一索引</p>
+<p>书接例一：</p>
+<p>我们使用的普通索引都是<strong>BTREE索引</strong>，我们来探索一下这个普通索引是如何快速查询的</p>
+<p>执行这条查询语句：<code>SELECT id,name FROM lc_object WHERE tenant_id=&quot;1453698&quot;;</code></p>
+<p>我们这里假设对于tenant_id的索引使用<strong>前缀索引</strong>，只取前两位</p>
+<p><a href="https://imgtu.com/i/jkUd4s"><img src="https://s1.ax1x.com/2022/06/25/jkUd4s.jpg" alt="jkUd4s.jpg" style="zoom: 50%;" /></a></p>
+<p>使用BTREE数据结构实现的的普通索引，都是先使用建立索引的字段与主键建立联系，从索引中找到id后，需要进行一次<strong>回表查询</strong>，再通过id查询到具体数据</p>
+<p>那假如我们现在要使用<strong>聚簇索引</strong>进行优化，情况会是怎样呢？</p>
+<p><a href="https://imgtu.com/i/jkUaNj"><img src="https://s1.ax1x.com/2022/06/25/jkUaNj.jpg" alt="jkUaNj.jpg" style="zoom:50%;" /></a></p>
+<p>此时，id和name都保存在了叶子节点中，我们只需要查询一次就能找到数据了，不需要再次回表查询，这样就提高了效率。</p>
+<p>另外再说一下，如果我们在这里还对id建立了索引，此时被建立索引的字段（id、name）和我们要SELECT的字段是一致的，此时就是<strong>覆盖索引</strong>，即要查询的字段恰好都建立了索引</p>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>责任链模式</title>
+    <url>/202203216208627e/</url>
+    <content><![CDATA[<p>最近开发消息模块的任务告一段落，mentor设计的消息中心让我收获颇多，所以在此总结。</p>
+<p>从责任链模式模式开始。</p>
+<p>一开始，mentor跟我讲，咱们的消息中心使用了责任链的设计模式，啥叫个链儿呢？粗暴理解，就是个数据结构里的单链表。用它是为了将消息的发送方和接收方进行解耦，而且还能提高服务的可用性。咱们这个消息中心，就只管发消息，你不管啥消息都可以往里扔，它不仅能帮你持久化，还能帮你发出去。</p>
+<p>我一听，好家伙，真厉害。</p>
+<p>我还是第一次接触设计模式呢。</p>
+<p>我先看看啥叫责任链模式吧～～</p>
+<h1 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h1><blockquote>
+<p><a href="https://www.runoob.com/design-pattern/chain-of-responsibility-pattern.html">菜鸟教程 - 责任链模式</a></p>
+<p>《Head First设计模式（中文版）》P616 - 责任链</p>
+</blockquote>
+<h2 id="What"><a href="#What" class="headerlink" title="What"></a>What</h2><p>我觉得数据结构是看得见摸得着的东西，最好理解。从数据结构的角度上看，它就是个<strong>单链表</strong>。</p>
+<p><strong>责任链中的节点是对行为的抽象（接口）而实例化的对象，接口所能接受的类型是责任链能处理的抽象类型。</strong></p>
+<h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><p>优点：</p>
+<ol>
+<li>将请求的接收者和发送者解耦</li>
+<li>简化对象，因为它不知道责任链的结构</li>
+<li>通过改变链内成员，动态地新增和删除责任</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>不保证请求一定被执行，得有处理它的链节点</li>
+<li>不容易观察运行时的特征，不利于除错</li>
+</ol>
+<h2 id="How"><a href="#How" class="headerlink" title="How"></a>How</h2><p>Talk is cheap, show you the code:</p>
+<h2 id="个人理解"><a href="#个人理解" class="headerlink" title="个人理解"></a>个人理解</h2><p>责任链的这个链儿，能够接收某一类的对象，并对不同的对象进行不同的处理，这让我想起了C语言中的<strong>引用数组</strong>（数组中放的是内存地址，不是具体值），还有Java中的<strong>多态</strong>（超类数组中存放不同的子类对象）。有点儿见对象下菜碟儿的感觉😂。</p>
+<p>还有个需要强调的点，责任链在一开始初始化的时候就初始化了我们配置好的所有节点，来一个对象，就开始判断它的类型，符合条件就处理，否则就交给下个节点处理。</p>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IoC和DI</title>
+    <url>/202202282385b230/</url>
+    <content><![CDATA[<h1 id="IoC控制反转"><a href="#IoC控制反转" class="headerlink" title="IoC控制反转"></a>IoC控制反转</h1><p>IoC（Inversion of Control）即：<a href="https://zh.wikipedia.org/wiki/控制反转">控制反转</a>，是把传统上由程序代码直接操控的对象的调用权交给容器，<strong>通过容器来实现对象组件的装配和管理</strong>。所谓的”控制反转”就是对组件<strong>对象控制权的转移</strong>，从程序代码本身转移到了外部容器，由容器来创建对象并管理对象之间的依赖关系。</p>
+<p>IoC是一种理念，一种思想，不拘泥于具体形式。</p>
+<p>IoC主要的实现方式有两种：依赖查找，依赖注入。依赖注入是一种更可取的方式。</p>
+<p>容器替我们做了哪些工作呢？</p>
+<h1 id="DI依赖注入"><a href="#DI依赖注入" class="headerlink" title="DI依赖注入"></a>DI依赖注入</h1><p>DI（Dependency Injection）即：<a href="https://zh.wikipedia.org/wiki/依赖注入">依赖注入</a>，将实例变量传入到一个对象中去。</p>
+<h2 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h2><ul>
+<li><p>基于接口。实现特定接口以供外部容器注入所依赖类型的对象。</p>
+</li>
+<li><p>基于 set 方法。实现特定属性的public set方法，来让外部容器调用传入所依赖类型的对象。</p>
+</li>
+<li><p>基于构造函数。实现特定参数的构造函数，在新建对象时传入所依赖类型的对象。</p>
+</li>
+<li><p>基于注解。基于<a href="https://zh.wikipedia.org/wiki/Java注解">Java的注解功能</a>，在私有变量前加“@Autowired”等注解，不需要显式的定义以上三种代码，便可以让外部容器传入对应的对象。该方案相当于定义了public的set方法，但是因为没有真正的set方法，从而不会为了实现依赖注入导致暴露了不该暴露的接口（因为set方法只想让容器访问来注入而并不希望其他依赖此类的对象访问）。</p>
+</li>
+</ul>
+<h2 id="Spring装配Bean的4种策略"><a href="#Spring装配Bean的4种策略" class="headerlink" title="Spring装配Bean的4种策略"></a>Spring装配Bean的4种策略</h2><blockquote>
+<p><a href="https://juejin.cn/post/6844903793637720071">彻底搞明白Spring中的自动装配和Autowired - 掘金</a></p>
+</blockquote>
+<ul>
+<li>byName：按名称装配</li>
+<li>byType：按类型装配</li>
+<li>constructor：构造器装配</li>
+<li>autodetect：Spring3.0之后已经被标记为<code>@Deprecated</code></li>
+</ul>
+<h2 id="Autowired和Resource"><a href="#Autowired和Resource" class="headerlink" title="Autowired和Resource"></a>Autowired和Resource</h2><ul>
+<li>Autowired默认按类型装配，但不是说就不能按名称装配了，如果默认按照类型装配，发现多个实例，则可以使用<code>@qulifier</code>、<code>@Primary</code>进行过滤</li>
+<li>Resource默认按名称装配</li>
+</ul>
+<p>推荐优先使用构造器装配，但我比较喜欢用Resource。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://developer.aliyun.com/article/634987#:~:text=如何实现的？-,IoC叫控制反转，是Inversion of Control的,组件的装配和管理。">什么是IoC和DI？DI是如何实现的？-阿里云开发者社区</a></p>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MongoDB与ES同步</title>
+    <url>/20220225d7e3aea0/</url>
+    <content><![CDATA[<blockquote>
+<p><a href="https://www.linkedin.com/pulse/5-way-sync-data-from-mongodb-es-kai-hao">5 ways to synchronize data from MongoDb to ElasticSearch</a></p>
+</blockquote>
+<h1 id="1-Server同步"><a href="#1-Server同步" class="headerlink" title="1.Server同步"></a>1.Server同步</h1><p><a href="https://imgtu.com/i/jktJRP"><img src="https://s1.ax1x.com/2022/06/25/jktJRP.jpg" alt="jktJRP.jpg" style="zoom: 67%;" /></a></p>
+<p>在服务端（Spring Boot或Spring Cloud）对MongoDB进行CRUD操作时，同时对ES进行相同操作。</p>
+<p>优点：对两者同时操作，代码层面解决同步问题。</p>
+<p>缺点：</p>
+<ol>
+<li>服务端改动较大，可以在common模块中集成对两种数据库的CUD操作</li>
+<li>可靠性一般，任一方CUD操作出现问题时，可能会产生<strong>数据不一致</strong>问题</li>
+<li>对Server的性能开销较大，得同时操作两种数据库</li>
+</ol>
+<h1 id="2-手动同步-增量更新"><a href="#2-手动同步-增量更新" class="headerlink" title="2.手动同步+增量更新"></a>2.手动同步+增量更新</h1><p><a href="https://github.com/compose/transporter">Transporter</a>可以将数据从MongoDB同步到ES，但重要的是Transporter只同步一次。当工作完成时，Transporter的工作就结束了。<strong>无法实现增量同步</strong></p>
+<p><a href="https://docs.mongodb.com/manual/changeStreams/#:~:text=Change streams allow applications to,and immediately react to them.">Change Stream</a>是MongoDB从3.6开始支持的新特性。可以实现增量同步。</p>
+<p><a href="https://imgtu.com/i/jktyR0"><img src="https://s1.ax1x.com/2022/06/25/jktyR0.jpg" alt="jktyR0.jpg" style="zoom:67%;" /></a></p>
+<blockquote>
+<p><a href="https://segmentfault.com/a/1190000019300099">MongoDB Change Stream初体验</a></p>
+</blockquote>
+<h1 id="3-ES插件"><a href="#3-ES插件" class="headerlink" title="3.ES插件"></a>3.ES插件</h1><p>ES有一个插件叫<a href="https://github.com/richardwilly98/elasticsearch-river-mongodb">elasticsearch-river-mongodb</a>，在ES 1.x中被广泛使用，但在ES 2.x被弃用。如果使用ES 1.x，可以使用这个插件。</p>
+<p><a href="https://imgtu.com/i/jkt6zV"><img src="https://s1.ax1x.com/2022/06/25/jkt6zV.jpg" alt="jkt6zV.jpg" style="zoom:67%;" /></a></p>
+<h1 id="4-JDBC-input-plugin-for-logstash"><a href="#4-JDBC-input-plugin-for-logstash" class="headerlink" title="4.JDBC input plugin for logstash"></a>4.JDBC input plugin for logstash</h1><p>通过添加一个Mongo输入和ES输出插件，我们可以利用logstash存储的缓冲、输入、输出和过滤功能来完成这项工作。</p>
+<p>实际上是定时从mongo中获取新数据写入es。如果在mongo中更新或删除数据，es中是不会跟着变化的。大量的冗余数据传输，实时性差，仅适用于少量数据。</p>
+<p>JDBC输入插件是一种选择，但它<strong>需要JDBC驱动程序</strong>的支持。MongoDB没有得到良好支持的免费JDBC驱动程序。</p>
+<p><a href="https://imgtu.com/i/jktsGq"><img src="https://s1.ax1x.com/2022/06/25/jktsGq.jpg" alt="jktsGq.jpg" style="zoom:67%;" /></a></p>
+<h1 id="5-Mongo-ES-connector"><a href="#5-Mongo-ES-connector" class="headerlink" title="5.Mongo-ES connector"></a>5.Mongo-ES connector</h1><blockquote>
+<p><a href="https://www.bloghome.com.cn/post/elasticsearchzui-jia-shi-jian-zhi-cong-mongodbdao-elasticsearch.html">使用Mongo-connector同步ES</a></p>
+</blockquote>
+<p><a href="https://github.com/yougov/mongo-connector">Mongo-connector</a>是一个python包的实时同步服务。它创建了一个从mongodb集群到一个或多个目标系统的管道。它需要mongo在replica-set模式下运行，同步mongo中的数据到目标，然后跟踪Mongo <strong>oplog</strong>，实时跟踪MongoDB中的操作。它需要一个名为“elastic2_doc_manager”的包来将数据写入ES。</p>
+<p><a href="https://imgtu.com/i/jktrin"><img src="https://s1.ax1x.com/2022/06/25/jktrin.jpg" alt="jktrin.jpg" style="zoom:67%;" /></a></p>
+<h1 id="6-Monstache"><a href="#6-Monstache" class="headerlink" title="6.Monstache"></a>6.Monstache</h1><blockquote>
+<p><a href="https://help.aliyun.com/document_detail/171650.html">通过Monstache实时同步MongoDB数据到阿里云ES - 检索分析服务Elasticsearch版 - 阿里云</a></p>
+</blockquote>
+<p><a href="https://rwynn.github.io/monstache-site/">Monstache</a>使用MongoDB <strong>oplog</strong>作为事件源。需要确保MongoDB通过部署副本集来配置为生成oplog。</p>
+<ul>
+<li><p>MongoDB、阿里云ES及Monstache服务部署在专有网络VPC（Virtual Private Cloud）内，所有数据私网通信，高速且安全。</p>
+</li>
+<li><p>Monstache基于MongoDB的oplog实现实时数据同步及订阅，支持MongoDB与高版本ES之间的数据同步，同时支持MongoDB的变更流和聚合管道功能，并且拥有丰富的<a href="https://rwynn.github.io/monstache-site/">特性</a>。</p>
+</li>
+<li><p>Monstache不仅支持软删除和硬删除，还支持数据库删除和集合删除，能够确保ES端实时与源端数据保持一致。</p>
+</li>
+</ul>
+<p><a href="https://imgtu.com/i/jktBIs"><img src="https://s1.ax1x.com/2022/06/25/jktBIs.jpg" alt="jktBIs.jpg" style="zoom:67%;" /></a></p>
+<p>Mongo-ES connector和Monstache都是使用MongoDB oplog作为事件源，基于MongoDB的replica进行同步，因为多加了一个副本集，所以有<strong>数据冗余</strong>的问题。connector使用python开发，monstache使用Go语言开发。</p>
+<h1 id="7-netcore"><a href="#7-netcore" class="headerlink" title="7.netcore"></a>7.netcore</h1><blockquote>
+<p><a href="https://www.cnblogs.com/snaildev/p/8616524.html">基于netcore实现mongodb和ElasticSearch之间的数据实时同步的工具(Mongo2Es)</a></p>
+</blockquote>
+<p>Mongo2Es是用来保持你的mongoDB collections和你的elasticsearch index之间的数据实时同步.它是用mongo oplog来监听你的mongdb数据是否发生变化,无论是增删改查它都会及时反映到你的elasticsearch index上.在使用本工具之前你必须保证你的mongoDB是符合replica结构的,如果不是请先正确设置之后再使用此工具.</p>
+<p><img src="https://jkrxr34vq2.feishu.cn/space/api/box/stream/download/asynccode/?code=NTRmN2U2NGE3NDU2ZDM3OGFmMjkwNDQ0Y2FmZmE4ZDNfbm51eTdpdTlmeUd4UEFhb21NdHhBcFZwRDY1TlNFQ1FfVG9rZW46Ym94Y25JWnpvMjluSjdHN2ZZZjh2RWpqT0JjXzE2NTYxNDgzNDI6MTY1NjE1MTk0Ml9WNA" alt="img" style="zoom:67%;" /></p>
+<p>支持一对一,一对多,多对一和多对多的数据传输方式.</p>
+<ul>
+<li><p><strong>一对一</strong> - 一个mongodb的collection对应一个elasticsearch的index之间的数据同步</p>
+</li>
+<li><p><strong>一对多</strong> - 一个mongodb的collection对应多个elasticsearch的index之间的数据同步</p>
+</li>
+<li><p><strong>多对一</strong> - 多个mongodb的collection对应一个elasticsearch的index之间的数据同步</p>
+</li>
+<li><p><strong>多对多</strong> - 多个mongodb的collection对应多个elasticsearch的index之间的数据同步</p>
+</li>
+</ul>
+<p>这个工具是GitHub上开源的一个工具，地址是：<a href="https://github.com/SnailDev/SnailDev.Mongo2Es">https://github.com/SnailDev/SnailDev.Mongo2Es</a></p>
+<p>使用C#开发的，就是不知道靠不靠谱</p>
+<h1 id="8-mongo-sync-elasticsearch"><a href="#8-mongo-sync-elasticsearch" class="headerlink" title="8.mongo-sync-elasticsearch"></a>8.mongo-sync-elasticsearch</h1><blockquote>
+<p><a href="https://github.com/levonmo/mongo-sync-elasticsearch">https://github.com/levonmo/mongo-sync-elasticsearch</a></p>
+</blockquote>
+<p>mongodb数据同步到elasticsearch的中间件，支持全量，增量(新增修改删除)，实时同步等多种同步情景。(sync MongoDB to Elasticsearch in realtime) （MongoDB sync to es/Elasticsearch）</p>
+<p>Go语言开发，不知道靠不靠谱</p>
+<h1 id="综上所述"><a href="#综上所述" class="headerlink" title="综上所述"></a>综上所述</h1><ol>
+<li>Server同步的好处是同步方式都是自己定义的，灵活，可控，缺点是得写大量的开发代码</li>
+<li>elasticsearch-river-mongodb在ES2.x已经被弃用了，不推荐</li>
+<li>JDBC input plugin for logstash需要JDBC支持，不推荐</li>
+<li>netcore和mongo-sync-elasticsearch都是个人开源的工具，支持不好，不太推荐</li>
+</ol>
+<p>推荐以下：</p>
+<ol>
+<li>Monstache，支持好，阿里云比较承认</li>
+<li>Mongo-connector</li>
+<li>上述第二条，先手动同步，再增量更新，我自己想出来的，不知道这样靠不靠谱</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>单体架构与微服务</title>
+    <url>/202201286eb5e523/</url>
+    <content><![CDATA[<h1 id="一、单体架构"><a href="#一、单体架构" class="headerlink" title="一、单体架构"></a>一、单体架构</h1><h2 id="1-什么是单体架构"><a href="#1-什么是单体架构" class="headerlink" title="1.什么是单体架构"></a>1.什么是单体架构</h2><p>单体架构（Monolithic Architecture）是一种将所有功能打包在一个容器中运行的设计风格，一个实例中集成了一个系统的所有功能。通过负载均衡软件/设备实现多实例调用。每个实例中都有完整的一套项目代码</p>
+<h2 id="2-单体架构的优点"><a href="#2-单体架构的优点" class="headerlink" title="2.单体架构的优点"></a>2.单体架构的优点</h2><ol>
+<li>初期开发应用很简单</li>
+<li>易于对应用程序进行大规模修改</li>
+<li>测试简单</li>
+<li>部署简单</li>
+<li>横向扩展简单</li>
+</ol>
+<p>这些优点本质上都是因为单体架构前期开发代码量少，易于维护，随着代码量逐渐增多，项目复杂，体量庞大，这些优点都将不复存在</p>
+<h2 id="3-单体架构的缺点"><a href="#3-单体架构的缺点" class="headerlink" title="3.单体架构的缺点"></a>3.单体架构的缺点</h2><p>当项目发展到特别巨大时，上边的优点都变成了缺点：</p>
+<ol>
+<li>项目代码结构难以梳理，开发节奏变缓</li>
+<li>难以进行大规模修改</li>
+<li>测试需要涉及的东西太多，甚至需要手动测试</li>
+<li>在开发环境中，项目的重新编译启动需要耗费大量时间</li>
+<li>从代码提交到实际部署的周期很长，而且容易出现问题（牵一发而动全身）</li>
+<li>可能需要长期依赖某个已经过时的技术栈</li>
+</ol>
+<h1 id="二、SOA的演变"><a href="#二、SOA的演变" class="headerlink" title="二、SOA的演变"></a>二、SOA的演变</h1><p>SOA（Service-Oriented Architecture）是一种分布式服务架构的常见方式：提供一种被各个服务单元/系统彼此认可的协议进行数据通讯，进而实现跨服务单元/系统交互的能力。</p>
+<p>早期的SOA多以基于SOAP (Simple Object Access Protocol)协议的Webservice实现，因其通过WSDL (Web Service Description Language)实现了严格服务间通讯格式约束，所以它非常适用于对稳定性要求高、不易变、防御式的场景， 这种方式在当下的银行、电信系统中还有很大市场。但SOAP的优势也为其带来了：笨重、不灵活、修改困难、通讯效率低等问题。</p>
+<p>SOA在一定程度上解决了单体架构的问题，但是非常不灵活，所有模块之间的通信有严格的约束，对重量级通信协议强依赖</p>
+<p><img src="https://jkrxr34vq2.feishu.cn/space/api/box/stream/download/asynccode/?code=YmM2MTY0YWViODExM2NiODFkMzk2ZjEwYmMwYzZjYzFfaGgxamN3UGQ4YVA2bEk2alhMNjFHOXJobDhUdnBzM0JfVG9rZW46Ym94Y25GRkhCcWtsNmtGc0tibEc3WVVQeTFjXzE2NTYxNDgxOTE6MTY1NjE1MTc5MV9WNA" alt="img"></p>
+<h1 id="三、微服务兴起"><a href="#三、微服务兴起" class="headerlink" title="三、微服务兴起"></a>三、微服务兴起</h1><h2 id="1-什么是微服务"><a href="#1-什么是微服务" class="headerlink" title="1.什么是微服务"></a>1.什么是微服务</h2><p><a href="https://aws.amazon.com/cn/microservices/">什么是微服务？| AWS</a></p>
+<p>微服务是一种开发软件的架构和组织方法，其中软件由通过明确定义的 API 进行通信的小型独立服务组成。这些服务由各个小型独立团队负责。微服务架构使应用程序更易于扩展和更快地开发，从而加速创新并缩短新功能的上市时间。</p>
+<h2 id="2-微服务的优点"><a href="#2-微服务的优点" class="headerlink" title="2.微服务的优点"></a>2.微服务的优点</h2><ol>
+<li>使大型复杂应用可以持续交付部署</li>
+</ol>
+<p>大型项目被拆分成了很多的小服务，当需要进行更新部署时，只需要更新已修改的的服务</p>
+<ol>
+<li>每个服务相对较小并容易维护</li>
+<li>服务可以独立部署、独立扩展</li>
+<li>可以实现团队自治</li>
+<li>容易实验和采纳新技术</li>
+</ol>
+<p>开发新服务时，可以自由地选择适合这个服务的任何语言和框架。</p>
+<ol>
+<li>更好的容错性</li>
+</ol>
+<p>微服务架构可以实现更好的故障隔离。某个服务的内存泄漏不会对其他服务造成影响。</p>
+<h2 id="3-微服务的缺点"><a href="#3-微服务的缺点" class="headerlink" title="3.微服务的缺点"></a>3.微服务的缺点</h2><ol>
+<li>服务的拆分和定义很难</li>
+</ol>
+<p>如果服务没有拆分好，可能诞生一个分布式单体应用（很多核心功能都集成在了一个服务中，没有做到很好的解耦）</p>
+<ol>
+<li>分布式系统更复杂，开发测试部署更难</li>
+</ol>
+<p>这是相对于单体架构而言的，并且还需要解决远程服务不可用或出现高延迟等情况</p>
+<ol>
+<li>部署多服务的功能需要进行很多的协调</li>
+<li>开发者需要考虑什么时候使用微服务</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>设计者通过使用微服务架构将一个大的单体项目合理拆分成多个小的“单体项目”，每个小的单体项目就重新拥有了单体架构的优点，在项目变得越来越大的过程中，也可以创建新的微服务，方便扩展。服务之间使用API进行通信。服务与服务之间互相隔离，不会相互影响。小步快跑，快速迭代，这里也体现了“双向门”的思想，可以起一个很小的服务，投入市场，看看受不受欢迎。如果非常受欢迎，就可以快速上线，不受欢迎也可以很容易地下架这个服务。</p>
+]]></content>
+      <categories>
+        <category>Dig from here</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>第4天 查找算法（简单）</title>
+    <url>/20220124ce0017a2/</url>
+    <content><![CDATA[<h1 id="剑指-Offer-03-数组中重复的数字"><a href="#剑指-Offer-03-数组中重复的数字" class="headerlink" title="剑指 Offer 03. 数组中重复的数字"></a><a href="https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/">剑指 Offer 03. 数组中重复的数字</a></h1><p>找出数组中重复的数字。</p>
+<p>在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。</p>
+<p>示例 1：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">[2, 3, 1, 0, 2, 5, 3]</span><br><span class="line">输出：2 或 3 </span><br></pre></td></tr></table></figure></p>
+<p>限制：</p>
+<p><code>2 &lt;= n &lt;= 100000</code></p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p><strong>HashSet</strong></p>
+<p>循环地将数组中的元素放入Set中,放不进去说明就重复了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findRepeatNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Set&lt;Integer&gt; help = <span class="keyword">new</span> HashSet&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> n : nums)</span><br><span class="line">            <span class="keyword">if</span>(!help.add(n))</span><br><span class="line">                <span class="keyword">return</span> n;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p>暴力法,直接用每个元素查,复杂度太高</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findRepeatNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len-<span class="number">1</span>; i++)</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; len; j++)</span><br><span class="line">                <span class="keyword">if</span>(nums[i] == nums[j])</span><br><span class="line">                    <span class="keyword">return</span> nums[i];</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="思路三"><a href="#思路三" class="headerlink" title="思路三"></a>思路三</h3><p>使用Java内置的Arrays.sort()方法进行排序,然后遍历一遍就行了,Java的排序方法是快速排序,一般为O(nlogn)效率比较高,遍历的时候,复杂度是O(n)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findRepeatNumber</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> n = <span class="number">1</span>; n &lt; nums.length; n++)</span><br><span class="line">            <span class="keyword">if</span>(nums[n] == nums[n-<span class="number">1</span>])</span><br><span class="line">                <span class="keyword">return</span> nums[n];</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="剑指-Offer-53-I-在排序数组中查找数字-I"><a href="#剑指-Offer-53-I-在排序数组中查找数字-I" class="headerlink" title="剑指 Offer 53 - I. 在排序数组中查找数字 I"></a><a href="https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/">剑指 Offer 53 - I. 在排序数组中查找数字 I</a></h1><p>统计一个数字在排序数组中出现的次数。</p>
+<p>示例 1:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: nums &#x3D; [5,7,7,8,8,10], target &#x3D; 8</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure><br>示例 2:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: nums &#x3D; [5,7,7,8,8,10], target &#x3D; 6</span><br><span class="line">输出: 0</span><br></pre></td></tr></table></figure>
+<p>提示：</p>
+<ul>
+<li><code>0 &lt;= nums.length &lt;= 105</code></li>
+<li><code>-109 &lt;= nums[i] &lt;= 109</code></li>
+<li><code>nums 是一个非递减数组</code></li>
+<li><code>-109 &lt;= target &lt;= 109</code></li>
+</ul>
+<h2 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2><h3 id="思路一-1"><a href="#思路一-1" class="headerlink" title="思路一"></a>思路一</h3><p>直接找,复杂度为O(n)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> n : nums)</span><br><span class="line">            <span class="keyword">if</span>(n == target)</span><br><span class="line">                res++;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="思路二-1"><a href="#思路二-1" class="headerlink" title="思路二"></a>思路二</h3><p>二分查找,O(logn)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>剑指Offer</category>
       </categories>
   </entry>
   <entry>
-    <title>剑指 Offer 24. 反转链表</title>
-    <url>/20220116cb96fafb/</url>
-    <content><![CDATA[<p>定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。</p>
+    <title>第3天 字符串（简单）</title>
+    <url>/202201176bd8727/</url>
+    <content><![CDATA[<h1 id="剑指-Offer-05-替换空格"><a href="#剑指-Offer-05-替换空格" class="headerlink" title="剑指 Offer 05. 替换空格"></a><a href="https://leetcode-cn.com/problems/ti-huan-kong-ge-lcof/">剑指 Offer 05. 替换空格</a></h1><p>请实现一个函数，把字符串 s 中的每个空格替换成”%20”。</p>
+<p>示例 1：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：s &#x3D; &quot;We are happy.&quot;</span><br><span class="line">输出：&quot;We%20are%20happy.&quot;</span><br></pre></td></tr></table></figure></p>
+<p>限制：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0 &lt;&#x3D; s 的长度 &lt;&#x3D; 10000</span><br></pre></td></tr></table></figure></p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p><strong>字符数组</strong></p>
+<p>需要声明一个3倍长的字符数组, 以防止全是空格的情况<br>使用<code>charAt()</code>方法按字符遍历原字符串,当遇到空格时,就使用<code>%</code>、<code>2</code>、<code>0</code>来替换空格即可</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">replaceSpace</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s.equals(<span class="string">&quot;&quot;</span>)) <span class="keyword">return</span> s;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">char</span>[] result = <span class="keyword">new</span> <span class="keyword">char</span>[len * <span class="number">3</span>];</span><br><span class="line">        <span class="keyword">int</span> resultSize = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s.charAt(i) == <span class="string">&#x27; &#x27;</span>)&#123;</span><br><span class="line">                result[resultSize++] = <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">                result[resultSize++] = <span class="string">&#x27;2&#x27;</span>;</span><br><span class="line">                result[resultSize++] = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                result[resultSize++] = s.charAt(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(result, <span class="number">0</span>, resultSize);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="剑指-Offer-58-II-左旋转字符串"><a href="#剑指-Offer-58-II-左旋转字符串" class="headerlink" title="剑指 Offer 58 - II. 左旋转字符串"></a><a href="https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/">剑指 Offer 58 - II. 左旋转字符串</a></h1><p>字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串”abcdefg”和数字2，该函数将返回左旋转两位得到的结果”cdefgab”。</p>
+<p>示例 1：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: s &#x3D; &quot;abcdefg&quot;, k &#x3D; 2</span><br><span class="line">输出: &quot;cdefgab&quot;</span><br></pre></td></tr></table></figure><br>示例 2：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: s &#x3D; &quot;lrloseumgh&quot;, k &#x3D; 6</span><br><span class="line">输出: &quot;umghlrlose&quot;</span><br></pre></td></tr></table></figure></p>
+<p>限制：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1 &lt;&#x3D; k &lt; s.length &lt;&#x3D; 10000</span><br></pre></td></tr></table></figure></p>
+<h2 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2><h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p>沿用上题<strong>字符数组</strong>的思路:</p>
+<ol>
+<li>从k开始,复制后半段;</li>
+<li>从0开始,复制前半段.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">reverseLeftWords</span><span class="params">(String s, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] str = <span class="keyword">new</span> <span class="keyword">char</span>[s.length()];</span><br><span class="line">        <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n; i &lt; s.length(); i++)</span><br><span class="line">            str[size++] = s.charAt(i);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">            str[size++] = s.charAt(j);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(str, <span class="number">0</span>, s.length());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p>使用<code>substring()</code>方法进行字符串切割和重组</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">reverseLeftWords</span><span class="params">(String s, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        String str1 = s.substring(<span class="number">0</span>, n);</span><br><span class="line">        String str2 = s.substring(n);</span><br><span class="line">        <span class="keyword">return</span> str2 + str1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>剑指Offer</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>第2天 链表（简单）</title>
+    <url>/202201168f830780/</url>
+    <content><![CDATA[<h1 id="剑指-Offer-06-从尾到头打印链表"><a href="#剑指-Offer-06-从尾到头打印链表" class="headerlink" title="剑指 Offer 06. 从尾到头打印链表"></a><a href="https://leetcode-cn.com/problems/cong-wei-dao-tou-da-yin-lian-biao-lcof/">剑指 Offer 06. 从尾到头打印链表</a></h1><p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [1,3,2]</span><br><span class="line">输出：[2,3,1]</span><br></pre></td></tr></table></figure>
+<p>限制：</p>
+<p><code>0 &lt;= 链表长度 &lt;= 10000</code></p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>逐次遍历链表,并将val放入辅助栈中,再对辅助栈进行出栈,将结果保存在一个数组中</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] reversePrint(ListNode head) &#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack.push(head.val);</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> size = stack.size();</span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">        System.out.println(res.length);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            res[i] = (<span class="keyword">int</span>)stack.pop();</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注:</p>
+<p>stack.size()方法的返回值表示stack栈的大小,当出栈后,size()的返回值就会发生改变,所以应该用一个变量size记录stack的大小,而不是直接使用<code>stack.size()</code></p>
+<h1 id="剑指-Offer-24-反转链表"><a href="#剑指-Offer-24-反转链表" class="headerlink" title="剑指 Offer 24. 反转链表"></a><a href="https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/">剑指 Offer 24. 反转链表</a></h1><p>定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。</p>
 <p>示例:</p>
 <p>输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL<br>输出: 5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;NULL</p>
 <p>限制：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0 &lt;&#x3D; 节点个数 &lt;&#x3D; 5000</span><br></pre></td></tr></table></figure></p>
 <p><strong>注意</strong>：本题与主站 206 题相同：<a href="https://leetcode-cn.com/problems/reverse-linked-list/">https://leetcode-cn.com/problems/reverse-linked-list/</a></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p>正好上一题使用<strong>stack</strong>实现了从尾到头打印链表,所以沿用上一题的算法:</p>
+<h2 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2><h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p>正好上一题使用<strong>stack</strong>实现了从尾到头打印链表,所以沿用上一题的算法:</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        Stack&lt;ListNode&gt; stack = <span class="keyword">new</span> Stack&lt;ListNode&gt;();</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack.push(head);</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode res, temp;</span><br><span class="line">        res = stack.pop();</span><br><span class="line">        temp = res;</span><br><span class="line">        temp.next = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!stack.isEmpty())&#123;</span><br><span class="line">            temp.next = stack.pop();</span><br><span class="line">            temp = temp.next;</span><br><span class="line">            temp.next = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p><a href="https://imgtu.com/i/7N6qk8"><img src="https://s4.ax1x.com/2022/01/16/7N6qk8.jpg" alt="7N6qk8.jpg" style="zoom: 50%;" /></a></p>
 <p><strong>双指针</strong></p>
@@ -49,76 +597,54 @@
 </ol>
 <p>循环体中的语句其实与前面的语句功能很相似,但为了让第一个节点的next为NULL,所以需要特殊处理</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        Stack&lt;ListNode&gt; stack = <span class="keyword">new</span> Stack&lt;ListNode&gt;();</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        ListNode temp = <span class="keyword">new</span> ListNode(head.val);</span><br><span class="line">        temp.next = <span class="keyword">null</span>;</span><br><span class="line">        head = head.next;</span><br><span class="line">        ListNode pre = temp;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span>)&#123;</span><br><span class="line">            ListNode temp1 = <span class="keyword">new</span> ListNode(head.val);</span><br><span class="line">            temp1.next = pre;</span><br><span class="line">            pre = temp1;</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>剑指Offer</category>
-      </categories>
-      <tags>
-        <tag>stack</tag>
-        <tag>two-pointers</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>剑指 Offer 06. 从尾到头打印链表</title>
-    <url>/202201168c70c103/</url>
-    <content><![CDATA[<p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
+<h1 id="剑指-Offer-35-复杂链表的复制"><a href="#剑指-Offer-35-复杂链表的复制" class="headerlink" title="剑指 Offer 35. 复杂链表的复制"></a><a href="https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/">剑指 Offer 35. 复杂链表的复制</a></h1><p>请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。</p>
 <p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [1,3,2]</span><br><span class="line">输出：[2,3,1]</span><br></pre></td></tr></table></figure>
-<p>限制：</p>
-<p><code>0 &lt;= 链表长度 &lt;= 10000</code></p>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>逐次遍历链表,并将val放入辅助栈中,再对辅助栈进行出栈,将结果保存在一个数组中</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] reversePrint(ListNode head) &#123;</span><br><span class="line">        Stack&lt;Integer&gt; stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span>)&#123;</span><br><span class="line">            stack.push(head.val);</span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> size = stack.size();</span><br><span class="line">        <span class="keyword">int</span>[] res = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">        System.out.println(res.length);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            res[i] = (<span class="keyword">int</span>)stack.pop();</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注:</p>
-<p>stack.size()方法的返回值表示stack栈的大小,当出栈后,size()的返回值就会发生改变,所以应该用一个变量size记录stack的大小,而不是直接使用<code>stack.size()</code></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e1.png" alt=""><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br><span class="line">输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]</span><br></pre></td></tr></table></figure><br><strong>示例 2：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e2.png" alt=""><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [[1,1],[2,1]]</span><br><span class="line">输出：[[1,1],[2,1]]</span><br></pre></td></tr></table></figure><br><strong>示例 3：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/09/e3.png" alt=""><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; [[3,null],[3,0],[3,null]]</span><br><span class="line">输出：[[3,null],[3,0],[3,null]]</span><br></pre></td></tr></table></figure><br><strong>示例 4：</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：head &#x3D; []</span><br><span class="line">输出：[]</span><br><span class="line">解释：给定的链表为空（空指针），因此返回 null。</span><br></pre></td></tr></table></figure></p>
+<p><strong>提示：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-10000 &lt;&#x3D; Node.val &lt;&#x3D; 10000</span><br><span class="line">Node.random 为空（null）或指向链表中的节点。</span><br><span class="line">节点数目不超过 1000 。</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>本题与主站 138 题相同：<a href="https://leetcode-cn.com/problems/copy-list-with-random-pointer/">https://leetcode-cn.com/problems/copy-list-with-random-pointer/</a></p>
+<h2 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a>题解</h2><p>一开始没理解懂题意,写的脑残代码,<code>next</code>和<code>random</code>字段是不能直接复制的,要不指向的就是原链表的各个节点了.这题简单理解就是<strong>深拷贝</strong>还是参考了<a href="https://leetcode-cn.com/problems/fu-za-lian-biao-de-fu-zhi-lcof/solution/fu-za-lian-biao-de-fu-zhi-by-leetcode-so-9ik5/">官网题解</a>,递归或者叫回溯,解决的真的很巧啊,法二更是秀了我一脸.</p>
+<p>我就记录一下使用map记录映射的方法吧:</p>
+<p>使用map,将旧节点与新节点做了映射.因为旧节点为key,所以复制的时候,只有一个对应的新节点会被创建,并与旧节点做映射,而headNew的<code>next</code>和<code>random</code>字段都是通过递归函数赋值的.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// Definition for a Node.</span></span><br><span class="line"><span class="comment">class Node &#123;</span></span><br><span class="line"><span class="comment">    int val;</span></span><br><span class="line"><span class="comment">    Node next;</span></span><br><span class="line"><span class="comment">    Node random;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    public Node(int val) &#123;</span></span><br><span class="line"><span class="comment">        this.val = val;</span></span><br><span class="line"><span class="comment">        this.next = null;</span></span><br><span class="line"><span class="comment">        this.random = null;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    Map&lt;Node, Node&gt; cachedNode = <span class="keyword">new</span> HashMap&lt;Node, Node&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">copyRandomList</span><span class="params">(Node head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span>(!cachedNode.containsKey(head))&#123;</span><br><span class="line">            Node headNew = <span class="keyword">new</span> Node(head.val);</span><br><span class="line">            cachedNode.put(head, headNew);</span><br><span class="line">            headNew.next = copyRandomList(head.next);</span><br><span class="line">            headNew.random = copyRandomList(head.random);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cachedNode.get(head);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到有位叫<a href="https://leetcode-cn.com/u/eipip1e0/">eipip1e0</a>的同学写的代码感觉更好理解一些,我就臭不要脸的放这里记录一下了:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;Node,Node&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Node <span class="title">copyRandomList</span><span class="params">(Node head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 终止条件next给过来的node为null；</span></span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 中间处理方法</span></span><br><span class="line">        <span class="comment">// 1. 递归创建节点到最后一个节点，并吧所有创建的节点保存在map中；</span></span><br><span class="line">        Node newNode = <span class="keyword">new</span> Node(head.val);</span><br><span class="line">        map.put(head,newNode);</span><br><span class="line">        newNode.next = copyRandomList(head.next);</span><br><span class="line">        <span class="comment">// 2. 因为递归过程中会创建所有的节点，所以回溯过程中直接进行newNode.random赋值</span></span><br><span class="line">        newNode.random = map.get(head.random);</span><br><span class="line">        <span class="keyword">return</span> newNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>剑指Offer</category>
       </categories>
-      <tags>
-        <tag>stack</tag>
-      </tags>
   </entry>
   <entry>
-    <title>剑指 Offer 30. 包含min函数的栈</title>
-    <url>/20220115c833387c/</url>
-    <content><![CDATA[<p>定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。</p>
+    <title>第1天 栈与队列（简单）</title>
+    <url>/20220115dac30321/</url>
+    <content><![CDATA[<h1 id="剑指-Offer-09-用两个栈实现队列"><a href="#剑指-Offer-09-用两个栈实现队列" class="headerlink" title="剑指 Offer 09. 用两个栈实现队列"></a><a href="https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/">剑指 Offer 09. 用两个栈实现队列</a></h1><p>用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )</p>
+<p>示例 1：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;CQueue&quot;,&quot;appendTail&quot;,&quot;deleteHead&quot;,&quot;deleteHead&quot;]</span><br><span class="line">[[],[3],[],[]]</span><br><span class="line">输出：[null,null,3,-1]</span><br></pre></td></tr></table></figure><br>示例 2：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;CQueue&quot;,&quot;deleteHead&quot;,&quot;appendTail&quot;,&quot;appendTail&quot;,&quot;deleteHead&quot;,&quot;deleteHead&quot;]</span><br><span class="line">[[],[],[5],[2],[],[]]</span><br><span class="line">输出：[null,-1,null,null,5,2]</span><br></pre></td></tr></table></figure><br>提示：</p>
+<ul>
+<li><code>1 &lt;= values &lt;= 10000</code></li>
+<li><code>最多会对 appendTail、deleteHead 进行 10000 次调用</code></li>
+</ul>
+<h2 id="理解题意"><a href="#理解题意" class="headerlink" title="理解题意"></a>理解题意</h2><p>使用两个栈实现队列的入队和出队功能，栈只支持压栈和出栈操作</p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><ol>
+<li>直接往<strong>stack1</strong>里压栈,出栈的时候从<strong>stack2</strong>里出;</li>
+<li><strong>stack2</strong>里出没了,再把<strong>stack1</strong>里的放到<strong>stack2</strong>里,再接着出</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CQueue</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack1;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        stack1 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        stack2 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">appendTail</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        stack1.push(value);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteHead</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!stack2.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">return</span> stack2.pop();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(!stack1.isEmpty())&#123;</span><br><span class="line">                stack2.push(stack1.pop());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> stack2.isEmpty() ? -<span class="number">1</span> : stack2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your CQueue object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * CQueue obj = new CQueue();</span></span><br><span class="line"><span class="comment"> * obj.appendTail(value);</span></span><br><span class="line"><span class="comment"> * int param_2 = obj.deleteHead();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<h1 id="剑指-Offer-30-包含min函数的栈"><a href="#剑指-Offer-30-包含min函数的栈" class="headerlink" title="剑指 Offer 30. 包含min函数的栈"></a><a href="https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/">剑指 Offer 30. 包含min函数的栈</a></h1><p>定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。</p>
 <p>示例:</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MinStack minStack &#x3D; new MinStack();</span><br><span class="line">minStack.push(-2);</span><br><span class="line">minStack.push(0);</span><br><span class="line">minStack.push(-3);</span><br><span class="line">minStack.min();   --&gt; 返回 -3.</span><br><span class="line">minStack.pop();</span><br><span class="line">minStack.top();      --&gt; 返回 0.</span><br><span class="line">minStack.min();   --&gt; 返回 -2.</span><br></pre></td></tr></table></figure>
 <p>提示：</p>
 <ol>
 <li>各函数的调用总次数不超过 20000 次</li>
 </ol>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>使用一个<code>minSt</code>辅助栈来存放较小的值</p>
+<h2 id="理解题意-1"><a href="#理解题意-1" class="headerlink" title="理解题意"></a>理解题意</h2><p>能够实时获得当前栈中的最小值，使用辅助栈存储每个元素入栈时的最小值，当元素出栈，其对应的最小值也相应出栈。</p>
+<h2 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2><p>使用一个<code>minSt</code>辅助栈来存放较小的值</p>
 <p>每次入栈时,如果要入栈的数<strong>小于等于</strong>辅助栈顶的数,就把待入栈的数也压入辅助栈中,辅助栈就用来返回当前的最小值.</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinStack</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; minSt;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** initialize your data structure here. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MinStack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        minSt = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        stack.push(x);</span><br><span class="line">        <span class="keyword">if</span>(minSt.empty() || x &lt;= minSt.peek())&#123; </span><br><span class="line">            <span class="comment">// 需要加 ‘=’, 否则“0-1-0”这样的序列中, 辅助栈minSt中只会有1个‘0’,</span></span><br><span class="line">            <span class="comment">// 这样当stack中出栈时, minSt中可能就没元素了</span></span><br><span class="line">            minSt.push(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// if(stack.pop() == minSt.peek())&#123; // == 比的是地址,应该用equals</span></span><br><span class="line">        <span class="keyword">if</span>(stack.pop().equals(minSt.peek()))&#123;</span><br><span class="line">            minSt.pop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.peek();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> minSt.peek();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your MinStack object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * MinStack obj = new MinStack();</span></span><br><span class="line"><span class="comment"> * obj.push(x);</span></span><br><span class="line"><span class="comment"> * obj.pop();</span></span><br><span class="line"><span class="comment"> * int param_3 = obj.top();</span></span><br><span class="line"><span class="comment"> * int param_4 = obj.min();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MinStack</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; minSt;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** initialize your data structure here. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MinStack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        stack = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        minSt = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        stack.push(x);</span><br><span class="line">        <span class="keyword">if</span>(minSt.empty() || x &lt;= minSt.peek())&#123; </span><br><span class="line">            <span class="comment">// 需要加 ‘=’, 否则“0-1-0”这样的序列中, 辅助栈minSt中只会有1个‘0’,</span></span><br><span class="line">            <span class="comment">// 这样当stack中出栈时, minSt中可能就没元素了</span></span><br><span class="line">            minSt.push(x);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// if(stack.pop() == minSt.peek())&#123; // == 比的是地址,应该用equals</span></span><br><span class="line">        <span class="keyword">if</span>(stack.pop().equals(minSt.peek()))&#123;</span><br><span class="line">            minSt.pop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">top</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.peek();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> minSt.peek();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your MinStack object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * MinStack obj = new MinStack();</span></span><br><span class="line"><span class="comment"> * obj.push(x);</span></span><br><span class="line"><span class="comment"> * obj.pop();</span></span><br><span class="line"><span class="comment"> * int param_3 = obj.top();</span></span><br><span class="line"><span class="comment"> * int param_4 = obj.min();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>剑指Offer</category>
       </categories>
-      <tags>
-        <tag>stack</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>剑指 Offer 09. 用两个栈实现队列</title>
-    <url>/202201156fda8efa/</url>
-    <content><![CDATA[<p>用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )</p>
-<p>示例 1：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;CQueue&quot;,&quot;appendTail&quot;,&quot;deleteHead&quot;,&quot;deleteHead&quot;]</span><br><span class="line">[[],[3],[],[]]</span><br><span class="line">输出：[null,null,3,-1]</span><br></pre></td></tr></table></figure><br>示例 2：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;CQueue&quot;,&quot;deleteHead&quot;,&quot;appendTail&quot;,&quot;appendTail&quot;,&quot;deleteHead&quot;,&quot;deleteHead&quot;]</span><br><span class="line">[[],[],[5],[2],[],[]]</span><br><span class="line">输出：[null,-1,null,null,5,2]</span><br></pre></td></tr></table></figure><br>提示：</p>
-<ul>
-<li><code>1 &lt;= values &lt;= 10000</code></li>
-<li><code>最多会对 appendTail、deleteHead 进行 10000 次调用</code></li>
-</ul>
-<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><ol>
-<li>直接往<strong>stack1</strong>里压栈,出栈的时候从<strong>stack2</strong>里出;</li>
-<li><strong>stack2</strong>里出没了,再把<strong>stack1</strong>里的放到<strong>stack2</strong>里,再接着出</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CQueue</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack1;</span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Integer&gt; stack2;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        stack1 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">        stack2 = <span class="keyword">new</span> Stack&lt;Integer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">appendTail</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        stack1.push(value);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">deleteHead</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!stack2.isEmpty())&#123;</span><br><span class="line">            <span class="keyword">return</span> stack2.pop();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">while</span>(!stack1.isEmpty())&#123;</span><br><span class="line">                stack2.push(stack1.pop());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> stack2.isEmpty() ? -<span class="number">1</span> : stack2.pop();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your CQueue object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * CQueue obj = new CQueue();</span></span><br><span class="line"><span class="comment"> * obj.appendTail(value);</span></span><br><span class="line"><span class="comment"> * int param_2 = obj.deleteHead();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>剑指Offer</category>
-      </categories>
-      <tags>
-        <tag>stack</tag>
-      </tags>
   </entry>
   <entry>
     <title>实习面试经历</title>
@@ -2444,7 +2970,7 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
   </entry>
   <entry>
-    <title>Java上溯造型与动态绑定</title>
+    <title>Java基础知识</title>
     <url>/2020080231118/</url>
     <content><![CDATA[<h1 id="Java基础知识"><a href="#Java基础知识" class="headerlink" title="Java基础知识"></a>Java基础知识</h1><h2 id="八种基本数据类型"><a href="#八种基本数据类型" class="headerlink" title="八种基本数据类型"></a>八种基本数据类型</h2><div class="table-container">
 <table>
@@ -3256,6 +3782,36 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>965.单值二叉树</title>
+    <url>/2020031923916/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>如果二叉树每个节点都具有相同的值，那么该二叉树就是<em>单值</em>二叉树。</p>
+<p>只有给定的树是单值二叉树时，才返回 <code>true</code>；否则返回 <code>false</code>。</p>
+<p><strong>示例 1：</strong></p>
+<p><img src="https://i.loli.net/2020/03/19/OpILqw2D4Gizg8b.png" alt="binarysearchtree_improved.png" style="zoom:33%;" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1,1,1,1,null,1]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<p><img src="https://i.loli.net/2020/03/19/Kwfm71GPi9W6nMy.png" alt="screen-shot-2018-12-25-at-50050-pm.png" style="zoom:33%;" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[2,2,2,5,2]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ol>
+<li>给定树的节点数范围是 <code>[1, 100]</code>。</li>
+<li>每个节点的值都是整数，范围为 <code>[0, 99]</code> 。</li>
+</ol>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
+<li>空树为单值二叉树</li>
+<li>不是空树时，递归判断根节点的值与孩子节点是否相等</li>
+<li>左右子树都相等时，返回true，否则返回false</li>
+</ol>
+<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">help</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;val == val)</span><br><span class="line">        <span class="keyword">return</span> help(root-&gt;left, val) &amp;&amp; help(root-&gt;right, val);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isUnivalTree</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> single = root-&gt;val;</span><br><span class="line">    <span class="keyword">return</span> help(root-&gt;left, single) &amp;&amp; help(root-&gt;right, single);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>993.二叉树的堂兄弟节点</title>
     <url>/2020031916967/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>在二叉树中，根节点位于深度 <code>0</code> 处，每个深度为 <code>k</code> 的节点的子节点位于深度 <code>k+1</code> 处。</p>
@@ -3281,36 +3837,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>递归调用help()函数即可</li>
 </ol>
 <h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//深度相同，父节点不同</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> deepth;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> *<span class="title">father</span>;</span></span><br><span class="line">&#125; Node;</span><br><span class="line"><span class="comment">//求深度和父节点</span></span><br><span class="line">help(struct TreeNode *root, <span class="keyword">int</span> val, <span class="keyword">int</span> deepth, struct TreeNode *father, struct Node *node)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!root)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;val == val)</span><br><span class="line">    &#123;</span><br><span class="line">        node-&gt;father = father;</span><br><span class="line">        node-&gt;deepth = deepth;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        help(root-&gt;left, val, deepth + <span class="number">1</span>, root, node);</span><br><span class="line">        help(root-&gt;right, val, deepth + <span class="number">1</span>, root, node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isCousins</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">node1</span> =</span> (struct Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct Node));</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">node2</span> =</span> (struct Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct Node));</span><br><span class="line">    node1-&gt;deepth = <span class="number">0</span>;</span><br><span class="line">    node1-&gt;father = <span class="literal">NULL</span>;</span><br><span class="line">    node2-&gt;deepth = <span class="number">0</span>;</span><br><span class="line">    node2-&gt;father = <span class="literal">NULL</span>;</span><br><span class="line">    help(root, x, <span class="number">0</span>, <span class="literal">NULL</span>, node1);</span><br><span class="line">    help(root, y, <span class="number">0</span>, <span class="literal">NULL</span>, node2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, node1-&gt;deepth);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, node2-&gt;deepth);</span><br><span class="line">    <span class="keyword">return</span> node1-&gt;deepth == node2-&gt;deepth &amp;&amp; node1-&gt;father != node2-&gt;father;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>tree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>965.单值二叉树</title>
-    <url>/2020031923916/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>如果二叉树每个节点都具有相同的值，那么该二叉树就是<em>单值</em>二叉树。</p>
-<p>只有给定的树是单值二叉树时，才返回 <code>true</code>；否则返回 <code>false</code>。</p>
-<p><strong>示例 1：</strong></p>
-<p><img src="https://i.loli.net/2020/03/19/OpILqw2D4Gizg8b.png" alt="binarysearchtree_improved.png" style="zoom:33%;" /></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1,1,1,1,null,1]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<p><img src="https://i.loli.net/2020/03/19/Kwfm71GPi9W6nMy.png" alt="screen-shot-2018-12-25-at-50050-pm.png" style="zoom:33%;" /></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[2,2,2,5,2]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ol>
-<li>给定树的节点数范围是 <code>[1, 100]</code>。</li>
-<li>每个节点的值都是整数，范围为 <code>[0, 99]</code> 。</li>
-</ol>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
-<li>空树为单值二叉树</li>
-<li>不是空树时，递归判断根节点的值与孩子节点是否相等</li>
-<li>左右子树都相等时，返回true，否则返回false</li>
-</ol>
-<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">help</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;val == val)</span><br><span class="line">        <span class="keyword">return</span> help(root-&gt;left, val) &amp;&amp; help(root-&gt;right, val);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isUnivalTree</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> single = root-&gt;val;</span><br><span class="line">    <span class="keyword">return</span> help(root-&gt;left, single) &amp;&amp; help(root-&gt;right, single);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -3525,6 +4051,29 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>538.把二叉搜索树转换为累加树</title>
+    <url>/2020031359946/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。</p>
+<p><strong>例如：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 原始二叉搜索树:</span><br><span class="line">              5</span><br><span class="line">            &#x2F;   \</span><br><span class="line">           2     13</span><br><span class="line"></span><br><span class="line">输出: 转换为累加树:</span><br><span class="line">             18</span><br><span class="line">            &#x2F;   \</span><br><span class="line">          20     13</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>本题和 1038: <a href="https://leetcode-cn.com/problems/binary-search-tree-to-greater-sum-tree/">https://leetcode-cn.com/problems/binary-search-tree-to-greater-sum-tree/</a> 相同</p>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
+<li>二叉搜索树的中序遍历是递增数列，则<strong>逆</strong>中序遍历则是递减序列</li>
+<li>声明一个累加值res = 0；</li>
+<li>利用这一性质，对其进行逆中序遍历，开始使用累加值更新节点值</li>
+<li>在遍历左子树前，要更新res的值</li>
+</ol>
+<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inorderReverse</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> *res)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    inorderReverse(root-&gt;right, res);</span><br><span class="line">   	root-&gt;val += *res;<span class="comment">//更新root节点的值</span></span><br><span class="line">    *res = root-&gt;val;<span class="comment">//更新res的值</span></span><br><span class="line">    inorderReverse(root-&gt;left, res);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct TreeNode *<span class="title">convertBST</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    inorderReverse(root, &amp;res);</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顺便把1038题也做了 :)</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>563.二叉树的坡度</title>
     <url>/202003139306/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，计算<strong>整个树</strong>的坡度。</p>
@@ -3553,29 +4102,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
       <tags>
         <tag>recursion</tag>
-        <tag>tree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>538.把二叉搜索树转换为累加树</title>
-    <url>/2020031359946/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉搜索树（Binary Search Tree），把它转换成为累加树（Greater Tree)，使得每个节点的值是原来的节点值加上所有大于它的节点值之和。</p>
-<p><strong>例如：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 原始二叉搜索树:</span><br><span class="line">              5</span><br><span class="line">            &#x2F;   \</span><br><span class="line">           2     13</span><br><span class="line"></span><br><span class="line">输出: 转换为累加树:</span><br><span class="line">             18</span><br><span class="line">            &#x2F;   \</span><br><span class="line">          20     13</span><br></pre></td></tr></table></figure>
-<p><strong>注意：</strong>本题和 1038: <a href="https://leetcode-cn.com/problems/binary-search-tree-to-greater-sum-tree/">https://leetcode-cn.com/problems/binary-search-tree-to-greater-sum-tree/</a> 相同</p>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
-<li>二叉搜索树的中序遍历是递增数列，则<strong>逆</strong>中序遍历则是递减序列</li>
-<li>声明一个累加值res = 0；</li>
-<li>利用这一性质，对其进行逆中序遍历，开始使用累加值更新节点值</li>
-<li>在遍历左子树前，要更新res的值</li>
-</ol>
-<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inorderReverse</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> *res)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    inorderReverse(root-&gt;right, res);</span><br><span class="line">   	root-&gt;val += *res;<span class="comment">//更新root节点的值</span></span><br><span class="line">    *res = root-&gt;val;<span class="comment">//更新res的值</span></span><br><span class="line">    inorderReverse(root-&gt;left, res);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">struct TreeNode *<span class="title">convertBST</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    inorderReverse(root, &amp;res);</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>顺便把1038题也做了 :)</p>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
         <tag>tree</tag>
       </tags>
   </entry>
