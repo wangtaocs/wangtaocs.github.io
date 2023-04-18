@@ -3114,22 +3114,17 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
   </entry>
   <entry>
-    <title>118.杨辉三角</title>
-    <url>/2020071434917/</url>
-    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负整数 <em>numRows，</em>生成杨辉三角的前 <em>numRows</em> 行。</p>
+    <title>119.杨辉三角 II</title>
+    <url>/202007149168/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
 <p><img src="https://s1.ax1x.com/2020/07/14/UUA7VA.gif" alt="UUA7VA.gif"></p>
 <p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
 <p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 5</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">     [1],</span><br><span class="line">    [1,1],</span><br><span class="line">   [1,2,1],</span><br><span class="line">  [1,3,3,1],</span><br><span class="line"> [1,4,6,4,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><blockquote>
-<p><a href="https://leetcode-cn.com/u/wengcanzi/">wengcanzi</a></p>
-</blockquote>
-<h3 id="C"><a href="#C" class="headerlink" title="C:"></a>C:</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of arrays of size *returnSize.</span></span><br><span class="line"><span class="comment"> * The sizes of the arrays are returned as *returnColumnSizes array.</span></span><br><span class="line"><span class="comment"> * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span>** <span class="title">generate</span><span class="params">(<span class="keyword">int</span> numRows, <span class="keyword">int</span>* returnSize, <span class="keyword">int</span>** returnColumnSizes)</span></span>&#123;</span><br><span class="line">    *returnSize = numRows;</span><br><span class="line">    <span class="keyword">int</span>** res = (<span class="keyword">int</span>**)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>*)*numRows);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; numRows; i++)&#123;</span><br><span class="line">        (*returnColumnSizes)[i] = i+<span class="number">1</span>;<span class="comment">//returnColumnSizes储存杨辉三角每一行元素的个数</span></span><br><span class="line">        res[i] = (<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*(i+<span class="number">1</span>));</span><br><span class="line">        res[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        res[i][i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt; i; j++)&#123;</span><br><span class="line">            res[i][j] = res[i<span class="number">-1</span>][j] + res[i<span class="number">-1</span>][j<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><blockquote>
-<p><a href="https://leetcode-cn.com/problems/pascals-triangle/solution/qu-qiao-jie-fa-cuo-yi-wei-zai-zhu-ge-xiang-jia-28m/">取巧解法：错一位再逐个相加</a></p>
-</blockquote>
-<h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate</span>(<span class="params">self, numRows: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        <span class="keyword">if</span> numRows == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        res = [[<span class="number">1</span>]]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res) &lt; numRows:</span><br><span class="line">            newRow = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res[-<span class="number">1</span>], res[-<span class="number">1</span>]+[<span class="number">0</span>])]</span><br><span class="line">            res.append(newRow)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
-]]></content>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: [1,3,3,1]</span><br></pre></td></tr></table></figure>
+<p><strong>进阶：</strong></p>
+<p>你可以优化你的算法到 <em>O</em>(<em>k</em>) 空间复杂度吗？</p>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>跟118题思路一样</p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getRow</span>(<span class="params">self, rowIndex: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        res = [<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res)-<span class="number">1</span> &lt; rowIndex:</span><br><span class="line">            res = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res, res+[<span class="number">0</span>])]</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>LeetCode</category>
       </categories>
@@ -3159,17 +3154,22 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>119.杨辉三角 II</title>
-    <url>/202007149168/</url>
-    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负索引 <em>k</em>，其中 <em>k</em> ≤ 33，返回杨辉三角的第 <em>k</em> 行。</p>
+    <title>118.杨辉三角</title>
+    <url>/2020071434917/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>给定一个非负整数 <em>numRows，</em>生成杨辉三角的前 <em>numRows</em> 行。</p>
 <p><img src="https://s1.ax1x.com/2020/07/14/UUA7VA.gif" alt="UUA7VA.gif"></p>
 <p>在杨辉三角中，每个数是它左上方和右上方的数的和。</p>
 <p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: [1,3,3,1]</span><br></pre></td></tr></table></figure>
-<p><strong>进阶：</strong></p>
-<p>你可以优化你的算法到 <em>O</em>(<em>k</em>) 空间复杂度吗？</p>
-<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>跟118题思路一样</p>
-<h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getRow</span>(<span class="params">self, rowIndex: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        res = [<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res)-<span class="number">1</span> &lt; rowIndex:</span><br><span class="line">            res = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res, res+[<span class="number">0</span>])]</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: 5</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">     [1],</span><br><span class="line">    [1,1],</span><br><span class="line">   [1,2,1],</span><br><span class="line">  [1,3,3,1],</span><br><span class="line"> [1,4,6,4,1]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><blockquote>
+<p><a href="https://leetcode-cn.com/u/wengcanzi/">wengcanzi</a></p>
+</blockquote>
+<h3 id="C"><a href="#C" class="headerlink" title="C:"></a>C:</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Return an array of arrays of size *returnSize.</span></span><br><span class="line"><span class="comment"> * The sizes of the arrays are returned as *returnColumnSizes array.</span></span><br><span class="line"><span class="comment"> * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span>** <span class="title">generate</span><span class="params">(<span class="keyword">int</span> numRows, <span class="keyword">int</span>* returnSize, <span class="keyword">int</span>** returnColumnSizes)</span></span>&#123;</span><br><span class="line">    *returnSize = numRows;</span><br><span class="line">    <span class="keyword">int</span>** res = (<span class="keyword">int</span>**)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>*)*numRows);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; numRows; i++)&#123;</span><br><span class="line">        (*returnColumnSizes)[i] = i+<span class="number">1</span>;<span class="comment">//returnColumnSizes储存杨辉三角每一行元素的个数</span></span><br><span class="line">        res[i] = (<span class="keyword">int</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*(i+<span class="number">1</span>));</span><br><span class="line">        res[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        res[i][i] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">1</span>; j &lt; i; j++)&#123;</span><br><span class="line">            res[i][j] = res[i<span class="number">-1</span>][j] + res[i<span class="number">-1</span>][j<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><blockquote>
+<p><a href="https://leetcode-cn.com/problems/pascals-triangle/solution/qu-qiao-jie-fa-cuo-yi-wei-zai-zhu-ge-xiang-jia-28m/">取巧解法：错一位再逐个相加</a></p>
+</blockquote>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python:"></a>Python:</h3>   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate</span>(<span class="params">self, numRows: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        <span class="keyword">if</span> numRows == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        res = [[<span class="number">1</span>]]</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(res) &lt; numRows:</span><br><span class="line">            newRow = [a+b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>([<span class="number">0</span>]+res[-<span class="number">1</span>], res[-<span class="number">1</span>]+[<span class="number">0</span>])]</span><br><span class="line">            res.append(newRow)</span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>LeetCode</category>
       </categories>
@@ -3840,6 +3840,36 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>965.单值二叉树</title>
+    <url>/2020031923916/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>如果二叉树每个节点都具有相同的值，那么该二叉树就是<em>单值</em>二叉树。</p>
+<p>只有给定的树是单值二叉树时，才返回 <code>true</code>；否则返回 <code>false</code>。</p>
+<p><strong>示例 1：</strong></p>
+<p><img src="https://i.loli.net/2020/03/19/OpILqw2D4Gizg8b.png" alt="binarysearchtree_improved.png" style="zoom:33%;" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1,1,1,1,null,1]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<p><img src="https://i.loli.net/2020/03/19/Kwfm71GPi9W6nMy.png" alt="screen-shot-2018-12-25-at-50050-pm.png" style="zoom:33%;" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[2,2,2,5,2]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ol>
+<li>给定树的节点数范围是 <code>[1, 100]</code>。</li>
+<li>每个节点的值都是整数，范围为 <code>[0, 99]</code> 。</li>
+</ol>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
+<li>空树为单值二叉树</li>
+<li>不是空树时，递归判断根节点的值与孩子节点是否相等</li>
+<li>左右子树都相等时，返回true，否则返回false</li>
+</ol>
+<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">help</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;val == val)</span><br><span class="line">        <span class="keyword">return</span> help(root-&gt;left, val) &amp;&amp; help(root-&gt;right, val);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isUnivalTree</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> single = root-&gt;val;</span><br><span class="line">    <span class="keyword">return</span> help(root-&gt;left, single) &amp;&amp; help(root-&gt;right, single);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>993.二叉树的堂兄弟节点</title>
     <url>/2020031916967/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>在二叉树中，根节点位于深度 <code>0</code> 处，每个深度为 <code>k</code> 的节点的子节点位于深度 <code>k+1</code> 处。</p>
@@ -3865,36 +3895,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>递归调用help()函数即可</li>
 </ol>
 <h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//深度相同，父节点不同</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> deepth;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> *<span class="title">father</span>;</span></span><br><span class="line">&#125; Node;</span><br><span class="line"><span class="comment">//求深度和父节点</span></span><br><span class="line">help(struct TreeNode *root, <span class="keyword">int</span> val, <span class="keyword">int</span> deepth, struct TreeNode *father, struct Node *node)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!root)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;val == val)</span><br><span class="line">    &#123;</span><br><span class="line">        node-&gt;father = father;</span><br><span class="line">        node-&gt;deepth = deepth;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        help(root-&gt;left, val, deepth + <span class="number">1</span>, root, node);</span><br><span class="line">        help(root-&gt;right, val, deepth + <span class="number">1</span>, root, node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isCousins</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">node1</span> =</span> (struct Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct Node));</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">node2</span> =</span> (struct Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(struct Node));</span><br><span class="line">    node1-&gt;deepth = <span class="number">0</span>;</span><br><span class="line">    node1-&gt;father = <span class="literal">NULL</span>;</span><br><span class="line">    node2-&gt;deepth = <span class="number">0</span>;</span><br><span class="line">    node2-&gt;father = <span class="literal">NULL</span>;</span><br><span class="line">    help(root, x, <span class="number">0</span>, <span class="literal">NULL</span>, node1);</span><br><span class="line">    help(root, y, <span class="number">0</span>, <span class="literal">NULL</span>, node2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, node1-&gt;deepth);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>, node2-&gt;deepth);</span><br><span class="line">    <span class="keyword">return</span> node1-&gt;deepth == node2-&gt;deepth &amp;&amp; node1-&gt;father != node2-&gt;father;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>tree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>965.单值二叉树</title>
-    <url>/2020031923916/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>如果二叉树每个节点都具有相同的值，那么该二叉树就是<em>单值</em>二叉树。</p>
-<p>只有给定的树是单值二叉树时，才返回 <code>true</code>；否则返回 <code>false</code>。</p>
-<p><strong>示例 1：</strong></p>
-<p><img src="https://i.loli.net/2020/03/19/OpILqw2D4Gizg8b.png" alt="binarysearchtree_improved.png" style="zoom:33%;" /></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[1,1,1,1,1,null,1]</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<p><img src="https://i.loli.net/2020/03/19/Kwfm71GPi9W6nMy.png" alt="screen-shot-2018-12-25-at-50050-pm.png" style="zoom:33%;" /></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[2,2,2,5,2]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ol>
-<li>给定树的节点数范围是 <code>[1, 100]</code>。</li>
-<li>每个节点的值都是整数，范围为 <code>[0, 99]</code> 。</li>
-</ol>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
-<li>空树为单值二叉树</li>
-<li>不是空树时，递归判断根节点的值与孩子节点是否相等</li>
-<li>左右子树都相等时，返回true，否则返回false</li>
-</ol>
-<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">help</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;val == val)</span><br><span class="line">        <span class="keyword">return</span> help(root-&gt;left, val) &amp;&amp; help(root-&gt;right, val);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isUnivalTree</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> single = root-&gt;val;</span><br><span class="line">    <span class="keyword">return</span> help(root-&gt;left, single) &amp;&amp; help(root-&gt;right, single);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -3953,6 +3953,33 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>872.叶子相似的树</title>
+    <url>/2020031660530/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请考虑一颗二叉树上所有的叶子，这些叶子的值按从左到右的顺序排列形成一个 <em>叶值序列</em> 。</p>
+<p><img src="https://i.loli.net/2020/03/16/l6cBuoOSaj1Eg5L.png" alt="binarysearchtree_improved.png" style="zoom:50%;" /></p>
+<p>举个例子，如上图所示，给定一颗叶值序列为 <code>(6, 7, 4, 9, 8)</code> 的树。</p>
+<p>如果有两颗二叉树的叶值序列是相同，那么我们就认为它们是 <em>叶相似</em> 的。</p>
+<p>如果给定的两个头结点分别为 <code>root1</code> 和 <code>root2</code> 的树是叶相似的，则返回 <code>true</code>；否则返回 <code>false</code> 。</p>
+<p><strong>提示：</strong></p>
+<ul>
+<li>给定的两颗树可能会有 <code>1</code> 到 <code>100</code> 个结点。</li>
+</ul>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
+<li>如果root的左右子树都为空，就将此节点加入到数组中</li>
+<li>递归调用上述过程</li>
+<li>对比两个数组内容</li>
+</ol>
+<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> maxSize 100</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getLeaf</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> *arr, <span class="keyword">int</span> *returnSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;left == <span class="literal">NULL</span> &amp;&amp; root-&gt;right == <span class="literal">NULL</span>)</span><br><span class="line">        arr[(*returnSize)++] = root-&gt;val;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        getLeaf(root-&gt;left, arr, returnSize);</span><br><span class="line">        getLeaf(root-&gt;right, arr, returnSize);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">leafSimilar</span><span class="params">(struct TreeNode *root1, struct TreeNode *root2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr1[maxSize];</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> arr2[maxSize];</span><br><span class="line">    <span class="keyword">int</span> len2 = <span class="number">0</span>;</span><br><span class="line">    getLeaf(root1, arr1, &amp;len1);</span><br><span class="line">    getLeaf(root2, arr2, &amp;len2);</span><br><span class="line">    <span class="keyword">if</span> (len1 != len2)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len1; i++)</span><br><span class="line">        <span class="keyword">if</span> (arr1[i] != arr2[i])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+        <tag>depth-first-search</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>897.递增顺序查找树</title>
     <url>/2020031636925/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个树，<strong>按中序遍历</strong>重新排列树，使树中最左边的结点现在是树的根，并且每个结点没有左子结点，只有一个右子结点。</p>
@@ -3977,33 +4004,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>借助数组，创建一颗新树</li>
 </ol>
 <h4 id="2-2-代码"><a href="#2-2-代码" class="headerlink" title="2.2 代码"></a>2.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">struct TreeNode *<span class="title">increasingBST</span><span class="params">(struct TreeNode *root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> *<span class="title">stack</span>[100], *<span class="title">p</span> =</span> root;</span><br><span class="line">    <span class="keyword">int</span> stackTop = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> arr[<span class="number">100</span>];</span><br><span class="line">    <span class="keyword">int</span> arrTop = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (stackTop != <span class="number">-1</span> || p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (p != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">stack</span>[++stackTop] = p;</span><br><span class="line">            p = p-&gt;left;</span><br><span class="line">        &#125;</span><br><span class="line">        p = <span class="built_in">stack</span>[stackTop--];</span><br><span class="line">        arr[++arrTop] = p-&gt;val;</span><br><span class="line">        p = p-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> *<span class="title">res</span> =</span> (struct TreeNode *)<span class="built_in">malloc</span>(<span class="number">1</span> * <span class="keyword">sizeof</span>(struct TreeNode));</span><br><span class="line">    res-&gt;left = <span class="literal">NULL</span>;</span><br><span class="line">    res-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">    res-&gt;val = arr[<span class="number">0</span>];</span><br><span class="line">    p = res;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= arrTop; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        p-&gt;left = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">TreeNode</span> *<span class="title">cur</span> =</span> (struct TreeNode *)<span class="built_in">malloc</span>(<span class="number">1</span> * <span class="keyword">sizeof</span>(struct TreeNode));</span><br><span class="line">        cur-&gt;left = <span class="literal">NULL</span>;</span><br><span class="line">        cur-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">        cur-&gt;val = arr[i];</span><br><span class="line">        p-&gt;right = cur;</span><br><span class="line">        p = p-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>tree</tag>
-        <tag>depth-first-search</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>872.叶子相似的树</title>
-    <url>/2020031660530/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>请考虑一颗二叉树上所有的叶子，这些叶子的值按从左到右的顺序排列形成一个 <em>叶值序列</em> 。</p>
-<p><img src="https://i.loli.net/2020/03/16/l6cBuoOSaj1Eg5L.png" alt="binarysearchtree_improved.png" style="zoom:50%;" /></p>
-<p>举个例子，如上图所示，给定一颗叶值序列为 <code>(6, 7, 4, 9, 8)</code> 的树。</p>
-<p>如果有两颗二叉树的叶值序列是相同，那么我们就认为它们是 <em>叶相似</em> 的。</p>
-<p>如果给定的两个头结点分别为 <code>root1</code> 和 <code>root2</code> 的树是叶相似的，则返回 <code>true</code>；否则返回 <code>false</code> 。</p>
-<p><strong>提示：</strong></p>
-<ul>
-<li>给定的两颗树可能会有 <code>1</code> 到 <code>100</code> 个结点。</li>
-</ul>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
-<li>如果root的左右子树都为空，就将此节点加入到数组中</li>
-<li>递归调用上述过程</li>
-<li>对比两个数组内容</li>
-</ol>
-<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> maxSize 100</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getLeaf</span><span class="params">(struct TreeNode *root, <span class="keyword">int</span> *arr, <span class="keyword">int</span> *returnSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;left == <span class="literal">NULL</span> &amp;&amp; root-&gt;right == <span class="literal">NULL</span>)</span><br><span class="line">        arr[(*returnSize)++] = root-&gt;val;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        getLeaf(root-&gt;left, arr, returnSize);</span><br><span class="line">        getLeaf(root-&gt;right, arr, returnSize);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">leafSimilar</span><span class="params">(struct TreeNode *root1, struct TreeNode *root2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr1[maxSize];</span><br><span class="line">    <span class="keyword">int</span> len1 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> arr2[maxSize];</span><br><span class="line">    <span class="keyword">int</span> len2 = <span class="number">0</span>;</span><br><span class="line">    getLeaf(root1, arr1, &amp;len1);</span><br><span class="line">    getLeaf(root2, arr2, &amp;len2);</span><br><span class="line">    <span class="keyword">if</span> (len1 != len2)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len1; i++)</span><br><span class="line">        <span class="keyword">if</span> (arr1[i] != arr2[i])</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -4132,6 +4132,34 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>572.另一个树的子树</title>
+    <url>/2020031335055/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个非空二叉树 <strong>s</strong> 和 <strong>t</strong>，检验 <strong>s</strong> 中是否包含和 <strong>t</strong> 具有相同结构和节点值的子树。<strong>s</strong> 的一个子树包括 <strong>s</strong> 的一个节点和这个节点的所有子孙。<strong>s</strong> 也可以看做它自身的一棵子树。</p>
+<p><strong>示例 1:</strong><br>给定的树 s:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
+<p>给定的树 t：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4 </span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
+<p>返回 <strong>true</strong>，因为 t 与 s 的一个子树拥有相同的结构和节点值。</p>
+<p><strong>示例 2:</strong><br>给定的树 s：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br><span class="line">   &#x2F;</span><br><span class="line">  0</span><br></pre></td></tr></table></figure>
+<p>给定的树 t：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
+<p>返回 <strong>false</strong>。</p>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
+<li><p>什么叫子树？</p>
+<p>答：树B是树A的子集。即A与B相等；或B是A的左子树或右子树的子树。</p>
+</li>
+</ol>
+<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSame</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> (s &amp;&amp; t) &amp;&amp; s-&gt;val == t-&gt;val &amp;&amp; isSame(s-&gt;left, t-&gt;left) &amp;&amp; isSame(s-&gt;right, t-&gt;right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSubtree</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t != <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> isSame(s, t) || isSubtree(s-&gt;left, t) || isSubtree(s-&gt;right, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>tree</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>563.二叉树的坡度</title>
     <url>/202003139306/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个二叉树，计算<strong>整个树</strong>的坡度。</p>
@@ -4160,34 +4188,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
       <tags>
         <tag>recursion</tag>
-        <tag>tree</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>572.另一个树的子树</title>
-    <url>/2020031335055/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定两个非空二叉树 <strong>s</strong> 和 <strong>t</strong>，检验 <strong>s</strong> 中是否包含和 <strong>t</strong> 具有相同结构和节点值的子树。<strong>s</strong> 的一个子树包括 <strong>s</strong> 的一个节点和这个节点的所有子孙。<strong>s</strong> 也可以看做它自身的一棵子树。</p>
-<p><strong>示例 1:</strong><br>给定的树 s:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
-<p>给定的树 t：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4 </span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
-<p>返回 <strong>true</strong>，因为 t 与 s 的一个子树拥有相同的结构和节点值。</p>
-<p><strong>示例 2:</strong><br>给定的树 s：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    3</span><br><span class="line">   &#x2F; \</span><br><span class="line">  4   5</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br><span class="line">   &#x2F;</span><br><span class="line">  0</span><br></pre></td></tr></table></figure>
-<p>给定的树 t：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  4</span><br><span class="line"> &#x2F; \</span><br><span class="line">1   2</span><br></pre></td></tr></table></figure>
-<p>返回 <strong>false</strong>。</p>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-递归"><a href="#1-递归" class="headerlink" title="1.递归"></a>1.递归</h3><h4 id="1-1-思路"><a href="#1-1-思路" class="headerlink" title="1.1 思路"></a>1.1 思路</h4><ol>
-<li><p>什么叫子树？</p>
-<p>答：树B是树A的子集。即A与B相等；或B是A的左子树或右子树的子树。</p>
-</li>
-</ol>
-<h4 id="1-2-代码"><a href="#1-2-代码" class="headerlink" title="1.2 代码"></a>1.2 代码</h4>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     struct TreeNode *right;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSame</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> (s &amp;&amp; t) &amp;&amp; s-&gt;val == t-&gt;val &amp;&amp; isSame(s-&gt;left, t-&gt;left) &amp;&amp; isSame(s-&gt;right, t-&gt;right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isSubtree</span><span class="params">(struct TreeNode *s, struct TreeNode *t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="literal">NULL</span> &amp;&amp; t != <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> isSame(s, t) || isSubtree(s-&gt;left, t) || isSubtree(s-&gt;right, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
         <tag>tree</tag>
       </tags>
   </entry>
@@ -4752,41 +4752,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>150.逆波兰表达式求值</title>
-    <url>/2020030212598/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>根据<a href="https://baike.baidu.com/item/逆波兰式/128437">逆波兰表示法</a>，求表达式的值。</p>
-<p>有效的运算符包括 <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。</p>
-<p><strong>说明：</strong></p>
-<ul>
-<li>整数除法只保留整数部分。</li>
-<li>给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。</li>
-</ul>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]</span><br><span class="line">输出: 9</span><br><span class="line">解释: ((2 + 1) * 3) &#x3D; 9</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;&#x2F;&quot;, &quot;+&quot;]</span><br><span class="line">输出: 6</span><br><span class="line">解释: (4 + (13 &#x2F; 5)) &#x3D; 6</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;&#x2F;&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]</span><br><span class="line">输出: 22</span><br><span class="line">解释: </span><br><span class="line">  ((10 * (6 &#x2F; ((9 + 3) * -11))) + 17) + 5</span><br><span class="line">&#x3D; ((10 * (6 &#x2F; (12 * -11))) + 17) + 5</span><br><span class="line">&#x3D; ((10 * (6 &#x2F; -132)) + 17) + 5</span><br><span class="line">&#x3D; ((10 * 0) + 17) + 5</span><br><span class="line">&#x3D; (0 + 17) + 5</span><br><span class="line">&#x3D; 17 + 5</span><br><span class="line">&#x3D; 22</span><br></pre></td></tr></table></figure>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>栈的简单应用</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ol>
-<li>注意将字符串负数转化为整数类型时，注意特殊处理</li>
-<li>遇到操作符时，连出两次栈，并将计算结果入栈</li>
-<li>否则，遇到字符串数字，转化为整数类型后，入栈</li>
-<li>最后栈顶元素即为结果</li>
-</ol>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">stack</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> *data;</span><br><span class="line">    <span class="keyword">int</span> top;</span><br><span class="line">&#125; <span class="built_in">stack</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stoi</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">if</span> (str[<span class="number">0</span>] == <span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; <span class="built_in">strlen</span>(str); i++)</span><br><span class="line">            res = res * <span class="number">10</span> + (str[i] - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span> - res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(str); i++)</span><br><span class="line">        res = res * <span class="number">10</span> + (str[i] - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(<span class="keyword">char</span> **tokens, <span class="keyword">int</span> tokensSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span> *st = (<span class="built_in">stack</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="built_in">stack</span>));</span><br><span class="line">    st-&gt;data = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(tokensSize * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    st-&gt;top = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> a, b;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; tokensSize; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;+&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a + b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;-&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a - b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;*&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a * b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;/&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a / b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            st-&gt;data[++st-&gt;top] = stoi(tokens[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> st-&gt;data[st-&gt;top];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码有点复杂了，将就着看😜</p>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>stack</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>145.二叉树的后序遍历</title>
     <url>/2020030262169/</url>
     <content><![CDATA[<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，返回它的 <em>后序</em> 遍历。</p>
@@ -4825,6 +4790,41 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </categories>
       <tags>
         <tag>tree</tag>
+        <tag>stack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>150.逆波兰表达式求值</title>
+    <url>/2020030212598/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>根据<a href="https://baike.baidu.com/item/逆波兰式/128437">逆波兰表示法</a>，求表达式的值。</p>
+<p>有效的运算符包括 <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。</p>
+<p><strong>说明：</strong></p>
+<ul>
+<li>整数除法只保留整数部分。</li>
+<li>给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。</li>
+</ul>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]</span><br><span class="line">输出: 9</span><br><span class="line">解释: ((2 + 1) * 3) &#x3D; 9</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;&#x2F;&quot;, &quot;+&quot;]</span><br><span class="line">输出: 6</span><br><span class="line">解释: (4 + (13 &#x2F; 5)) &#x3D; 6</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;&#x2F;&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]</span><br><span class="line">输出: 22</span><br><span class="line">解释: </span><br><span class="line">  ((10 * (6 &#x2F; ((9 + 3) * -11))) + 17) + 5</span><br><span class="line">&#x3D; ((10 * (6 &#x2F; (12 * -11))) + 17) + 5</span><br><span class="line">&#x3D; ((10 * (6 &#x2F; -132)) + 17) + 5</span><br><span class="line">&#x3D; ((10 * 0) + 17) + 5</span><br><span class="line">&#x3D; (0 + 17) + 5</span><br><span class="line">&#x3D; 17 + 5</span><br><span class="line">&#x3D; 22</span><br></pre></td></tr></table></figure>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>栈的简单应用</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ol>
+<li>注意将字符串负数转化为整数类型时，注意特殊处理</li>
+<li>遇到操作符时，连出两次栈，并将计算结果入栈</li>
+<li>否则，遇到字符串数字，转化为整数类型后，入栈</li>
+<li>最后栈顶元素即为结果</li>
+</ol>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">stack</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> *data;</span><br><span class="line">    <span class="keyword">int</span> top;</span><br><span class="line">&#125; <span class="built_in">stack</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stoi</span><span class="params">(<span class="keyword">char</span> *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">if</span> (str[<span class="number">0</span>] == <span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; <span class="built_in">strlen</span>(str); i++)</span><br><span class="line">            res = res * <span class="number">10</span> + (str[i] - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span> - res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(str); i++)</span><br><span class="line">        res = res * <span class="number">10</span> + (str[i] - <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">evalRPN</span><span class="params">(<span class="keyword">char</span> **tokens, <span class="keyword">int</span> tokensSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span> *st = (<span class="built_in">stack</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="built_in">stack</span>));</span><br><span class="line">    st-&gt;data = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(tokensSize * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    st-&gt;top = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> a, b;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; tokensSize; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;+&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a + b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;-&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a - b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;*&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a * b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tokens[i][<span class="number">0</span>] == <span class="string">&#x27;/&#x27;</span> &amp;&amp; tokens[i][<span class="number">1</span>] == <span class="string">&#x27;\0&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            b = st-&gt;data[st-&gt;top--];</span><br><span class="line">            a = st-&gt;data[st-&gt;top--];</span><br><span class="line">            st-&gt;data[++st-&gt;top] = a / b;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            st-&gt;data[++st-&gt;top] = stoi(tokens[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> st-&gt;data[st-&gt;top];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码有点复杂了，将就着看😜</p>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
         <tag>stack</tag>
       </tags>
   </entry>
@@ -5652,37 +5652,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>1013.将数组分成和相等的三个部分</title>
-    <url>/2020021631411/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组 <code>A</code>，只有我们可以将其划分为三个和相等的非空部分时才返回 <code>true</code>，否则返回 <code>false</code>。</p>
-<p>形式上，如果我们可以找出索引 <code>i+1 &lt; j</code> 且满足 <code>(A[0] + A[1] + ... + A[i] == A[i+1] + A[i+2] + ... + A[j-1] == A[j] + A[j-1] + ... + A[A.length - 1])</code> 就可以将数组三等分。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输出：[0,2,1,-6,6,-7,9,1,2,0,1]</span><br><span class="line">输出：true</span><br><span class="line">解释：0 + 2 + 1 &#x3D; -6 + 6 - 7 + 9 + 1 &#x3D; 2 + 0 + 1</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[0,2,1,-6,6,7,9,-1,2,0,1]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[3,3,6,5,-2,2,5,1,-9,4]</span><br><span class="line">输出：true</span><br><span class="line">解释：3 + 3 &#x3D; 6 &#x3D; 5 - 2 + 2 + 5 + 1 - 9 + 4</span><br></pre></td></tr></table></figure>
-<p><strong>提示：</strong></p>
-<ol>
-<li><code>3 &lt;= A.length &lt;= 50000</code></li>
-<li><code>-10000 &lt;= A[i] &lt;= 10000</code></li>
-</ol>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>双指针</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li>双指针向数组中间遍历，如果头尾指针遍历的累加都等于整个数组和的1/3，则判断头尾指针之间元素的累加是否等于数组的1/3即可</li>
-</ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">summ</span><span class="params">(<span class="keyword">int</span> *A, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; a &lt;= b; a++)</span><br><span class="line">        sum += A[a];</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">canThreePartsEqualSum</span><span class="params">(<span class="keyword">int</span> *A, <span class="keyword">int</span> ASize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; ASize; i++)</span><br><span class="line">        sum += A[i];</span><br><span class="line">    <span class="keyword">if</span> (sum % <span class="number">3</span> != <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">int</span> oneThird = sum / <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">0</span>, n = ASize - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> qian = <span class="number">0</span>, hou = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (m &lt;= n)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (qian != oneThird)</span><br><span class="line">        &#123;</span><br><span class="line">            qian += A[m];</span><br><span class="line">            m++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (hou != oneThird)</span><br><span class="line">        &#123;</span><br><span class="line">            hou += A[n];</span><br><span class="line">            n--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (summ(A, m, n) == oneThird)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>1009.十进制整数的反码</title>
     <url>/2020021636196/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>每个非负整数 <code>N</code> 都有其二进制表示。例如， <code>5</code> 可以被表示为二进制 <code>&quot;101&quot;</code>，<code>11</code> 可以用二进制 <code>&quot;1011&quot;</code> 表示，依此类推。注意，除 <code>N = 0</code> 外，任何二进制表示中都不含前导零。</p>
@@ -5746,6 +5715,37 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>使用中间变量保存之前的值，进行递归（引申：二叉树的前中后序优先遍历，使用栈保存待递归的元素）</li>
 </ul>
 <h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tribonacci</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">1</span> || n == <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">0</span>, b = <span class="number">1</span>, c = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> i, temp;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">2</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        temp = a + b + c;</span><br><span class="line">        a = b;</span><br><span class="line">        b = c;</span><br><span class="line">        c = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">    <span class="comment">//直接递归会超时</span></span><br><span class="line">    <span class="comment">//return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1013.将数组分成和相等的三个部分</title>
+    <url>/2020021631411/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数数组 <code>A</code>，只有我们可以将其划分为三个和相等的非空部分时才返回 <code>true</code>，否则返回 <code>false</code>。</p>
+<p>形式上，如果我们可以找出索引 <code>i+1 &lt; j</code> 且满足 <code>(A[0] + A[1] + ... + A[i] == A[i+1] + A[i+2] + ... + A[j-1] == A[j] + A[j-1] + ... + A[A.length - 1])</code> 就可以将数组三等分。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输出：[0,2,1,-6,6,-7,9,1,2,0,1]</span><br><span class="line">输出：true</span><br><span class="line">解释：0 + 2 + 1 &#x3D; -6 + 6 - 7 + 9 + 1 &#x3D; 2 + 0 + 1</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[0,2,1,-6,6,7,9,-1,2,0,1]</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入：[3,3,6,5,-2,2,5,1,-9,4]</span><br><span class="line">输出：true</span><br><span class="line">解释：3 + 3 &#x3D; 6 &#x3D; 5 - 2 + 2 + 5 + 1 - 9 + 4</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<ol>
+<li><code>3 &lt;= A.length &lt;= 50000</code></li>
+<li><code>-10000 &lt;= A[i] &lt;= 10000</code></li>
+</ol>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>双指针</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li>双指针向数组中间遍历，如果头尾指针遍历的累加都等于整个数组和的1/3，则判断头尾指针之间元素的累加是否等于数组的1/3即可</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">summ</span><span class="params">(<span class="keyword">int</span> *A, <span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; a &lt;= b; a++)</span><br><span class="line">        sum += A[a];</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">canThreePartsEqualSum</span><span class="params">(<span class="keyword">int</span> *A, <span class="keyword">int</span> ASize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; ASize; i++)</span><br><span class="line">        sum += A[i];</span><br><span class="line">    <span class="keyword">if</span> (sum % <span class="number">3</span> != <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">int</span> oneThird = sum / <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">0</span>, n = ASize - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> qian = <span class="number">0</span>, hou = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (m &lt;= n)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (qian != oneThird)</span><br><span class="line">        &#123;</span><br><span class="line">            qian += A[m];</span><br><span class="line">            m++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (hou != oneThird)</span><br><span class="line">        &#123;</span><br><span class="line">            hou += A[n];</span><br><span class="line">            n--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (summ(A, m, n) == oneThird)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -5982,6 +5982,40 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
+    <title>717.1比特与2比特字符</title>
+    <url>/2020021422762/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>有两种特殊字符。第一种字符可以用一比特<code>0</code>来表示。第二种字符可以用两比特(<code>10</code> 或 <code>11</code>)来表示。</p>
+<p>现给一个由若干比特组成的字符串。问最后一个字符是否必定为一个一比特字符。给定的字符串总是由0结束。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">bits &#x3D; [1, 0, 0]</span><br><span class="line">输出: True</span><br><span class="line">解释: </span><br><span class="line">唯一的编码方式是一个两比特字符和一个一比特字符。所以最后一个字符是一比特字符。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">bits &#x3D; [1, 1, 1, 0]</span><br><span class="line">输出: False</span><br><span class="line">解释: </span><br><span class="line">唯一的编码方式是两比特字符和两比特字符。所以最后一个字符不是一比特字符。</span><br></pre></td></tr></table></figure>
+<p><strong>注意:</strong></p>
+<ul>
+<li><code>1 &lt;= len(bits) &lt;= 1000</code>.</li>
+<li><code>bits[i]</code> 总是<code>0</code> 或 <code>1</code>.</li>
+</ul>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>模拟栈</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li>把数组想象成一个栈底在数组尾部的栈，从头开始出栈，遇到以下两种情况出栈：<ul>
+<li>1后边是1或0，出栈</li>
+<li>单独一个0，出栈</li>
+</ul>
+</li>
+<li>如果栈底还剩一个元素，那么返回true，否则返回false。</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isOneBitCharacter</span><span class="params">(<span class="keyword">int</span> *bits, <span class="keyword">int</span> bitsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bitsSize == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; bitsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (bits[i] == <span class="number">1</span> &amp;&amp; (bits[i + <span class="number">1</span>] == <span class="number">1</span> || bits[i + <span class="number">1</span>] == <span class="number">0</span>))</span><br><span class="line">            i += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (bits[i] == <span class="number">0</span> &amp;&amp; i != bitsSize - <span class="number">1</span>)</span><br><span class="line">            i++;</span><br><span class="line">        <span class="keyword">if</span> (i == bitsSize - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>724.寻找数组的中心索引</title>
     <url>/2020021440098/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个整数类型的数组 <code>nums</code>，请编写一个能够返回数组<strong>“中心索引”</strong>的方法。</p>
@@ -6043,31 +6077,31 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>717.1比特与2比特字符</title>
-    <url>/2020021422762/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>有两种特殊字符。第一种字符可以用一比特<code>0</code>来表示。第二种字符可以用两比特(<code>10</code> 或 <code>11</code>)来表示。</p>
-<p>现给一个由若干比特组成的字符串。问最后一个字符是否必定为一个一比特字符。给定的字符串总是由0结束。</p>
+    <title>561.数组拆分</title>
+    <url>/2020021324149/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定长度为 <strong>2n</strong> 的数组, 你的任务是将这些数分成 <strong>n</strong> 对, 例如 (a1, b1), (a2, b2), …, (an, bn) ，使得从1 到 n 的 min(ai, bi) 总和最大。</p>
 <p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">bits &#x3D; [1, 0, 0]</span><br><span class="line">输出: True</span><br><span class="line">解释: </span><br><span class="line">唯一的编码方式是一个两比特字符和一个一比特字符。所以最后一个字符是一比特字符。</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: </span><br><span class="line">bits &#x3D; [1, 1, 1, 0]</span><br><span class="line">输出: False</span><br><span class="line">解释: </span><br><span class="line">唯一的编码方式是两比特字符和两比特字符。所以最后一个字符不是一比特字符。</span><br></pre></td></tr></table></figure>
-<p><strong>注意:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,4,3,2]</span><br><span class="line"></span><br><span class="line">输出: 4</span><br><span class="line">解释: n 等于 2, 最大总和为 4 &#x3D; min(1, 2) + min(3, 4).</span><br></pre></td></tr></table></figure>
+<p><strong>提示:</strong></p>
+<ol>
+<li><strong>n</strong> 是正整数,范围在 [1, 10000].</li>
+<li>数组中的元素范围在 [-10000, 10000].</li>
+</ol>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><ol>
+<li><p>算法描述</p>
 <ul>
-<li><code>1 &lt;= len(bits) &lt;= 1000</code>.</li>
-<li><code>bits[i]</code> 总是<code>0</code> 或 <code>1</code>.</li>
-</ul>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>模拟栈</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li>把数组想象成一个栈底在数组尾部的栈，从头开始出栈，遇到以下两种情况出栈：<ul>
-<li>1后边是1或0，出栈</li>
-<li>单独一个0，出栈</li>
+<li>排序+最小值累加</li>
 </ul>
 </li>
-<li>如果栈底还剩一个元素，那么返回true，否则返回false。</li>
+<li><p>个人分析</p>
+<ul>
+<li>首先将给定数组排序，然后每两位选择较小值进行累加</li>
 </ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isOneBitCharacter</span><span class="params">(<span class="keyword">int</span> *bits, <span class="keyword">int</span> bitsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (bitsSize == <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; bitsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (bits[i] == <span class="number">1</span> &amp;&amp; (bits[i + <span class="number">1</span>] == <span class="number">1</span> || bits[i + <span class="number">1</span>] == <span class="number">0</span>))</span><br><span class="line">            i += <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (bits[i] == <span class="number">0</span> &amp;&amp; i != bitsSize - <span class="number">1</span>)</span><br><span class="line">            i++;</span><br><span class="line">        <span class="keyword">if</span> (i == bitsSize - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">min</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? b : a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare1</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *a, <span class="keyword">const</span> <span class="keyword">void</span> *b)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">//升序</span></span><br><span class="line">    <span class="keyword">return</span> (*(<span class="keyword">int</span> *)a - *(<span class="keyword">int</span> *)b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">arrayPairSum</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sizeOfElem = <span class="keyword">sizeof</span>(nums[<span class="number">0</span>]);</span><br><span class="line">    qsort(nums, numsSize, sizeOfElem, compare1);</span><br><span class="line">    <span class="keyword">int</span> i, res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i += <span class="number">2</span>)</span><br><span class="line">        res += min(nums[i], nums[i + <span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -6097,40 +6131,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
 <li>总结时发现，只利用双指针就行了，头尾指针向中间扫描时，头指针扫描的数应该是越来越大的，而尾指针扫描的数应该是越来越小的，当头指针的后一个数比当前位置的数小时，头指针就应该停下了，尾指针亦然；当头尾指针相遇，则表明这是一个完全有序的数组，所以返回0.</li>
 </ul>
 <h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">int</span> <span class="title">compare1</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *a, <span class="keyword">const</span> <span class="keyword">void</span> *b)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">//升序</span></span><br><span class="line">    <span class="keyword">return</span> (*(<span class="keyword">int</span> *)a - *(<span class="keyword">int</span> *)b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findUnsortedSubarray</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize == <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> *help = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(numsSize * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">        help[i] = nums[i];</span><br><span class="line">    qsort(nums, numsSize, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), compare1);</span><br><span class="line">    <span class="comment">//逐位异或</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i++)</span><br><span class="line">        nums[i] ^= help[i];</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">0</span>, n = numsSize - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> res = numsSize;</span><br><span class="line">    <span class="comment">//双指针</span></span><br><span class="line">    <span class="keyword">while</span> ((nums[m] == <span class="number">0</span> || nums[n] == <span class="number">0</span>) &amp;&amp; m &lt;= n)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[m] == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            res--;</span><br><span class="line">            m++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (nums[n] == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            res--;</span><br><span class="line">            n--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (res &lt; <span class="number">0</span>) <span class="comment">//如果队列有序，res=-1，那么应该返回0</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>561.数组拆分</title>
-    <url>/2020021324149/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定长度为 <strong>2n</strong> 的数组, 你的任务是将这些数分成 <strong>n</strong> 对, 例如 (a1, b1), (a2, b2), …, (an, bn) ，使得从1 到 n 的 min(ai, bi) 总和最大。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,4,3,2]</span><br><span class="line"></span><br><span class="line">输出: 4</span><br><span class="line">解释: n 等于 2, 最大总和为 4 &#x3D; min(1, 2) + min(3, 4).</span><br></pre></td></tr></table></figure>
-<p><strong>提示:</strong></p>
-<ol>
-<li><strong>n</strong> 是正整数,范围在 [1, 10000].</li>
-<li>数组中的元素范围在 [-10000, 10000].</li>
-</ol>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><ol>
-<li><p>算法描述</p>
-<ul>
-<li>排序+最小值累加</li>
-</ul>
-</li>
-<li><p>个人分析</p>
-<ul>
-<li>首先将给定数组排序，然后每两位选择较小值进行累加</li>
-</ul>
-</li>
-<li><p>代码</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">min</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b ? b : a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare1</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *a, <span class="keyword">const</span> <span class="keyword">void</span> *b)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">//升序</span></span><br><span class="line">    <span class="keyword">return</span> (*(<span class="keyword">int</span> *)a - *(<span class="keyword">int</span> *)b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">arrayPairSum</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sizeOfElem = <span class="keyword">sizeof</span>(nums[<span class="number">0</span>]);</span><br><span class="line">    qsort(nums, numsSize, sizeOfElem, compare1);</span><br><span class="line">    <span class="keyword">int</span> i, res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; numsSize; i += <span class="number">2</span>)</span><br><span class="line">        res += min(nums[i], nums[i + <span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
 ]]></content>
       <categories>
         <category>LeetCode</category>
@@ -6234,33 +6234,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       </tags>
   </entry>
   <entry>
-    <title>283.移动零</title>
-    <url>/2020020928492/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
-<p><strong>示例:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [0,1,0,3,12]</span><br><span class="line">输出: [1,3,12,0,0]</span><br></pre></td></tr></table></figure>
-<p><strong>说明</strong>:</p>
-<ol>
-<li>必须在原数组上操作，不能拷贝额外的数组。</li>
-<li>尽量减少操作次数。</li>
-</ol>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>双指针法</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li>指针<code>i</code>用于寻找零，指针<code>j</code>用于寻找指针<code>i</code>后边不为零的数，并令<code>nums[i]=nums[j]</code>，然后再令<code>nums[j]=0</code>，遍历整个数组。</li>
-</ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; numsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (j &lt; numsSize)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[j] != <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    nums[i] = nums[j];</span><br><span class="line">                    nums[j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
-        <tag>two-pointers</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>268.缺失数字</title>
     <url>/2020020958118/</url>
     <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个包含 <code>0, 1, 2, ..., n</code> 中 <em>n</em> 个数的序列，找出 0 .. <em>n</em> 中没有出现在序列中的那个数。</p>
@@ -6288,6 +6261,70 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
         <tag>array</tag>
         <tag>bit-manipu</tag>
         <tag>math</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>283.移动零</title>
+    <url>/2020020928492/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [0,1,0,3,12]</span><br><span class="line">输出: [1,3,12,0,0]</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong>:</p>
+<ol>
+<li>必须在原数组上操作，不能拷贝额外的数组。</li>
+<li>尽量减少操作次数。</li>
+</ol>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>双指针法</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li>指针<code>i</code>用于寻找零，指针<code>j</code>用于寻找指针<code>i</code>后边不为零的数，并令<code>nums[i]=nums[j]</code>，然后再令<code>nums[j]=0</code>，遍历整个数组。</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3>   <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">moveZeroes</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; numsSize)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (j &lt; numsSize)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[j] != <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    nums[i] = nums[j];</span><br><span class="line">                    nums[j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    j++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
+        <tag>two-pointers</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>189.旋转数组</title>
+    <url>/2020020820560/</url>
+    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组，将数组中的元素向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,2,3,4,5,6,7] 和 k &#x3D; 3</span><br><span class="line">输出: [5,6,7,1,2,3,4]</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: [7,1,2,3,4,5,6]</span><br><span class="line">向右旋转 2 步: [6,7,1,2,3,4,5]</span><br><span class="line">向右旋转 3 步: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [-1,-100,3,99] 和 k &#x3D; 2</span><br><span class="line">输出: [3,99,-1,-100]</span><br><span class="line">解释: </span><br><span class="line">向右旋转 1 步: [99,-1,-100,3]</span><br><span class="line">向右旋转 2 步: [3,99,-1,-100]</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。</li>
+<li>要求使用空间复杂度为 O(1) 的 <strong>原地</strong> 算法。</li>
+</ul>
+<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
+<li>暴力法：两个for循环嵌套，每次将数组中的元素向后移动一位</li>
+<li>三次翻转数组</li>
+</ul>
+<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
+<li>暴力法挺好理解就是超时</li>
+<li>三次翻转：<ul>
+<li>第一次：将整个数组翻转</li>
+<li>第二次：将[0,k-1]的数组翻转</li>
+<li>第三次：将[k,n-1]的数组翻转</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (low &lt; high)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> temp;</span><br><span class="line">        temp = nums[low];</span><br><span class="line">        nums[low] = nums[high];</span><br><span class="line">        nums[high] = temp;</span><br><span class="line">        low++;</span><br><span class="line">        high--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    k = k % numsSize;</span><br><span class="line">    reverse(nums, <span class="number">0</span>, numsSize - <span class="number">1</span>);</span><br><span class="line">    reverse(nums, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">    reverse(nums, k, numsSize - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三、PS："><a href="#三、PS：" class="headerlink" title="三、PS："></a>三、PS：</h2><p>暴力法的超时代码</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//超时了</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       <span class="keyword">int</span> minK = k % numsSize;</span><br><span class="line">       <span class="keyword">int</span> i, temp, j;</span><br><span class="line">       <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; minK; j++)</span><br><span class="line">       &#123;</span><br><span class="line">           temp = nums[numsSize - <span class="number">1</span>];</span><br><span class="line">           <span class="keyword">for</span> (i = numsSize - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)</span><br><span class="line">           &#123;</span><br><span class="line">               nums[i] = nums[i - <span class="number">1</span>];</span><br><span class="line">           &#125;</span><br><span class="line">           nums[<span class="number">0</span>] = temp;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>LeetCode</category>
+      </categories>
+      <tags>
+        <tag>array</tag>
       </tags>
   </entry>
   <entry>
@@ -6334,43 +6371,6 @@ J(w, b)=\frac{1}{m} \sum_{i=1}^{m} L\left(\hat{y}^{(i)}, y^{(i)}\right)  (2)</sc
       <tags>
         <tag>array</tag>
         <tag>hash-table</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>189.旋转数组</title>
-    <url>/2020020820560/</url>
-    <content><![CDATA[<h2 id="一、题目描述"><a href="#一、题目描述" class="headerlink" title="一、题目描述"></a>一、题目描述</h2><p>给定一个数组，将数组中的元素向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [1,2,3,4,5,6,7] 和 k &#x3D; 3</span><br><span class="line">输出: [5,6,7,1,2,3,4]</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: [7,1,2,3,4,5,6]</span><br><span class="line">向右旋转 2 步: [6,7,1,2,3,4,5]</span><br><span class="line">向右旋转 3 步: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入: [-1,-100,3,99] 和 k &#x3D; 2</span><br><span class="line">输出: [3,99,-1,-100]</span><br><span class="line">解释: </span><br><span class="line">向右旋转 1 步: [99,-1,-100,3]</span><br><span class="line">向右旋转 2 步: [3,99,-1,-100]</span><br></pre></td></tr></table></figure>
-<p><strong>说明:</strong></p>
-<ul>
-<li>尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。</li>
-<li>要求使用空间复杂度为 O(1) 的 <strong>原地</strong> 算法。</li>
-</ul>
-<h2 id="二、题解"><a href="#二、题解" class="headerlink" title="二、题解"></a>二、题解</h2><h3 id="1-算法描述"><a href="#1-算法描述" class="headerlink" title="1.算法描述"></a>1.算法描述</h3><ul>
-<li>暴力法：两个for循环嵌套，每次将数组中的元素向后移动一位</li>
-<li>三次翻转数组</li>
-</ul>
-<h3 id="2-个人分析"><a href="#2-个人分析" class="headerlink" title="2.个人分析"></a>2.个人分析</h3><ul>
-<li>暴力法挺好理解就是超时</li>
-<li>三次翻转：<ul>
-<li>第一次：将整个数组翻转</li>
-<li>第二次：将[0,k-1]的数组翻转</li>
-<li>第三次：将[k,n-1]的数组翻转</li>
-</ul>
-</li>
-</ul>
-<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (low &lt; high)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> temp;</span><br><span class="line">        temp = nums[low];</span><br><span class="line">        nums[low] = nums[high];</span><br><span class="line">        nums[high] = temp;</span><br><span class="line">        low++;</span><br><span class="line">        high--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    k = k % numsSize;</span><br><span class="line">    reverse(nums, <span class="number">0</span>, numsSize - <span class="number">1</span>);</span><br><span class="line">    reverse(nums, <span class="number">0</span>, k - <span class="number">1</span>);</span><br><span class="line">    reverse(nums, k, numsSize - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="三、PS："><a href="#三、PS：" class="headerlink" title="三、PS："></a>三、PS：</h2><p>暴力法的超时代码</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//超时了</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span> *nums, <span class="keyword">int</span> numsSize, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (numsSize &lt; <span class="number">2</span>)</span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       <span class="keyword">int</span> minK = k % numsSize;</span><br><span class="line">       <span class="keyword">int</span> i, temp, j;</span><br><span class="line">       <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; minK; j++)</span><br><span class="line">       &#123;</span><br><span class="line">           temp = nums[numsSize - <span class="number">1</span>];</span><br><span class="line">           <span class="keyword">for</span> (i = numsSize - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--)</span><br><span class="line">           &#123;</span><br><span class="line">               nums[i] = nums[i - <span class="number">1</span>];</span><br><span class="line">           &#125;</span><br><span class="line">           nums[<span class="number">0</span>] = temp;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>LeetCode</category>
-      </categories>
-      <tags>
-        <tag>array</tag>
       </tags>
   </entry>
   <entry>
